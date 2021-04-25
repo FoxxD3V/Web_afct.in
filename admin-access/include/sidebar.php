@@ -4,23 +4,23 @@
 	<!-- Sidebar - Brand -->
 	<a class="sidebar-brand d-flex align-items-center justify-content-center " href="#">
 		<div class="sidebar-brand-icon  ">
-			 <img src="https://www.geolifecare.com/assets/links/img/logo/logo_big.png" class="img-fluid p-5 d-none  d-md-block" />
-			<img src="https://www.geolifecare.com/assets/links/img/logo/logo_big.png"  class="d-md-none d-sm-block" style="width: 100%" />
+			 <img src="../core/img/logo.jpg" class="img-fluid p-5 d-none  d-md-block" />
+			<img src="../core/img/logo.jpg"  class="d-md-none d-sm-block" style="width: 100%" />
 
 		</div>
 
 	</a>
 
 	<!-- Divider -->
-	<hr class="sidebar-divider my-0">
+<!--	<hr class="sidebar-divider my-0">-->
 
 	<!-- Nav Item - Dashboard -->
-	<li class="nav-item ">
-		<a class="nav-link" target="_blank" href="<?php echo $SITE_URL;?>">
+<!--	<li class="nav-item ">
+		<a class="nav-link" target="_blank" href="<?php /*echo $SITE_URL;*/?>">
 			<i class="fas fa-fw fa-globe-asia faa-spin animated "></i>
 			<span>Website</span></a>
 	</li>
-
+-->
 	<!-- Divider -->
 	<hr class="sidebar-divider my-0">
 	<!-- Nav Item - Dashboard -->
@@ -29,7 +29,7 @@
 			<i class="fas fa-fw fa-tachometer-alt"></i>
 			<span>Dashboard</span></a>
 	</li>
-	<li class="nav-item <?php if($currentPG=="team_all.php" || $currentPG=="team_left.php" || $currentPG=="team_right.php" || $currentPG=="team_desig.php" ) echo 'active  '; ?> ">
+<!--	<li class="nav-item <?php /*if($currentPG=="team_all.php" || $currentPG=="team_left.php" || $currentPG=="team_right.php" || $currentPG=="team_desig.php" ) echo 'active  '; */?> ">
 		<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#team_members" aria-expanded="true" aria-controls="team_members">
 			<i class="fas fa-fw fa-users"></i>
 			<span>Team Members</span>
@@ -43,7 +43,7 @@
 			</div>
 		</div>
 	</li>
-	<li class="nav-item <?php if($currentPG=="business_designation.php"  ) echo 'active  '; ?> ">
+	<li class="nav-item <?php /*if($currentPG=="business_designation.php"  ) echo 'active  '; */?> ">
 		<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#business" aria-expanded="true" aria-controls="team_members">
 
 			<i class="fas  fa-fw fa-business-time"></i>
@@ -53,13 +53,13 @@
 			<div class="bg-white py-2 collapse-inner rounded">
  <a  class="collapse-item" href="business_designation.php"><i class="fas fa-angle-double-right"></i> My Designation </a>
  <a  class="collapse-item" href="tree_view.php"><i class="fas fa-angle-double-right"></i> Tree View</a>
-	<?php if($data_member['designation_id']>=5) { ?>
- <a  class="collapse-item" href="tree_view_big.php"><i class="fas fa-angle-double-right"></i> Tree View 12 Level</a>  <?php } ?>
+	<?php /*if($data_member['designation_id']>=5) { */?>
+ <a  class="collapse-item" href="tree_view_big.php"><i class="fas fa-angle-double-right"></i> Tree View 12 Level</a>  <?php /*} */?>
 
 	 </div>
 		</div>
 	</li>
-	<li class="nav-item <?php if($currentPG=="income_binary.php" || $currentPG=="income_salary.php" || $currentPG=="income_royalty.php"  ) echo 'active  '; ?> ">
+	<li class="nav-item <?php /*if($currentPG=="income_binary.php" || $currentPG=="income_salary.php" || $currentPG=="income_royalty.php"  ) echo 'active  '; */?> ">
 		<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#payouts" aria-expanded="true" aria-controls="team_members">
 
 			<i class="far fa-fw fa-money-bill-alt"></i>
@@ -79,7 +79,7 @@
 			<i class="fas fa-fw fa-file-signature"></i>
 			<span>Extra Facilities</span></a>
 	</li>
-	<li class="nav-item <?php if($currentPG=="setting_changepassword.php" || $currentPG=="setting_updateimage.php"  ) echo 'active  '; ?> ">
+	<li class="nav-item <?php /*if($currentPG=="setting_changepassword.php" || $currentPG=="setting_updateimage.php"  ) echo 'active  '; */?> ">
 		<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#setting" aria-expanded="true" aria-controls="team_members">
 			<i class="fas fa-fw fa-tools   faa-wrench animated  "></i>
 
@@ -94,7 +94,7 @@
 		  	</div>
 		</div>
 	</li>
-	<li class="nav-item <?php if($currentPG=="support_create.php" || $currentPG=="support_list_pending.php" || $currentPG=="support_list_replied.php"   ) echo 'active  '; ?> ">
+	<li class="nav-item <?php /*if($currentPG=="support_create.php" || $currentPG=="support_list_pending.php" || $currentPG=="support_list_replied.php"   ) echo 'active  '; */?> ">
 		<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#support" aria-expanded="true" aria-controls="team_members">
 
 			<i class="far fa-fw fa-comments"></i>
@@ -109,16 +109,16 @@
 			</div>
 		</div>
 	</li>
+-->
 
-
-	<?php if($data_foruser['status']==0) { ?>
+	<?php /*if($data_foruser['status']==0) { */?><!--
 	<li class="nav-item  ">
 		<a class="nav-link" target="_blank" href="form_transfer.php" >
 			<i class="fas fa-fw fa-exchange-alt"></i>
 
 			<span>Transfer Form</span></a>
 	</li>
-	<?php } ?>
+	--><?php /*}*/ ?>
 	<!-- Divider -->
 	<hr class="sidebar-divider  my-0">
 	<li class="nav-item  ">

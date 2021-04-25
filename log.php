@@ -1,19 +1,49 @@
 <?php
-require_once("../con_base/functions.inc.php");
+require_once("con_base/functions.inc.php");
 if(isset($_POST['login']))
 {
+    $user_role="";
+    $tmpusertyp=trim(clean($_POST['login_typ']));
     $tmpuserid=trim(clean($_POST['loginid']));
-    $tmppassword=trim($_POST['pass']);
-     $sql = " select * from registration where user='$tmpuserid' ";
+    $tmppassword=trim(enc($_POST['pass']));
+    if($tmpusertyp=='')
+    {
+        $sql = " select * from tbl_login where user='$tmpuserid' ";
+        $user_role='admin';
+    }
+    else
+    {
+        $user_role=$tmpusertyp;
+        $_SESSION[ 'warn_msg' ] = "Sorry this login is under development ";
+        $_SESSION['msg']=array('error', 'Sorry this login is under development');
+        header( "Location: index.php" );
+        exit();
+    }
 
-   $result = mysqli_query( $DB_LINK1, $sql );
+   $result = mysqli_query($DB_LINK, $sql );
    $GetRows = mysqli_num_rows( $result );
    if ( $GetRows > 0 )
    {
     $line = mysqli_fetch_array( $result );
-    if ( $line[ 'password' ] == $tmppassword ) 
+    if ( $line[ 'pass' ] == $tmppassword )
     {
-				if($line['status']==0)
+        $_SESSION[ 'user_role' ] = $user_role;
+        $_SESSION[ 'a_id' ] = $line[ 'id' ];
+        $_SESSION[ 'a_userid' ] = $tmpuserid;
+        $_SESSION[ 'a_name' ] = $line[ 'username' ];
+        $_SESSION[ 'a_mobile' ] = $line[ 'mobile' ];
+        $_SESSION[ 'a_email' ] = $line[ 'email' ];
+        $_SESSION[ 'a_status' ] = $line[ 'status' ];
+        ip_store($user_role,$line[ 'id' ]);
+        $_SESSION[ 'info_msg' ] = "Login Successfully";
+        $_SESSION['msg']=array('success', 'Login Successfully');
+        if($user_role=='admin')
+        {
+            header("Location: admin-access/index.php");
+            exit();
+        }
+
+			/*	if($line['status']==0)
 							{
 									$now = time(); // or your date as well
 									$your_date = strtotime($line['joining_date']);
@@ -36,31 +66,22 @@ if(isset($_POST['login']))
 							exit;
 					}
       
-      $_SESSION[ 'a_id' ] = $line[ 'id' ];
-      $_SESSION[ 'a_mid' ] = $line[ 'id' ];
-      $_SESSION[ 'a_name' ] = $line[ 'member' ];
-      $_SESSION[ 'a_mobile' ] = $line[ 'mobile' ];
-      $_SESSION[ 'a_email' ] = $line[ 'email' ];
-      $_SESSION[ 'a_status' ] = $line[ 'status' ];
-      ip_store($log_type,$line[ 'id' ]);       
-      $_SESSION[ 'info_msg' ] = "Login Successfully";
-      $_SESSION['msg']=array('success', 'Login Successfully');
-					header( "Location: index.php" );
-					exit();
+
+					 */
     } 
      else 
      {
       $_SESSION[ 'warn_msg' ] = "Please Enter Valid Password";
-      $_SESSION['msg']=array('error', 'Please Enter Valid Password');
-      header( "Location: login.php" );
+      $_SESSION['msg']=array('error', 'Please Enter Valid  Password');
+      header( "Location: index.php" );
       exit();
     }
    } 
   else 
   {
     $_SESSION[ 'warn_msg' ] = "Please Enter Valid Username";
-    $_SESSION['msg']=array('error', 'Please Enter Valid Username');
-			header( "Location: login.php" );
+    $_SESSION['msg']=array('error', 'Please Enter Valid Username ');
+			header( "Location: index.php" );
 			exit();
    }
 }
@@ -69,9 +90,8 @@ if(isset($_POST['login']))
 <Head>
 	<title>Login Processing..</title>
 </Head>
-<body>
-<center>
-	<img height="200px" src="http://customer.edusmart.com/website/sites/default/files/images/redirectUrl.gif"/></center>
+<body style="alignment: center">
+	<img height="200px" src="core/img/login_process.gif"/>
 </body>
 </html>
 

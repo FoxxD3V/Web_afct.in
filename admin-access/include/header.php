@@ -9,7 +9,7 @@
 	<!-- Topbar Search -->
 	<div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
 		<div class="input-group">
-			<h6 class="m-0 font-weight-bold text-primary">Welcome <?php echo ucfirst( $data_member['name']);?> [<?php echo $data_member['mem_id'];?>]</h6>
+			<h6 class="m-0 font-weight-bold text-primary">Welcome <?php echo ucfirst( $_SESSION[ 'a_name' ]);?> [<?php echo $_SESSION[ 'a_userid' ];?>]</h6>
 		</div>
 	</div>
 
@@ -20,12 +20,12 @@
 		<!-- Topbar Search -->
 		<div class="  d-sm-none ">
 			<div class="input-group">
-				<small class=" mt-3   text-primary"><?php echo ucfirst( $data_member['name']);?>  [<?php echo $data_member['mem_id'];?>]</small>
+				<small class=" mt-3   text-primary"><?php echo ucfirst( $_SESSION[ 'a_name' ]);?>  [<?php echo $_SESSION[ 'a_userid' ];?>]</small>
 			</div>
 		</div>
 		<?php
 		$sql_noticec = " select * from tbl_notice  where ondate='".date('Y-m-d')."'";
-		$qry_noticec = mysqli_query( $DB_LINK1, $sql_noticec );
+		$qry_noticec = mysqli_query( $DB_LINK, $sql_noticec );
 		$notice_count=mysqli_num_rows($qry_noticec);
 		?>
 		<!-- Nav Item - Alerts -->
@@ -45,7 +45,7 @@
 				</h6>
 				<?php
 				$sql_notice = " select * from tbl_notice  order by id desc limit 0,3";
-				$qry_notice = mysqli_query( $DB_LINK1, $sql_notice );
+				$qry_notice = mysqli_query( $DB_LINK, $sql_notice );
 				foreach($qry_notice as $data_notice) { ?>
 				<a class="dropdown-item d-flex align-items-center" href="#">
 					<div class="mr-3">
@@ -72,11 +72,11 @@
 		<li class="nav-item dropdown no-arrow">
 			<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 				<span class="mr-2 d-none d-lg-inline text-gray-600 small">My Account</span>
-				<?php if($data_member['user_image']!='') {?>
-					<img src="../upload/user_image/<?php echo $data_member['user_image'];?>" class="img-profile rounded-circle"/>
-				<?php } else if($data_foruser['pic']!=''){ ?>
-				<img class="img-profile rounded-circle" src="../upload/user/<?php echo $data_foruser['pic'];?>">
-				<?php } ?>
+			<!--	<?php /*if($data_member['user_image']!='') {*/?>
+					<img src="../upload/user_image/<?php /*echo $data_member['user_image'];*/?>" class="img-profile rounded-circle"/>
+				<?php /*} else if($data_foruser['pic']!=''){ */?>
+				<img class="img-profile rounded-circle" src="../upload/user/<?php /*echo $data_foruser['pic'];*/?>">
+				--><?php /*} */?>
 			</a>
 			<!-- Dropdown - User Information -->
 			<div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">

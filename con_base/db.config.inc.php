@@ -1,7 +1,7 @@
 <?php
 global $getCurrentHost,$getCurrentURL;
 $getCurrentHost=$_SERVER['HTTP_HOST'];
-$getCurrentURL="/Testing/Web_Geolifecare.com";
+$getCurrentURL="";
 //echo 'website is under construction... ';
 //exit; 
 $host = "localhost";
@@ -12,12 +12,12 @@ if($getCurrentHost=='localhost')
 }
 else
 {
-    $username = "geolifec_webuser";
-    $password = "l0#ksZKGAv*h";
+    $username = "afct_user";
+    $password = "bqe5%N48";
 }
 
 /////////////////////////////////
-$db = "geolifec_webdb";
+$db = "afct_db";
 global $DB_LINK;
 // Create connection
 $DB_LINK = new mysqli($host, $username, $password, $db);
@@ -26,6 +26,8 @@ if (!$DB_LINK)
     die("Server Busy kindly wait.." . mysqli_connect_error());
 	   exit;
 }
+
+/*
 $host1 = "localhost";
 if($getCurrentHost=='localhost')
 {
@@ -46,5 +48,5 @@ if (!$DB_LINK1)
 {
 	die("Server Busy kindly wait.." . mysqli_connect_error());
 	exit;
-}
+}*/
 ?>

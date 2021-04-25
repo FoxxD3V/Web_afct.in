@@ -23,16 +23,16 @@
 </div>
 
 <!-- Bootstrap core JavaScript-->
-<script src="core/vendor/jquery/jquery.min.js"></script>
-<script src="core/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="../core/vendor/jquery/jquery.min.js"></script>
+<script src="../core/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <!-- Core plugin JavaScript-->
-<script src="core/vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="../core/vendor/jquery-easing/jquery.easing.min.js"></script>
 
 <!-- Custom scripts for all pages-->
-<script src="core/js/sb-admin-2.min.js"></script>
+<script src="../core/js/sb-admin-2.min.js"></script>
 
-<script src="core/sweetalert/sweetalert.min.js"></script>
+<script src="../core/sweetalert/sweetalert.min.js"></script>
 
 <script>
 	<?php if(isset($_SESSION['msg'])){ if($_SESSION['msg']!='')

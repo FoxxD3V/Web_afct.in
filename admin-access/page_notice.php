@@ -47,7 +47,7 @@ require_once("../con_base/functions.inc.php");
 
 								<?php
 								$sql_notice = " select * from tbl_notice  order by id desc  ";
-								$qry_notice = mysqli_query( $DB_LINK1, $sql_notice );
+								$qry_notice = mysqli_query( $DB_LINK, $sql_notice );
 								foreach($qry_notice as $data_notice) { ?>
 
 									<?php if( $data_notice['ondate']==date('Y-m-d'))

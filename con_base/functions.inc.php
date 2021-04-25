@@ -1,32 +1,21 @@
 <?php
-ob_start();
-date_default_timezone_set("Asia/Kolkata");
-include("db.config.inc.php");
-/*header("Last-Modified: " . gmdate("D, d M Y H:i:s") . "GMT");
-header("cache-control: no-cache, no-store, must-revalidate");*/
-
-//// each client should remember their session id for EXACTLY 1 hour
 session_start();
+include("db.config.inc.php");
+date_default_timezone_set("Asia/Kolkata");
+//header("Last-Modified: " . gmdate("D, d M Y H:i:s") . "GMT");
+//header("Cache-Control: no-store, must-revalidate");
+//header("Pragma: no-cache");
  
-$qry_global=mysqli_query($DB_LINK,"select * from tbl_setting");
+//// each client should remember their session id for EXACTLY 1 hour
+
+ 
+$qry_global=mysqli_query($DB_LINK,"select * from tbl_setting")or die(mysql_error());
 $global_fetch=mysqli_fetch_array($qry_global);
 $SITE_NAME= stripslashes($global_fetch['site_name']);
-$SITE_URL='';
-if($getCurrentHost=='localhost')
-    {
-        $SITE_URL="http://".$getCurrentHost.$getCurrentURL;
-    }
-    else
-    {
-        $SITE_URL= stripslashes($global_fetch['site_url']);
-    }
-    //echo $SITE_URL;
-
-$EMAIL_ID=stripslashes($global_fetch['email']);
-$EMAIL_ID2=stripslashes($global_fetch['email2']);
-$phone=stripslashes($global_fetch['phone']);
-$mobile=stripslashes($global_fetch['mobile']);
-$mobile2=stripslashes($global_fetch['mobile2']);
+$SITE_URL= stripslashes($global_fetch['site_url']);
+$EMAIL_ID=stripslashes($global_fetch['email']); 
+$MOBILE=stripslashes($global_fetch['mobile']); 
+$MOBILE2=stripslashes($global_fetch['mobile2']); 
 $fax=stripslashes($global_fetch['fax']);
 $address=stripslashes($global_fetch['address']);
 $MAP=stripslashes($global_fetch['google_map']);
@@ -42,11 +31,44 @@ $PORT=stripslashes($global_fetch['port']);
 $IS_MENU=stripslashes($global_fetch['is_menu']);
 $msg_contact=stripslashes($global_fetch['msg_contact']);
 $msg_pass=stripslashes($global_fetch['msg_pass']);
-  $msg_sender_id=stripslashes($global_fetch['msg_sender_id']);
+$msg_sender_id=stripslashes($global_fetch['msg_sender_id']);
 $msg_type=stripslashes($global_fetch['msg_typ']);
 $SESSION_MIN = 10;
 $current_year = date('Y'); 
 $ADMIN_HTML_TITLE=stripslashes($global_fetch['site_admin_title']);
+
+$LAST_BINARY_ID=stripslashes($global_fetch['binary_last_ac']);
+
+function  update_bin_id($m_id)
+{
+	global $DB_LINK;
+
+	$qry=mysqli_query($DB_LINK,"update tbl_setting set binary_last_ac='$m_id' ");
+}
+
+function  update_bin_id_pre($m_id)
+{
+	global $DB_LINK;
+
+	$qry=mysqli_query($DB_LINK,"update tbl_setting set binary_last_ac_pre='$m_id' ");
+}
+
+function  update_bin_id_gold($m_id)
+{
+	global $DB_LINK;
+
+	$qry=mysqli_query($DB_LINK,"update tbl_setting set binary_last_ac_gold='$m_id' ");
+}
+
+
+
+function  update_bin_id_mem_table($m_id)
+{
+ global $DB_LINK;
+ $qry=mysqli_query($DB_LINK,"update tbl_staff_profile set is_binary_calc='1' where id='$m_id' ");  
+}
+
+
 // function for admin login validation
 function validate()
 {
@@ -59,9 +81,6 @@ function validate()
 		exit();
 	}
 }
-
-
-
 function master_main()
 {
 	if(!isset($_SESSION['session_master']))
@@ -135,6 +154,14 @@ function master_branch()
 		exit();
 	}
 }
+function master_member()
+{
+if(!isset($_SESSION['session_user'])) {  header("location:../");  exit(); }
+}
+function master_recruiters()
+{
+ if(!isset($_SESSION['session_recruiters'])) { header("location:sign-in");  exit(); }
+}
 function update_kyc()
 {
 	if($_SESSION['user_uid']=='')
@@ -165,9 +192,9 @@ function normal_filter($val)
 {
 	return ucfirst(stripslashes($val));
 }
-function strip_filter($val)
+function strip_filter($val, $size)
 {
-	return  stripslashes(strip_tags($val));
+	return substr(stripslashes(strip_tags($val)),0,$size);
 }
 function caps_filter($val)
 {
@@ -181,17 +208,12 @@ function date_dmy($date)
 {
 	if($date!='' || $date!='0000-00-00 00:00:00')
   	{
-  		/*$e=mysqli_fetch_array(mysqli_query("select convert_tz('$date','+00:00','+12:00')"));
-  		$date= $e[0];
-  		list($date_new,$time_new)=explode(" ",$date);
-  		list($y,$m,$d)=explode("-",$date_new);
-  		list($hr,$min,$sec)=explode(":",$time_new);*/
   		return date("j M Y h:i A", strtotime($date));
   	}
 }
 function date_dmy_small($date)
 {
-  	if($date!='' || $date!='0000-00-00')
+  	if($date!='' && $date!='0000-00-00')
   	{
   		 return date("j M Y", strtotime($date));
   	}
@@ -230,27 +252,11 @@ function dec_normal($val)
 	}
 }
  
-/*function show_content($id,$row_name,$DB_LINK)
+function show_content($id,$row_name,$DB_LINK)
 {
-	$grs=mysqli_query($DB_LINK,"select $row_name from pages where id='$id'");
+	$grs=mysqli_query($DB_LINK,"select $row_name from tbl_category where id='$id'");
 	$row=mysqli_fetch_array($grs);
 	return $row[$row_name];
-}*/
-
-function show_title($id)
-{
-    global $DB_LINK;
-    $grs=mysqli_query($DB_LINK,"select title from tbl_category where id='$id'");
-    $row=mysqli_fetch_array($grs);
-    return $row['title'];
-}
-
-function show_content($id)
-{
-    global $DB_LINK;
-    $grs=mysqli_query($DB_LINK,"select description from tbl_category where id='$id'");
-    $row=mysqli_fetch_array($grs);
-    return $row['description'];
 }
  
 function data_cutter($data,$cut)
@@ -258,6 +264,18 @@ function data_cutter($data,$cut)
 	if(strlen(stripslashes($data))>$cut)
 	{
 		$cutdata=ucfirst(substr(stripslashes($data),0,$cut)).".."; 
+	}
+	else 
+	{
+		$cutdata=stripslashes($data); 
+	}
+	return $cutdata;
+}
+function data_cutter_clean($data,$cut)
+{
+	if(strlen(stripslashes($data))>$cut)
+	{
+		$cutdata=ucfirst(substr(stripslashes($data),0,$cut)); 
 	}
 	else 
 	{
@@ -326,9 +344,21 @@ function get_ip()
 	
 function ip_store($log_type,$log_id)
 { 
-  global $DB_LINK;
+  	global $DB_LINK;
 	$ip=get_ip();
+	/*$qry_ip=mysqli_query($DB_LINK,"select * from log_data where ip='$ip'");
+	$count_ip=mysqli_num_rows($qry_ip);
+	if($count_ip>0)
+	{
+    	$global_ip=mysqli_fetch_array($qry_ip);
+		$ip_open=$global_ip['count']+1;
+   		mysqli_query($DB_LINK,"update log_data set count='$ip_open',dt='".date("Y-m-d")."' where ip='$ip'");
+	}
+	else
+	{}*/
+ // echo "insert into log_data set  ip='$ip',log_typ='$log_type',log_id='$log_id' "; exit;
 	mysqli_query($DB_LINK, "insert into log_data set ip='$ip', log_typ='$log_type', log_id='$log_id'");
+	
 }
 	
 // Numbetr to words
@@ -618,19 +648,19 @@ function rec($m_id)
 }
 function rec_anyleg($m_id,$place)
 {
-	global $DB_LINK;
-	$placer_id= $m_id; 
-  	$qry=mysqli_query($DB_LINK,"select m_id from staff where p_id='$m_id' and placing='".$place."' ");  
-  	if(mysqli_num_rows($qry)>0)
-    {          
-    	$data_get=mysqli_fetch_array($qry);
-        rec_anyleg($DB_LINK,$data_get['m_id'],$place);  
+	  global $DB_LINK,$placer_id;
+	  $placer_id= $m_id;   
+          $qry=mysqli_query($DB_LINK,"select login_id from tbl_staff where p_id='".$m_id."' and placing='".$place."' ");  
+   if(mysqli_num_rows($qry)>0)
+    {      
+       $data_get=mysqli_fetch_array($qry);
+        rec_anyleg($data_get['login_id'],$place); 
     }
     else 
     {  
-        $_SESSION['placer_id']=$placer_id;
-        return $placer_id;   
-    }            
+      $_SESSION['placer_id']=$placer_id;
+      return $placer_id;  
+    }
 }
 global  $placer_id_all, $tempTree,$exclude, $depth; 
 function rec_anyleg_all($m_id,$place)
@@ -640,7 +670,10 @@ function rec_anyleg_all($m_id,$place)
   	$depth='0';
   	$placer_id= $m_id; 
   	$placer_id_all='';
-  	$qry=mysqli_query($DB_LINK,"select m_id from staff where p_id='$m_id'     and placing='$place'");  
+  	$qry=mysqli_query($DB_LINK,"select m_id from tbl_staff where p_id='$m_id'     and placing='$place'");
+	 
+	 
+	
   	if(mysqli_num_rows($qry)>0)
     {          
 		$data_get=mysqli_fetch_array($qry);
@@ -655,52 +688,81 @@ function rec_anyleg_all($m_id,$place)
         return $placer_id_all;   
     }            
 }
-/*function totaldownlinemembers($a)// Recursive function to get all of the children... unlimited depth
+function totaldownlinemembers($DB_LINK,$a)
 {  
-	//error_reporting(0);
-	
-	// Refer to the global array defined at the top of this script
+           
 	global $DB_LINK;
-	$child_query = mysqli_query($DB_LINK,"SELECT m_id, p_id FROM staff WHERE p_id=".$a);
+           
+	$depth=0;
+	$tempTree='';
+	$child_query = mysqli_query($DB_LINK,"SELECT login_id, r_id FROM tbl_staff WHERE r_id='".$a."'   ");
+           
 	while ( $child = mysqli_fetch_array($child_query) )
 	{
-		if ( $child['m_id'] != $child['p_id'] )
+		if ( $child['login_id'] != $child['r_id'] )
 		{
-			for ( $c=0;$c<$depth;$c++ ) // Indent over so that there is distinction between levels
+			for ( $c=0;$c<$depth;$c++ ) 
 			{ $tempTree .= ""; }
-			$tempTree .= $child['m_id'].'~';
-			$depth++;		
-			$tempTree .= totaldownlinemembers($DB_LINK,$child['m_id']);	 
+			$tempTree .= $child['login_id'].'~';
+			$depth++;	
+			$tempTree .= totaldownlinemembers($DB_LINK,$child['login_id']);	
+		}
+	} 
+	return $tempTree;
+}
+function totaldownlinemembers_approved($DB_LINK,$a)
+{  
+           
+	global $DB_LINK;
+           
+	$depth=0;
+	$tempTree='';
+	$child_query = mysqli_query($DB_LINK,"SELECT login_id, r_id FROM tbl_staff WHERE r_id='".$a."'      ");
+           
+	while ( $child = mysqli_fetch_array($child_query) )
+	{
+		if ( $child['login_id'] != $child['r_id'] )
+		{
+			for ( $c=0;$c<$depth;$c++ ) 
+			{ $tempTree .= ""; }
+           
+                        if(ac_typ($child['login_id'])>0)
+                        {
+			$tempTree .= $child['login_id'].'~';
+                        }
+			$depth++;	
+			$tempTree .= totaldownlinemembers_approved($DB_LINK,$child['login_id']);	
 		} 
 	} 
 	return $tempTree;
-}*//*function totaldownlinemembers($a)// Recursive function to get all of the children... unlimited depth
-{
-	//error_reporting(0);
+}
 
-	// Refer to the global array defined at the top of this script
+ function    ac_typ($m_id)
+{
 	global $DB_LINK;
-	$child_query = mysqli_query($DB_LINK,"SELECT m_id, p_id FROM staff WHERE p_id=".$a);
-	while ( $child = mysqli_fetch_array($child_query) )
+	$c_query = mysqli_query($DB_LINK,"SELECT account_typ FROM tbl_staff_profile WHERE login_id='".$m_id."' ");
+	$c_data = mysqli_fetch_array($c_query);
+	if($c_data['account_typ']!='Registered')
 	{
-		if ( $child['m_id'] != $child['p_id'] )
-		{
-			for ( $c=0;$c<$depth;$c++ ) // Indent over so that there is distinction between levels
-			{ $tempTree .= ""; }
-			$tempTree .= $child['m_id'].'~';
-			$depth++;
-			$tempTree .= totaldownlinemembers($DB_LINK,$child['m_id']);
-		}
-	}
-	return $tempTree;
-}*/
+
+        $c_query = mysqli_query($DB_LINK, "SELECT status FROM tbl_staff WHERE login_id='" . $m_id . "' ");
+        $c_data = mysqli_fetch_array($c_query);
+        if($c_data['status']==1)
+        return 1;
+        else
+        return 0;
+    }
+	else return 0;
+
+
+
+}
 function mem_status($m_id)
 {
 	global $DB_LINK;
 	$c_query = mysqli_query($DB_LINK,"SELECT status FROM staff WHERE m_id=".$m_id);
 	$c_data = mysqli_fetch_array($c_query);
 	return $c_data['status'];
-	
 }
 function sum_of_payout($m_id)
 { 
@@ -742,8 +804,8 @@ function refresh_wallet($userid, $byledger)
  	while($row1=mysqli_fetch_array($qry1))
  	{
  		if($row1['typ']=='dr') { $expe+=$row1['amt']; }
- 		if($row1['typ']=='cr') { $inco+=$row1['amt'];  } 
- 	}  
+ 		if($row1['typ']=='cr') { $inco+=$row1['amt'];  }
+ 	}
  	return $final_bal=$inco-$expe;
 }
 function recharge_wallet($userid)
@@ -842,70 +904,10 @@ function recharge_api($operatorcode, $number, $amount)
 	$jsonRS = json_decode ($result,true);
 	return $jsonRS;
 }
-function sms_sender($contact, $sms_text,$templet_id)
-{
-  global $msg_contact, $msg_pass, $msg_sender_id;
-  $new = str_replace(' ', '%20', $sms_text);
-  // Account details
-  $username = $msg_contact;
-  $password = $msg_pass;
-// Message details
-  $senderid = $msg_sender_id;
-  $type = '1';
-  $product = '1';
-  $number = $contact;
-  $message = $new;
-// API credentials
-  $credentials = 'username=' . $username . '&password=' . $password;
-// prepare data for GET request
-  $data = '&sender=' . $senderid . '&mobile=' . $number . '&type=' . $type . '&product=' . $product . '&template='.$templet_id.'&message=' . $message;
-// make url to post using cURL
-
-    //http://makemysms.in/api/sendsms.php?username=XXXXXX&password=XXXXXX&sender=XXXXXX&mobile=91XXXXXXXXXX&type=1&product=1&template=XXXXXXXXXXXXXXXXXX&message=hello
-  $url = 'http://makemysms.in/api/sendsms.php?' . $credentials . $data;
-  $curl = curl_init();
-  curl_setopt_array($curl, array(
-   CURLOPT_URL => $url,
-   CURLOPT_RETURNTRANSFER => true,
-   CURLOPT_ENCODING => "",
-   CURLOPT_MAXREDIRS => 10,
-   CURLOPT_TIMEOUT => 30,
-   CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-   CURLOPT_CUSTOMREQUEST => "GET",
-   CURLOPT_HTTPHEADER => array(
-    "Accept: */*",
-    "Accept-Encoding: gzip, deflate",
-    "Cache-Control: no-cache",
-    "Connection: keep-alive",
-    "Host: sms.friendzitsolutions.biz",
-    "Postman-Token: 8b87ccb2-d715-41c0-bb5a-18b842fd14f0,7a21e08f-b8c6-4293-a8cd-6d6f0d623852",
-    "User-Agent: PostmanRuntime/7.15.2",
-    "cache-control: no-cache"
-   ),
-  ));
-  $response = curl_exec($curl);
-  $err = curl_error($curl);
-  curl_close($curl);
-  if ($err) {
-    echo "cURL Error #:" . $err;
-  } else {
-    echo $response;
-  }
-
-
-
-//     if ($err) {
-//        echo "cURL Error #:" . $err;
-//    } else {
-//        echo $response;
-//    }
-
-
-
-
-
-
-    /* global $msg_contact, $msg_pass, $msg_sender_id;
+function sms_sender($contact, $sms_text)
+{ 
+	
+	global $msg_contact, $msg_pass, $msg_sender_id;
  $username = $msg_contact;
  $password = $msg_pass;
 // Message details
@@ -919,8 +921,8 @@ function sms_sender($contact, $sms_text,$templet_id)
 // prepare data for GET request
   $data = '&sender='. $senderid . '&mobile='. $number . '&type='.$type. '&product='. $product .'&message='. $message;
 // make url to post using cURL
-  echo $url = 'http://sms.friendzitsolutions.biz/api/sendsms.php?'. $credentials . $data;
-exit;
+   $url = 'http://sms.friendzitsolutions.biz/api/sendsms.php?'. $credentials . $data;
+ 
   $url=str_replace(' ', '%20', $url);
  $curl = curl_init();
 curl_setopt_array($curl, array(
@@ -938,115 +940,153 @@ curl_setopt_array($curl, array(
     "content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW"
   ),
 ));
-$response = curl_exec($curl);
+return $response = curl_exec($curl);
 $err = curl_error($curl);
-curl_close($curl); */
+curl_close($curl);
 //if ($err) {
 //  echo "cURL Error #:" . $err;
 //} else {
 //  echo $response;
-//}
-
-
-
-
-    /*
-
-    $data ="mobile=".$msg_contact."&pass=".$msg_pass."&senderid=".$msg_sender_id."&to=".$contact."&msg=".$sms_text."";
-
-    //echo $data;exit;
-
-     // Send the POST request with cURL
-    $ch = curl_init('http://tsms.friendzitsolutions.biz/sendsms.aspx?'); //note https for SSL
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    $result = curl_exec($ch); //This is the result from Textlocal
-    curl_close($ch);
-    return $result;*/
+//}          
+ 
+           
+           
+           
+	/*
+	
+	$data ="mobile=".$msg_contact."&pass=".$msg_pass."&senderid=".$msg_sender_id."&to=".$contact."&msg=".$sms_text."";
+	 
+	//echo $data;exit;
+	
+ 	// Send the POST request with cURL
+	$ch = curl_init('http://tsms.friendzitsolutions.biz/sendsms.aspx?'); //note https for SSL
+	curl_setopt($ch, CURLOPT_POST, true);
+	curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	$result = curl_exec($ch); //This is the result from Textlocal
+	curl_close($ch);
+	return $result;*/
 }
 
 
-function mail_sender($contact, $sms_text)
-{ 
-	$subject = "Query About ".$SITE_NAME ;
-	$mail_body = '<div style="font:Arial, Helvetica, sans-serif;color:#000;text-decoration:none;font-weight:normal;">Hi, '.$_POST['name'].'<br>
-	
-	<div style="padding:10px;">
-		<img src="$SITE_URL/links/images/paysol-logo.png" alt="" />
-	</div>
-		
-	<table cellpadding="5" cellspacing="0" width="400px" style="line-height:22px;">
-				 
-	  <tr>
-		  <td>Name</td> 
-		  <td valign="top" >:</td>
-		  <td>'.$_POST['name'].'</td>
-	  </tr>
-		  
-	  <tr>
-		  <td>Mobile</td>
-		  <td valign="top" >:</td> 
-		  <td>'.$_POST['phone'].'</td>
-	   </tr>
-		  
-	   <tr>
-		  <td>Email</td> 
-		  <td valign="top" >:</td>
-		  <td>'.$_POST['email'].'</td>
-	   </tr>
-		  
-	   <tr>
-		  <td>Messege</td> 
-		  <td valign="top" >:</td>
-		  <td>'.$_POST['msg'].'</td>
-	   </tr>    
-		  
-	</table>
-	</div>';
-				
-				 
-	include('links/mailer/PHPMailerAutoload.php');
-	$mail = new PHPMailer; 
-	$mail->isSMTP(); // Set mailer to use SMTP
+
+function mail_sender($contact,$is_admin, $sms_text,$name,$subject) {
+	include('../assets/plugins/mailer/PHPMailerAutoload.php');
+	try{
+	global   $SITE_NAME,$EMAIL_ID ,$WEBMAIL,$MPASS ,$HOST ,$PORT,$SITE_URL;
+//echo $SITE_NAME.$EMAIL_ID .$WEBMAIL.$MPASS .$HOST .$PORT.$SITE_URL;
+	  $mail_body='<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>'.$SITE_NAME.'</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body style="margin: 0; padding: 0;">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%"> 
+        <tr>
+            <td style="padding: 10px 0 30px 0;">
+                <table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="border: 1px solid #cccccc; border-collapse: collapse;">
+                    <tr>
+                        <td align="center" bgcolor="#70bbd9" style="padding: 40px 0 30px 0; color: #153643; font-size: 28px; font-weight: bold; font-family: Arial, sans-serif;">
+                            <img src="'.$SITE_URL.'/assets/links/images/logo.png" alt="'.$SITE_NAME.'" width="200"   style="display: block;" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#ffffff" style="padding: 40px 30px 40px 30px;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tr>
+                                    <td style="color: #153643; font-family: Arial, sans-serif; font-size: 24px;">
+                                        <b>'.$subject.'</b>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 20px 0 30px 0; color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;">
+                                         <div style="font:Arial, Helvetica, sans-serif;color:#000;text-decoration:none;font-weight:normal;">Hi '.$name.',</div><br>
+                                         '.$sms_text.'
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                      
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#ee4c50" style="padding: 30px 30px 30px 30px;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tr>
+                                    <td style="color: #ffffff; font-family: Arial, sans-serif; font-size: 14px;" width="75%">
+                                        &reg; '.$SITE_NAME.', Copyright 2019-20<br/>
+                                        <a href="'.$SITE_URL.'" style="color: #ffffff;"><font color="#ffffff">Visit Website</font></a> 
+                                    </td>
+                                    <td align="right" width="25%">
+                                        <table border="0" cellpadding="0" cellspacing="0">
+                                            <tr>
+                                                <td style="font-family: Arial, sans-serif; font-size: 12px; font-weight: bold;">
+                                                    <a href="http://www.twitter.com/" style="color: #ffffff;">
+                                                        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/210284/tw.gif" alt="Twitter" width="38" height="38" style="display: block;" border="0" />
+                                                    </a>
+                                                </td>
+                                                <td style="font-size: 0; line-height: 0;" width="20">&nbsp;</td>
+                                                <td style="font-family: Arial, sans-serif; font-size: 12px; font-weight: bold;">
+                                                    <a href="http://www.facebook.com/" style="color: #ffffff;">
+                                                        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/210284/fb.gif" alt="Facebook" width="38" height="38" style="display: block;" border="0" />
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>';
+	$mail = new PHPMailer;
+	//$mail->isSMTP(); // Set mailer to use SMTP
+	$mail->SMTPDebug = 2;
 	$mail->Host = $HOST; // Specify main and backup server
 	$mail->SMTPAuth = true; // Enable SMTP authentication
 	$mail->Username = $WEBMAIL; // SMTP username
 	$mail->Password = $MPASS; // SMTP password
 	$mail->SMTPSecure = 'ssl'; // Enable encryption, 'ssl' also accepted
 	$mail->Port = $PORT; //Set the SMTP port number - 587 for authenticated TLS
-	$mail->setFrom($WEBMAIL,$SITE_NAME); //Set who the message is to be sent from
+	$mail->setFrom($WEBMAIL, $SITE_NAME); //Set who the message is to be sent from
 	//$mail->addReplyTo('labnol@gmail.com', 'First Last');  //Set an alternative reply-to address
-	
 	//$mail->addAddress('xyz@gmail.com', $SITE_NAME);
+	//$mail->addAddress($EMAIL_ID, $SITE_NAME);
+	$mail->addAddress($contact, $name);
+if($is_admin!='yes')
 	$mail->addAddress($EMAIL_ID, $SITE_NAME);
-	$mail->addAddress($_POST['email'],$_POST['name']);
-	
 	// Name is optional
 	//$mail->addCC('cc@example.com');
 	//$mail->addBCC('bcc@example.com');
 	$mail->WordWrap = 50; // Set word wrap to 50 characters
-	$mail->isHTML(true);              
-	//$mail->addAttachment('/images/image.jpg', 'new.jpg'); // Optional name                    
-	// Set email format to HTML 
+	$mail->isHTML(true);
+	//$mail->addAttachment('/images/image.jpg', 'new.jpg'); // Optional name
+	// Set email format to HTML
 	$mail->Subject = $subject;
-	$mail->Body    = $mail_body;
-	 
+	$mail->Body = $mail_body;
+
 	$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
-	 
+
 	//Read an HTML message body from an external file, convert referenced images to embedded,
 	//convert HTML into a basic pl}ain-text alternative body
 	//$mail->msgHTML(file_get_contents('contents.html'), dirname(__FILE__));
-	 
-	if($mail->send()) 
-	{
+
+	if ($mail->send()) {
 		//echo 'Message Sent Mailer';
-		// echo 'Mailer Error: ' . $mail->ErrorInfo;
-	}
-	else
-	{
+	  //echo 'Mailer Error: ' . $mail->ErrorInfo;
+	} /*else {
+		echo 'Mailer Error: ' . $mail->ErrorInfo;
 		//echo 'Message Sent Successfully';
-	 
 		// Always set content-type when sending HTML email
 		$headers = "MIME-Version: 1.0" . "\r\n";
 		$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
@@ -1054,9 +1094,150 @@ function mail_sender($contact, $sms_text)
 		$headers .= 'From: $SITE_NAME<$EMAIL_ID>' . "\r\n";
 		//$headers .= 'Cc: xyz@gmail.com' . "\r\n";
 		//mail($_POST['email'],$subject,$mail_body,$headers);
-		mail($EMAIL_ID,$subject,$mail_body,$headers);
+		mail($EMAIL_ID, $subject, $mail_body, $headers);
+	}*/
+
+	}
+	catch (Exception $ex)
+	{
+		echo 'Message: ' .$ex->getMessage();
 	}
 }
+
+function mail_sender_replica($contact,$is_admin, $sms_text,$name,$subject) {
+	//include('../assets/plugins/mailer/PHPMailerAutoload.php');
+	try{
+		global   $SITE_NAME,$EMAIL_ID ,$WEBMAIL,$MPASS ,$HOST ,$PORT,$SITE_URL;
+//echo $SITE_NAME.$EMAIL_ID .$WEBMAIL.$MPASS .$HOST .$PORT.$SITE_URL;
+		$mail_body='<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>'.$SITE_NAME.'</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body style="margin: 0; padding: 0;">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%"> 
+        <tr>
+            <td style="padding: 10px 0 30px 0;">
+                <table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="border: 1px solid #cccccc; border-collapse: collapse;">
+                    <tr>
+                        <td align="center" bgcolor="#70bbd9" style="padding: 40px 0 30px 0; color: #153643; font-size: 28px; font-weight: bold; font-family: Arial, sans-serif;">
+                            <img src="'.$SITE_URL.'/assets/links/images/logo.png" alt="'.$SITE_NAME.'" width="200"   style="display: block;" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#ffffff" style="padding: 40px 30px 40px 30px;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tr>
+                                    <td style="color: #153643; font-family: Arial, sans-serif; font-size: 24px;">
+                                        <b>'.$subject.'</b>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 20px 0 30px 0; color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;">
+                                         <div style="font:Arial, Helvetica, sans-serif;color:#000;text-decoration:none;font-weight:normal;">Hi '.$name.',</div><br>
+                                         '.$sms_text.'
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                      
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#ee4c50" style="padding: 30px 30px 30px 30px;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tr>
+                                    <td style="color: #ffffff; font-family: Arial, sans-serif; font-size: 14px;" width="75%">
+                                        &reg; '.$SITE_NAME.', Copyright 2019-20<br/>
+                                        <a href="'.$SITE_URL.'" style="color: #ffffff;"><font color="#ffffff">Visit Website</font></a> 
+                                    </td>
+                                    <td align="right" width="25%">
+                                        <table border="0" cellpadding="0" cellspacing="0">
+                                            <tr>
+                                                <td style="font-family: Arial, sans-serif; font-size: 12px; font-weight: bold;">
+                                                    <a href="http://www.twitter.com/" style="color: #ffffff;">
+                                                        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/210284/tw.gif" alt="Twitter" width="38" height="38" style="display: block;" border="0" />
+                                                    </a>
+                                                </td>
+                                                <td style="font-size: 0; line-height: 0;" width="20">&nbsp;</td>
+                                                <td style="font-family: Arial, sans-serif; font-size: 12px; font-weight: bold;">
+                                                    <a href="http://www.facebook.com/" style="color: #ffffff;">
+                                                        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/210284/fb.gif" alt="Facebook" width="38" height="38" style="display: block;" border="0" />
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>';
+		$mail = new PHPMailer;
+		//$mail->isSMTP(); // Set mailer to use SMTP
+		$mail->SMTPDebug = 2;
+		$mail->Host = $HOST; // Specify main and backup server
+		$mail->SMTPAuth = true; // Enable SMTP authentication
+		$mail->Username = $WEBMAIL; // SMTP username
+		$mail->Password = $MPASS; // SMTP password
+		$mail->SMTPSecure = 'ssl'; // Enable encryption, 'ssl' also accepted
+		$mail->Port = $PORT; //Set the SMTP port number - 587 for authenticated TLS
+		$mail->setFrom($WEBMAIL, $SITE_NAME); //Set who the message is to be sent from
+		//$mail->addReplyTo('labnol@gmail.com', 'First Last');  //Set an alternative reply-to address
+		//$mail->addAddress('xyz@gmail.com', $SITE_NAME);
+		//$mail->addAddress($EMAIL_ID, $SITE_NAME);
+		$mail->addAddress($contact, $name);
+		if($is_admin!='yes')
+			$mail->addAddress($EMAIL_ID, $SITE_NAME);
+		// Name is optional
+		//$mail->addCC('cc@example.com');
+		//$mail->addBCC('bcc@example.com');
+		$mail->WordWrap = 50; // Set word wrap to 50 characters
+		$mail->isHTML(true);
+		//$mail->addAttachment('/images/image.jpg', 'new.jpg'); // Optional name
+		// Set email format to HTML
+		$mail->Subject = $subject;
+		$mail->Body = $mail_body;
+
+		$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+		//Read an HTML message body from an external file, convert referenced images to embedded,
+		//convert HTML into a basic pl}ain-text alternative body
+		//$mail->msgHTML(file_get_contents('contents.html'), dirname(__FILE__));
+
+		if ($mail->send()) {
+			//echo 'Message Sent Mailer';
+			//echo 'Mailer Error: ' . $mail->ErrorInfo;
+		} /*else {
+		echo 'Mailer Error: ' . $mail->ErrorInfo;
+		//echo 'Message Sent Successfully';
+		// Always set content-type when sending HTML email
+		$headers = "MIME-Version: 1.0" . "\r\n";
+		$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+		// More headers
+		$headers .= 'From: $SITE_NAME<$EMAIL_ID>' . "\r\n";
+		//$headers .= 'Cc: xyz@gmail.com' . "\r\n";
+		//mail($_POST['email'],$subject,$mail_body,$headers);
+		mail($EMAIL_ID, $subject, $mail_body, $headers);
+	}*/
+
+	}
+	catch (Exception $ex)
+	{
+		echo 'Message: ' .$ex->getMessage();
+	}
+}
+
 /*function msg($type, $module)
 {
     switch($type)
@@ -1128,774 +1309,596 @@ function truncate_number( $number, $precision = 2) {
     // Run the math, re-applying the negative value to ensure returns correctly negative / positive
     return floor( $number * $precision ) / $precision * $negative;
 }*/
-function cat_title($id)
+function randomString($length = 8) 
 {
-	global $DB_LINK;
-	$qry=mysqli_query($DB_LINK,"select title  from tbl_category where id='$id' "); 
-    $data_get=mysqli_fetch_array($qry);
-    return $data_get['title'];       
+  $str = "";
+  $characters = array_merge(range('A','Z'));
+  $max = count($characters) - 1;
+  for ($i = 0; $i < $length/2; $i++) {
+    $rand = mt_rand(0, $max);
+    $str .= $characters[$rand];
+  }
+  $characters = array_merge( range('0','9'));
+  $max = count($characters) - 1;
+  for ($i = 0; $i < $length/2; $i++) {
+    $rand = mt_rand(0, $max);
+    $str .= $characters[$rand];
+  }
+  return $str;
 }
-function cat_data($id)
+function randomString_forpin($length = 16) 
 {
-	global $DB_LINK;
-	//echo "select description from tbl_category where  id='$id' ";
-	$qry=mysqli_query($DB_LINK,"select description from tbl_category where  id='$id' ");
+  $str = "";
+  $characters = array_merge(range('A','Z'));
+  $max = count($characters) - 1;
+  for ($i = 0; $i < $length/2; $i++) {
+    $rand = mt_rand(0, $max);
+    $str .= $characters[$rand];
+  }
+  $characters = array_merge( range('0','9'));
+  $max = count($characters) - 1;
+  for ($i = 0; $i < $length/2; $i++) {
+    $rand = mt_rand(0, $max);
+    $str .= $characters[$rand];
+  }
+  return $str;
+}
+function pin_typ($str_typ)
+{
+  if($str_typ=='1') $pintyp_is="Basic"; 
+  if($str_typ=='2') $pintyp_is="Premium"; 
+  if($str_typ=='3') $pintyp_is="Basic to Premium"; 
  
-    $data_get=mysqli_fetch_array($qry);
-    return $data_get['description'];       
+  return $pintyp_is;
 }
-function cat_img($id)
+function pin_status($str_typ)
+{
+  if($str_typ=='0') $pintyp_is="Free Pin"; 
+  if($str_typ=='1') $pintyp_is="Transferred Pin";
+  if($str_typ=='2') $pintyp_is="Used Pin"; 
+ 
+  return $pintyp_is;
+}
+
+global $place_is;
+function placing($placing)
+{
+    $place_is='';
+   
+  if($placing=='1') $place_is="Left"; 
+  if($placing=='2') $place_is="Right"; 
+ 
+  return $place_is;
+}
+
+function account_typ($actyp)
+{
+   $actyp_val='';    
+  if($actyp=='0') $actyp_val="Registered"; 
+  if($actyp=='1') $actyp_val="Basic"; 
+  if($actyp=='2') $actyp_val="Premium";  
+  return $actyp_val;
+}
+
+function pin_transfer($pin_code,$transfer_to,$transfer_by)
+{
+    $qry="INSERT INTO `tbl_pins_history` set `pin_code`='$pin_code', `transfer_to`='$transfer_to', `transfer_by`='$transfer_by'  ";    
+     global $DB_LINK;
+     mysqli_query($DB_LINK,$qry); 
+}
+
+function update_member($login_id,$data,$column_name)
+{
+     $qry="update `tbl_staff_profile` set $column_name='$data' where login_id='$login_id'";
+     global $DB_LINK;
+     mysqli_query($DB_LINK,$qry); 
+}
+
+function get_member_data($login_id,$column_name)
+{
+    $comm="select $column_name from  `tbl_staff_profile` where login_id='$login_id'";    
+     global $DB_LINK;
+     $qry=mysqli_query($DB_LINK,$comm); 
+     $result=mysqli_fetch_array($qry);
+     return $result[$column_name];
+}
+
+function direct_member_count($login_id,$position,$usertype)
+{  
+   global $DB_LINK;
+       // echo "SELECT tbl_staff.*, tbl_staff_profile.* FROM tbl_staff INNER JOIN tbl_staff_profile ON tbl_staff.login_id = tbl_staff_profile.login_id where tbl_staff.r_id='".$login_id."' and  tbl_staff.placing ='$position' and tbl_staff_profile.account_typ='1'  order by tbl_staff.m_id desc";
+   $qry=mysqli_query($DB_LINK,"SELECT tbl_staff.login_id  FROM tbl_staff INNER JOIN tbl_staff_profile ON tbl_staff.login_id = tbl_staff_profile.login_id where tbl_staff.r_id='".$login_id."' and  tbl_staff.placing ='$position' and tbl_staff_profile.account_typ='$usertype'    and tbl_staff.status='1' order by tbl_staff.m_id desc");
+  return mysqli_num_rows($qry);         
+}
+
+function binarypay_count($login_id,$position)
+{  
+   global $DB_LINK;
+       // echo "SELECT tbl_staff.*, tbl_staff_profile.* FROM tbl_staff INNER JOIN tbl_staff_profile ON tbl_staff.login_id = tbl_staff_profile.login_id where tbl_staff.r_id='".$login_id."' and  tbl_staff.placing ='$position' and tbl_staff_profile.account_typ='1'  order by tbl_staff.m_id desc";
+   $qry=mysqli_query($DB_LINK,"SELECT  * FROM tbl_ledger_binary  where  m_id='".$login_id."' and   for_placing ='$position'  order by   id desc");
+  return mysqli_num_rows($qry);         
+}
+
+function customer_data($c_id)
+{
+  global $DB_LINK;
+$getdata_qry=mysqli_query($DB_LINK,"SELECT
+ tbl_staff.login_id, 
+tbl_staff_profile.name ,
+tbl_staff_profile.mobile 
+FROM tbl_staff INNER JOIN tbl_staff_profile ON tbl_staff.login_id = tbl_staff_profile.login_id  where  tbl_staff.login_id='$c_id'  ");
+ $getresult=mysqli_fetch_array($getdata_qry);
+    return $c_data=$getresult['login_id']."<br>".$getresult['name']."<br>Mb. ".$getresult['mobile'];
+}
+
+function customer_data_mid($c_id)
+{
+    global $DB_LINK;
+    $getdata_qry=mysqli_query($DB_LINK,"SELECT 
+tbl_staff.login_id, 
+tbl_staff_profile.name ,
+tbl_staff_profile.mobile 
+FROM tbl_staff INNER JOIN tbl_staff_profile ON tbl_staff.login_id = tbl_staff_profile.login_id  where  tbl_staff.m_id='$c_id'  ");
+    $getresult=mysqli_fetch_array($getdata_qry);
+    return $c_data=$getresult['name']."<br>LoginId : ".$getresult['login_id']."<br>Mob : ".$getresult['mobile'];
+}
+
+function get_wallet_balance_allcombo($userid, $wallet_name)
+{
+	$tab_name=getwallet_tabname($wallet_name);
+	global $DB_LINK;
+	$cr = 0;			$dr = 0;			$w_amt = 0;
+	//echo "SELECT * from $tab_name where `m_id`='" . $userid . "'  ";
+	$qry = mysqli_query($DB_LINK, "SELECT * from $tab_name where `m_id`='" . $userid . "'  ");
+	foreach ($qry as $row)
+	{
+		if ($row['mode'] == 'CR') $cr = $cr + $row['amt'];
+		if ($row['mode'] == 'DR') $dr = $dr + $row['amt'];
+		$w_amt = $cr - $dr;
+	}
+	 return $w_amt;
+}
+
+function getwallet_colname($wallet_name)
+{
+	$col_name='';
+
+	if($wallet_name=='pin')
+		$col_name='wallet_pin';
+
+	if($wallet_name=='binary')
+		$col_name='wallet_binary';
+
+	if($wallet_name=='contact')
+		$col_name='wallet_contact';
+
+	if($wallet_name=='contact_b')
+		$col_name='wallet_contact_b';
+
+	if($wallet_name=='ad')
+		$col_name='wallet_ad';
+
+	if($wallet_name=='shopping')
+		$col_name='wallet_shopping';
+
+	if($wallet_name=='journey')
+		$col_name='wallet_journey';
+
+	if($wallet_name=='carfund')
+		$col_name='wallet_carfund';
+
+	if($wallet_name=='housefund')
+		$col_name='wallet_housefund';
+
+	if($wallet_name=='movies')
+		$col_name='wallet_movies';
+
+	if($wallet_name=='bonus')
+		$col_name='wallet_bonus';
+
+	return $col_name;
+}
+
+function getwallet_tabname($wallet_name)
+{
+	$tab_name='';
+
+	if($wallet_name=='contact')
+		$tab_name='tbl_ledger_contact';
+
+	if($wallet_name=='contact_b')
+		$tab_name='tbl_ledger_contact_b';
+
+	if($wallet_name=='binary')
+	$tab_name='tbl_ledger_binary';
+
+	if($wallet_name=='ad')
+		$tab_name='tbl_ledger_video';
+
+	if($wallet_name=='shopping')
+	$tab_name='tbl_ledger_shopping';
+
+	if($wallet_name=='journey')
+		$tab_name='tbl_ledger_journey';
+
+	if($wallet_name=='carfund')
+		$tab_name='tbl_ledger_carfund';
+
+	if($wallet_name=='housefund')
+		$tab_name='tbl_ledger_housefund';
+
+	if($wallet_name=='movies')
+	$tab_name='tbl_ledger_movies';
+
+	if($wallet_name=='pin')
+		$tab_name='tbl_ledger_pin';
+
+	if($wallet_name=='bonus')
+		$tab_name='tbl_ledger_bonus';
+	if($wallet_name=='team')
+		$tab_name='tbl_ledger_team';
+
+	return $tab_name;
+}
+
+function w2wplimit_Other($usertyp)
+{
+	if($usertyp=='Basic')
+		$min_value=1000;
+
+	if($usertyp=='Premium')
+		$min_value=1000;
+
+	return $min_value;
+}
+
+function w2wplimit($usertyp)
+{
+	if($usertyp=='Basic')
+		$min_value=500;
+		//$min_value=1500;
+
+	if($usertyp=='Premium')
+		$min_value=2000;
+
+	return $min_value;
+}
+
+function w2bplimit($usertyp)
+{
+	if($usertyp=='Basic')
+		$min_value=1000;
+  
+  		//$min_value=1000;
+
+	if($usertyp=='Premium')
+		$min_value=1000;
+
+	return $min_value;
+}
+function w2shoppingplimit($usertyp)
+{
+	if($usertyp=='Basic')
+		$min_value=500;
+
+	//$min_value=1000;
+
+	if($usertyp=='Premium')
+		$min_value=2000;
+
+	return $min_value;
+}
+
+function pinvaluebyidtype($usertyp)
+{
+	if($usertyp=='Basic')
+		$min_value=2000;
+
+	//	old $min_value=1999;
+
+	if($usertyp=='Premium')
+		$min_value=5999;
+
+	return $min_value;
+}
+
+function user_validty($usertyp)
+{
+	if($usertyp=='Basic')
+		$val_days=84;
+	if($usertyp=='Premium')
+		$val_days=163;
+	if($usertyp=='Gold')
+		$val_days=333;
+	return $val_days;
+}
+
+function get_transcation_pass($c_id)
 {
 	global $DB_LINK;
-	//echo "select description from tbl_category where  id='$id' ";
-	$qry=mysqli_query($DB_LINK,"select images from tbl_category where  id='$id' ");
- 
-    $data_get=mysqli_fetch_array($qry);
-    return $data_get['images'];       
+	$getdata_qry=mysqli_query($DB_LINK,"SELECT tpass FROM tbl_staff where   login_id='$c_id'");
+	$getresult=mysqli_fetch_array($getdata_qry);
+	return  $getresult['tpass'];
 }
 
-
-  function totalmembers($id,$side)
+function update_level_history($m_id,$m_name,$m_level,$summary)
 {
-    global $DB_LINK1,$tempTree1;
-    $sql_rec="SELECT `id`,`sponsor_id`,status, `placement` FROM registration WHERE  sponsor_id='".$id."' and placement='".$side."'";
-    $query_rec= mysqli_query($DB_LINK1,$sql_rec);
-    while ( $data_rec= mysqli_fetch_array($query_rec) )
-    {
-        $tempTree1 .= $data_rec['id'].'~';
-        totalmembers( $data_rec['id'],$side);
-    }
-    return $tempTree1;
-}
-
-function downlinemembers(  $id)
-{
-
-    global $DB_LINK1;
-    global $tempTreexx;
-    global $exclude, $depth;
-
-    $child_query = mysqli_query($DB_LINK1,"SELECT `id`,`sponsor_id`,status, `placement` FROM registration WHERE sponsor_id='".$id."' ");
-    while ( $child= mysqli_fetch_array($child_query) )
-    {
-        /*if ( $child['id'] != $child['sponsor_id'] )
-        {
-            for ( $c=0;$c<$depth;$c++ )	 { $tempTree .= ""; }
-            echo $tempTree .= $child['id'].'~';
-            $depth++;
-            $tempTree .= downlinemembers(  $child['id']);
-        }*/
-
-        echo $tempTreexx .= $child['id'].'~';
-        $tempTreexx .= downlinemembers($child['id']);
-    }
-    return $tempTreexx;
-}
-
-
-function pv_calc($members_data)
-{
-    global $DB_LINK1;
-    $array_left=explode("~",$members_data);
-    $count=count($array_left);
-    $left_pv=0;
-    for($i=0;$i<$count;$i++)
-    {
-        $qry_pv=mysqli_query($DB_LINK1,"select * from registration where id='".$array_left[$i]."'") ;
-        $rowget=mysqli_fetch_array($qry_pv);
-        $left_pv=$left_pv+$rowget['pv'];
-    }
-    return $left_pv;
-}
-
-function verified_filter($members_data)
-{
-    global $DB_LINK1;
-    $array_left=explode("~",$members_data);
-    $count=count($array_left);
-    $ver_user="";
-    for($i=0;$i<$count;$i++)
-    {
-        $qry_pv=mysqli_query($DB_LINK1,"select id from registration where id='".$array_left[$i]."' and status='2'") ;
-        if(mysqli_num_rows($qry_pv)>0)
-        {
-            $rowget = mysqli_fetch_array($qry_pv);
-            $ver_user = $ver_user . "~" . $rowget['id'];
-        }
-    }
-    return $ver_user;
-}
-
-function gettotalincome($member_id)
-{
-    global $DB_LINK1;
-    $pay1=0;
-    $data="SELECT sum(income) as way1 FROM `binary1` where member='".$member_id."'";
-    $qry1=mysqli_query($DB_LINK1,$data);
-    $rowget1=mysqli_fetch_array($qry1);
-    $pay1=$rowget1['way1'];
-
-
-    $pay2=0;
-    $data2="SELECT sum(amt) as way2 FROM `bonus_pay` where uid='".$member_id."'";
-    $qry2=mysqli_query($DB_LINK1,$data2);
-    $rowget2=mysqli_fetch_array($qry2);
-    $pay2=$rowget2['way2'];
-
-
-    $pay3=0;
-    $data3="SELECT sum(amt) as way3 FROM `royl_pay` where uid='".$member_id."'";
-    $qry3=mysqli_query($DB_LINK1,$data3);
-    $rowget3=mysqli_fetch_array($qry3);
-    $pay3=$rowget3['way3'];
-
-
-    $pay4=0;
-    $data4="SELECT sum(amt) as way4 FROM `sal_pay` where uid='".$member_id."'";
-    $qry4=mysqli_query($DB_LINK1,$data4);
-    $rowget4=mysqli_fetch_array($qry4);
-    $pay4=$rowget4['way4'];
-
-
-    return $all=$pay1+$pay2+$pay3+$pay4;
-}
-
-function getweekincome($member_id,$diff)
-{
-    $TodayDate = date("Y-m-d");
-    $PreviousDate=date('Y-m-d', strtotime($TodayDate. ' - '.$diff.' days'));
-
-    global $DB_LINK1;
-    $pay1=0;
-    $data="SELECT sum(income) as way1 FROM `binary1` where member='".$member_id."' and dt between '".$PreviousDate."' and '".$TodayDate."' ";
-    $qry1=mysqli_query($DB_LINK1,$data);
-    $rowget1=mysqli_fetch_array($qry1);
-    $pay1=$rowget1['way1'];
-
-    $pay4=0;
-    $data4="SELECT sum(amt) as way4 FROM `sal_pay` where uid='".$member_id."' and stat='1' and  dt between '".$PreviousDate."' and '".$TodayDate."'";
-    $qry4=mysqli_query($DB_LINK1,$data4);
-    $rowget4=mysqli_fetch_array($qry4);
-    $pay4=$rowget4['way4'];
-
-
-    return $all=$pay1+$pay4;
-}
-
-function getdesignation($member_id,$status)
-{
-    global $DB_LINK1;
-    $desig="";
-    $getqry=mysqli_query($DB_LINK1,"select * from salary where uid='".$member_id."' order by id desc  ");
-    $count=mysqli_num_rows($getqry);
-    if($count>0) {
-        $getval = mysqli_fetch_array($getqry);
-
-        if ($getval['level'] == 1)
-            $desig = 'Advisor';
-        else if ($getval['level'] == 2)
-            $desig = 'Silver Advisor';
-        else if ($getval['level'] == 3)
-            $desig = 'Gold Advisor';
-        else if ($getval['level'] == 4)
-            $desig = 'Diamond Advisor';
-        else if ($getval['level'] == 5)
-            $desig = 'Manager';
-        else if ($getval['level'] == 6)
-            $desig = 'Silver Manager';
-        else if ($getval['level'] == 7)
-            $desig = 'Gold Manager';
-        else if ($getval['level'] == 8)
-            $desig = 'Diamond Manager';
-        else if ($getval['level'] == 9)
-            $desig = 'Crown';
-        else if ($getval['level'] == 10)
-            $desig = 'Board Of Director';
-
-        $qry_fordata="update `tbl_member_info` set
-          designation_id= '".$getval['level']."',
-          designation= '".$desig."' 
-          where mem_id='".$member_id."'";
-        mysqli_query($DB_LINK1,$qry_fordata);
-
-
-
-    }
-    else
-    {
-        if($status==2)
-            $desig='Active Member';
-        else if($status==0)
-            $desig='Registered Member';
-
-        $qry_fordata="update `tbl_member_info` set
-          designation_id= '0',
-          designation= '".$desig."' 
-          where mem_id='".$member_id."'";
-        mysqli_query($DB_LINK1,$qry_fordata);
-    }
-    return  $desig;
-}
-
-function getdesignation_bylevel($level)
-{
-    if ($level == 1)
-        $desig = 'Advisor';
-    else if ($level == 2)
-        $desig = 'Silver Advisor';
-    else if ($level == 3)
-        $desig = 'Gold Advisor';
-    else if ($level == 4)
-        $desig = 'Diamond Advisor';
-    else if ($level == 5)
-        $desig = 'Manager';
-    else if ($level == 6)
-        $desig = 'Silver Manager';
-    else if ($level == 7)
-        $desig = 'Gold Manager';
-    else if ($level == 8)
-        $desig = 'Diamond Manager';
-    else if ($level == 9)
-        $desig = 'Crown';
-    else if ($level == 10)
-        $desig = 'Board Of Director';
-
-    return $desig;
-}
-
-function validate_newmember()
-{
-    if(!isset($_SESSION[ 'a_mid' ]))
-    {
-    	header("Location: ../login.html");
-     ?>
-					<a href="../login.html">User Logout kindly login again!!!</a>
-				<!--	<script>   window.location = "../login.html";  </script>-->
-					<?php exit();
-    }
-}
-
-function validate_newmember_version2()
-{
-	if(!isset($_SESSION[ 'a_mid' ]))
+	global $DB_LINK;
+	$getdata_qry=mysqli_query($DB_LINK,"SELECT `level` as lev_data FROM tbl_level_achive_list 
+ where `m_id`='$m_id' order by id desc");
+	$getresult=mysqli_fetch_array($getdata_qry);
+	if($getresult['lev_data']!=$m_level)
 	{
-		header("Location: login.php");
-	 exit();
+		mysqli_query($DB_LINK, "INSERT INTO `tbl_level_achive_list` 
+ set `m_id`='$m_id', 
+`m_name`='$m_name',
+`level`='$m_level', 
+`summary`='$summary' ");
 	}
-}
-
-function gen_designation($member_id,$status)
-{
-    ///////Upadte Designation//////////////
-    global $DB_LINK1;
-    $main=$member_id;
-
-    $sql_member = " select * from tbl_member_info where mem_id='".$main."' ";
-    $qry_member = mysqli_query( $DB_LINK1, $sql_member );
-    $data_member = mysqli_fetch_array( $qry_member );
-
-//echo "<br><br>[".$_SESSION[ 'a_id' ]."] Name :".$name;
-    if($status==2)
-    {
-        $pay1=$data_member['left_pv'];
-        $pay2=$data_member['right_pv'];
-        //echo "<br/>left PV= [".$pay1."]";
-        //echo "<br/>Right PV= [".$pay2."]";
-
-        if($pay1>=500 && $pay2>=500)
-        {
-            //echo "<br/>Active For salary";
-            $found=mysqli_query($DB_LINK1,"select * from salary where uid='".$main."'");
-            $f1=mysqli_num_rows($found);
-            if($f1==0)
-            {
-                if(mysqli_query($DB_LINK1,"INSERT INTO salary(`uid` ,`level` ,`dt` ,sal) values ('".$main."',1,now(),'N')"))
-                {
-                }
-            }
-            else
-            {
-                $found=mysqli_query($DB_LINK1,"select * from salary where uid='".$main."' order by id desc");
-                $finder=mysqli_fetch_array($found);
-                echo  '<br/>Current level : '.$curlev=$finder['level'];
-
-                switch($curlev)
-                {
-                    case 1:
-                        $bin=$data_member['left_members_data_ver'];
-                        $arr1=explode("~",$bin);
-                        $countbin=count($arr1);
-                        $counterl=0;
-                        $pay1=0;
-                        $left=0;
-                        $rowleft=0;
-                        for($i=0;$i<$countbin;$i++)
-                        {
-                            $left=mysqli_fetch_array(mysqli_query($DB_LINK1,"select * from salary where uid='".$arr1[$i]."' and level=1"));
-                            if($left>0)
-                                $rowleft=1;
-                        }
-
-                        $bin=$data_member['right_members_data_ver'];
-                        $arr2=explode("~",$bin);
-                        $countbin=count($arr2);
-                        $counterl=0;
-                        $pay1=0;
-                        $rowright=0;
-                        $right=0;
-                        for($i=0;$i<$countbin;$i++)
-                        {
-                            $right=mysqli_fetch_array(mysqli_query($DB_LINK1,"select * from salary where uid='".$arr1[$i]."' and level=1"));
-                            if($right>0)
-                                $rowright=1;
-                        }
-                        echo  '<br/>Left For Level '.$curlev." count : ".$rowleft;
-                        echo  '<br/>Right For Level '.$curlev." count : ".$rowright;
-
-                        if($rowright>0 && $rowleft>0)
-                        {
-                            $counter_enter=mysqli_fetch_array(mysqli_query($DB_LINK1,"select * from salary where   uid='".$main."'  and level=2   "));
-                            if($counter_enter<1)
-                            {
-                                mysqli_query($DB_LINK1,"insert into  salary set level=2, dt=now(), sal='N' , uid='".$main."' ");
-                            }
-                        }
-                        break;
-
-                    case 2:
-                        $bin=$data_member['left_members_data_ver'];
-                        $arr1=explode("~",$bin);
-                        $countbin=count($arr1);
-                        $counterl=0;
-                        $pay1=0;
-                        $left=0;
-                        $rowleft=0;
-                        for($i=0;$i<$countbin;$i++)
-                        {
-                            $left=mysqli_fetch_array(mysqli_query($DB_LINK1,"select * from salary where uid='".$arr1[$i]."' and level=2"));
-                            if($left>0)
-                                $rowleft=1;
-                        }
-
-                        $bin=$data_member['right_members_data_ver'];
-                        $arr2=explode("~",$bin);
-                        $countbin=count($arr2);
-                        $counterl=0;
-                        $pay1=0;
-                        $rowright=0;
-                        $right=0;
-                        for($i=0;$i<$countbin;$i++)
-                        {
-                            $right=mysqli_fetch_array(mysqli_query($DB_LINK1,"select * from salary where uid='".$arr1[$i]."' and level=2"));
-                            if($right>0)
-                                $rowright=1;
-                        }
-                        echo  '<br/>Left For Level '.$curlev." count : ".$rowleft;
-                        echo  '<br/>Right For Level '.$curlev." count : ".$rowright;
-
-                        if($rowright>0 && $rowleft>0)
-                        {
-                            $counter_enter=mysqli_fetch_array(mysqli_query($DB_LINK1,"select * from salary where   uid='".$main."'  and level=3   "));
-                            if($counter_enter<1)
-                            {
-                                mysqli_query($DB_LINK1,"insert into  salary set level=3, dt=now(), sal='N' , uid='".$main."' ");
-                            }
-                        }
-                        break;
-
-                    case 3:
-                        $bin=$data_member['left_members_data_ver'];
-                        $arr1=explode("~",$bin);
-                        $countbin=count($arr1);
-                        $counterl=0;
-                        $pay1=0;
-                        $left=0;
-                        $rowleft=0;
-                        for($i=0;$i<$countbin;$i++)
-                        {
-                            $left=mysqli_fetch_array(mysqli_query($DB_LINK1,"select * from salary where uid='".$arr1[$i]."' and level=3"));
-                            if($left>0)
-                                $rowleft=1;
-                        }
-
-                        $bin=$data_member['right_members_data_ver'];
-                        $arr2=explode("~",$bin);
-                        $countbin=count($arr2);
-                        $counterl=0;
-                        $pay1=0;
-                        $rowright=0;
-                        $right=0;
-                        for($i=0;$i<$countbin;$i++)
-                        {
-                            $right=mysqli_fetch_array(mysqli_query($DB_LINK1,"select * from salary where uid='".$arr1[$i]."' and level=3"));
-                            if($right>0)
-                                $rowright=1;
-                        }
-                        echo  '<br/>Left For Level '.$curlev." count : ".$rowleft;
-                        echo  '<br/>Right For Level '.$curlev." count : ".$rowright;
-
-                        if($rowright>0 && $rowleft>0)
-                        {
-                            $counter_enter=mysqli_fetch_array(mysqli_query($DB_LINK1,"select * from salary where   uid='".$main."'  and level=4   "));
-                            if($counter_enter<1)
-                            {
-                                mysqli_query($DB_LINK1,"insert into  salary set level=4, dt=now(), sal='N' , uid='".$main."' ");
-                            }
-                        }
-                        break;
-
-                    case 4:
-                        $bin=$data_member['left_members_data_ver'];
-                        $arr1=explode("~",$bin);
-                        $countbin=count($arr1);
-                        $counterl=0;
-                        $pay1=0;
-                        $left=0;
-                        $rowleft=0;
-                        for($i=0;$i<$countbin;$i++)
-                        {
-                            $left=mysqli_fetch_array(mysqli_query($DB_LINK1,"select * from salary where uid='".$arr1[$i]."' and level=4"));
-                            if($left>0)
-                                $rowleft=1;
-                        }
-
-                        $bin=$data_member['right_members_data_ver'];
-                        $arr2=explode("~",$bin);
-                        $countbin=count($arr2);
-                        $counterl=0;
-                        $pay1=0;
-                        $rowright=0;
-                        $right=0;
-                        for($i=0;$i<$countbin;$i++)
-                        {
-                            $right=mysqli_fetch_array(mysqli_query($DB_LINK1,"select * from salary where uid='".$arr1[$i]."' and level=4"));
-                            if($right>0)
-                                $rowright=1;
-                        }
-                        echo  '<br/>Left For Level '.$curlev." count : ".$rowleft;
-                        echo  '<br/>Right For Level '.$curlev." count : ".$rowright;
-
-                        if($rowright>0 && $rowleft>0)
-                        {
-                            $counter_enter=mysqli_fetch_array(mysqli_query($DB_LINK1,"select * from salary where   uid='".$main."'  and level=5   "));
-                            if($counter_enter<1)
-                            {
-                                mysqli_query($DB_LINK1,"insert into  salary set level=5, dt=now(), sal='N' , uid='".$main."' ");
-                            }
-                        }
-                        break;
-
-                    case 5:
-                        $bin=$data_member['left_members_data_ver'];
-                        $arr1=explode("~",$bin);
-                        $countbin=count($arr1);
-                        $counterl=0;
-                        $pay1=0;
-                        $left=0;
-                        $rowleft=0;
-                        for($i=0;$i<$countbin;$i++)
-                        {
-                            $left=mysqli_fetch_array(mysqli_query($DB_LINK1,"select * from salary where uid='".$arr1[$i]."' and level=5"));
-                            if($left>0)
-                                $rowleft=1;
-                        }
-
-                        $bin=$data_member['right_members_data_ver'];
-                        $arr2=explode("~",$bin);
-                        $countbin=count($arr2);
-                        $counterl=0;
-                        $pay1=0;
-                        $rowright=0;
-                        $right=0;
-                        for($i=0;$i<$countbin;$i++)
-                        {
-                            $right=mysqli_fetch_array(mysqli_query($DB_LINK1,"select * from salary where uid='".$arr1[$i]."' and level=5"));
-                            if($right>0)
-                                $rowright=1;
-                        }
-                        echo  '<br/>Left For Level '.$curlev." count : ".$rowleft;
-                        echo  '<br/>Right For Level '.$curlev." count : ".$rowright;
-
-                        if($rowright>0 && $rowleft>0)
-                        {
-                            $counter_enter=mysqli_fetch_array(mysqli_query($DB_LINK1,"select * from salary where   uid='".$main."'  and level=6   "));
-                            if($counter_enter<1)
-                            {
-                                mysqli_query($DB_LINK1,"insert into  salary set level=6, dt=now(), sal='N' , uid='".$main."' ");
-                            }
-                        }
-                        break;
-
-
-                    case 6:
-                        $bin=$data_member['left_members_data_ver'];
-                        $arr1=explode("~",$bin);
-                        $countbin=count($arr1);
-                        $counterl=0;
-                        $pay1=0;
-                        $left=0;
-                        $rowleft=0;
-                        for($i=0;$i<$countbin;$i++)
-                        {
-                            $left=mysqli_fetch_array(mysqli_query($DB_LINK1,"select * from salary where uid='".$arr1[$i]."' and level=6"));
-                            if($left>0)
-                                $rowleft=1;
-                        }
-
-                        $bin=$data_member['right_members_data_ver'];
-                        $arr2=explode("~",$bin);
-                        $countbin=count($arr2);
-                        $counterl=0;
-                        $pay1=0;
-                        $rowright=0;
-                        $right=0;
-                        for($i=0;$i<$countbin;$i++)
-                        {
-                            $right=mysqli_fetch_array(mysqli_query($DB_LINK1,"select * from salary where uid='".$arr1[$i]."' and level=6"));
-                            if($right>0)
-                                $rowright=1;
-                        }
-                        echo  '<br/>Left For Level '.$curlev." count : ".$rowleft;
-                        echo  '<br/>Right For Level '.$curlev." count : ".$rowright;
-
-                        if($rowright>0 && $rowleft>0)
-                        {
-                            $counter_enter=mysqli_fetch_array(mysqli_query($DB_LINK1,"select * from salary where   uid='".$main."'  and level=7  "));
-                            if($counter_enter<1)
-                            {
-                                mysqli_query($DB_LINK1,"insert into  salary set level=7, dt=now(), sal='N' , uid='".$main."' ");
-                            }
-                        }
-                        break;
-
-                    case 7:
-                        $bin=$data_member['left_members_data_ver'];
-                        $arr1=explode("~",$bin);
-                        $countbin=count($arr1);
-                        $counterl=0;
-                        $pay1=0;
-                        $left=0;
-                        $rowleft=0;
-                        for($i=0;$i<$countbin;$i++)
-                        {
-                            $left=mysqli_fetch_array(mysqli_query($DB_LINK1,"select * from salary where uid='".$arr1[$i]."' and level=7"));
-                            if($left>0)
-                                $rowleft=1;
-                        }
-
-                        $bin=$data_member['right_members_data_ver'];
-                        $arr2=explode("~",$bin);
-                        $countbin=count($arr2);
-                        $counterl=0;
-                        $pay1=0;
-                        $rowright=0;
-                        $right=0;
-                        for($i=0;$i<$countbin;$i++)
-                        {
-                            $right=mysqli_fetch_array(mysqli_query($DB_LINK1,"select * from salary where uid='".$arr1[$i]."' and level=7"));
-                            if($right>0)
-                                $rowright=1;
-                        }
-                        echo  '<br/>Left For Level '.$curlev." count : ".$rowleft;
-                        echo  '<br/>Right For Level '.$curlev." count : ".$rowright;
-
-                        if($rowright>0 && $rowleft>0)
-                        {
-                            $counter_enter=mysqli_fetch_array(mysqli_query($DB_LINK1,"select * from salary where   uid='".$main."'  and level=8   "));
-                            if($counter_enter<1)
-                            {
-                                mysqli_query($DB_LINK1,"insert into  salary set level=8, dt=now(), sal='N' , uid='".$main."' ");
-                            }
-                        }
-                        break;
-
-                    case 8:
-                        $bin=$data_member['left_members_data_ver'];
-                        $arr1=explode("~",$bin);
-                        $countbin=count($arr1);
-                        $counterl=0;
-                        $pay1=0;
-                        $left=0;
-                        $rowleft=0;
-                        for($i=0;$i<$countbin;$i++)
-                        {
-                            $left=mysqli_fetch_array(mysqli_query($DB_LINK1,"select * from salary where uid='".$arr1[$i]."' and level=8"));
-                            if($left>0)
-                                $rowleft=1;
-                        }
-
-                        $bin=$data_member['right_members_data_ver'];
-                        $arr2=explode("~",$bin);
-                        $countbin=count($arr2);
-                        $counterl=0;
-                        $pay1=0;
-                        $rowright=0;
-                        $right=0;
-                        for($i=0;$i<$countbin;$i++)
-                        {
-                            $right=mysqli_fetch_array(mysqli_query($DB_LINK1,"select * from salary where uid='".$arr1[$i]."' and level=8"));
-                            if($right>0)
-                                $rowright=1;
-                        }
-                        echo  '<br/>Left For Level '.$curlev." count : ".$rowleft;
-                        echo  '<br/>Right For Level '.$curlev." count : ".$rowright;
-
-                        if($rowright>0 && $rowleft>0)
-                        {
-                            $counter_enter=mysqli_fetch_array(mysqli_query($DB_LINK1,"select * from salary where   uid='".$main."'  and level=9   "));
-                            if($counter_enter<1)
-                            {
-                                mysqli_query($DB_LINK1,"insert into  salary set level=9, dt=now(), sal='N' , uid='".$main."' ");
-                            }
-                        }
-                        break;
-
-                    case 9:
-                        $bin=$data_member['left_members_data_ver'];
-                        $arr1=explode("~",$bin);
-                        $countbin=count($arr1);
-                        $counterl=0;
-                        $pay1=0;
-                        $left=0;
-                        $rowleft=0;
-                        for($i=0;$i<$countbin;$i++)
-                        {
-                            $left=mysqli_fetch_array(mysqli_query($DB_LINK1,"select * from salary where uid='".$arr1[$i]."' and level=9"));
-                            if($left>0)
-                                $rowleft=1;
-                        }
-
-                        $bin=$data_member['right_members_data_ver'];
-                        $arr2=explode("~",$bin);
-                        $countbin=count($arr2);
-                        $counterl=0;
-                        $pay1=0;
-                        $rowright=0;
-                        $right=0;
-                        for($i=0;$i<$countbin;$i++)
-                        {
-                            $right=mysqli_fetch_array(mysqli_query($DB_LINK1,"select * from salary where uid='".$arr1[$i]."' and level=9"));
-                            if($right>0)
-                                $rowright=1;
-                        }
-                        echo  '<br/>Left For Level '.$curlev." count : ".$rowleft;
-                        echo  '<br/>Right For Level '.$curlev." count : ".$rowright;
-
-                        if($rowright>0 && $rowleft>0)
-                        {
-                            $counter_enter=mysqli_fetch_array(mysqli_query($DB_LINK1,"select * from salary where   uid='".$main."'  and level=10   "));
-                            if($counter_enter<1)
-                            {
-                                mysqli_query($DB_LINK1,"insert into  salary set level=10, dt=now(), sal='N' , uid='".$main."' ");
-                            }
-                        }
-                        break;
-                }
-
-            }
-        }
-
-    }
-}
-
-function getstatuscolor($status,$joindt)
-{
-	$now = time(); // or your date as well
-	$your_date = strtotime($joindt);
-	$datediff = $now - $your_date;
-	$ddt=floor($datediff/(60*60*24));
-
-	$color='';
-	if($status==2) $color='greenm' ;
-	if($status==0)
-	{
-		if( $ddt>30)
-			$color = 'graym';
-		else
-			$color = 'redm';
-	}
-	if($status==3) $color= 'graym' ;
-	return $color;
-}
-
-function getgenderimage($a_mid,$gen,$joindt,$status)
-{
-	global $DB_LINK1;
-	global $genimg;
-	if($status==2)
-	{
-		 $sql_member_fm = " select user_image from tbl_member_info where mem_id='".$a_mid."' and user_image!='' and user_image_flag=1 ";
-		$qry_member_fm = mysqli_query( $DB_LINK1, $sql_member_fm );
-
-		if(mysqli_num_rows($qry_member_fm)>0)
-		{
-			$data_member_fm = mysqli_fetch_array( $qry_member_fm );
-			$genimg="../upload/user_image/".$data_member_fm['user_image'];
-		}
-		else {
-			if ($gen == 'Male')
-				$genimg = 'treeview/images/user_m.jpg';
-			if ($gen == 'MALE')
-				$genimg = 'treeview/images/user_m.jpg';
-			if ($gen == 'Female')
-				$genimg = 'treeview/images/user_f.jpg';
-			if ($gen == 'FEMALE')
-				$genimg = 'treeview/images/user_f.jpg';
-			if ($gen == '')
-				$genimg = 'treeview/images/user_m.jpg';
-		}
-	}
-	if($status==3)
-		$genimg = 'treeview/images/user_t.jpg';
-	if($status==0)
-	{
-		$now = time(); // or your date as well
-		$your_date = strtotime($joindt);
-		$datediff = $now - $your_date;
-		$ddt = floor($datediff / (60 * 60 * 24));
-		if ($ddt > 30)	{
-			$genimg = 'treeview/images/user_d.jpg';
-		}	else {
-			$sql_member_fm = " select user_image from tbl_member_info where mem_id='".$a_mid."' and user_image!='' and user_image_flag=1 ";
-			$qry_member_fm = mysqli_query( $DB_LINK1, $sql_member_fm );
-			if(mysqli_num_rows($qry_member_fm)>0)
-			{
-				$data_member_fm = mysqli_fetch_array( $qry_member_fm );
-				$genimg="../upload/user_image/".$data_member_fm['user_image'];
-			}
-			else {
-				if ($gen == 'Male')
-					$genimg = 'treeview/images/user_m.jpg';
-				if ($gen == 'MALE')
-					$genimg = 'treeview/images/user_m.jpg';
-				if ($gen == 'Female')
-					$genimg = 'treeview/images/user_f.jpg';
-				if ($gen == 'FEMALE')
-					$genimg = 'treeview/images/user_f.jpg';
-				if ($gen == '')
-					$genimg = 'treeview/images/user_m.jpg';
-			}
-		}
-	}
-	return $genimg;
-}
-
-function kyc_approveby_data($kyc_by)
-{
-	global $DB_LINK1;
-	if($kyc_by=='Admin')
-		return $kyc_by;
 	else
-		{
-			$data="SELECT * FROM `tbl_branch` where br_code='".$kyc_by."' ";
-			$qry1=mysqli_query($DB_LINK1,$data);
-			$rowget1=mysqli_fetch_array($qry1);
-			return $rowget1['title'];
-		}
+	{}
 }
 
+function video_payment($usertyp)
+{
+	if($usertyp=='Basic')
+		$min_value=80;
+	if($usertyp=='Premium')
+		$min_value=80;
+	return $min_value;
+}        
+  
+function get_upadate_level($downline,$referal,$m_id,$userlevel)
+{
+	global $DB_LINK;
+	///////////////////////////////Restore Level Data//////////////////////////
+	$mylevel='0';
+	$qry=mysqli_query($DB_LINK,"select * From tbl_level_data order by id asc");
+	foreach($qry as $row)
+	{
+				///////////////////////////////Level 1 Clear///////////////////////////////
 
+		if($userlevel=="0" || $userlevel=="***")	{
+			if ($row['lev_name'] == 'Level 1')	{
+				if ($row['dl_mem'] < $downline || $row['ref_mem'] < $referal)	{
+					$mylevel = '1';
+				}
+			}
+		}
+				////////////////////////////////Level 2 Clear//////////////////////////////
 
+		if($userlevel=="1" ) {
+			if ($row['lev_name'] == 'Level 2')	{
+				if ($row['dl_mem'] < $downline || $row['ref_mem'] < $referal)	{
+					$mylevel = '2';
+				}
+			}
+		}
+				///////////////////////////////////Level 3 Clear///////////////////////////
+		if($userlevel=="2" ) {
+			if ($row['lev_name'] == 'Level 3')	{
+				if ($row['dl_mem'] < $downline || $row['ref_mem'] < $referal)	{
+					$mylevel = '3';
+				}
+			}
+		}
+				///////////////////////////////////Level 4 Clear///////////////////////////
+		if($userlevel=="3" ) {
+			if ($row['lev_name'] == 'Level 4')	{
+				if ($row['dl_mem'] < $downline || $row['ref_mem'] < $referal)	{
+					$mylevel = '4';
+				}
+			}
+		}
+				///////////////////////////////////Level 5 Clear///////////////////////////
+		if($userlevel=="4" ) {
+			if ($row['lev_name'] == 'Level 5')	{
+				if ($row['dl_mem'] < $downline || $row['ref_mem'] < $referal)	{
+					$mylevel = '5';
+				}
+			}
+		}
+				//////////////////////////////////////////////////////////////
+				 }
+	update_member($m_id,$mylevel,'level_report');
+	return $mylevel;
+	}
 
+	function multiwalletcredit_system($m_id,$m_name,$m_level,$usertyp,$placing)
+	{
+		global $DB_LINK;
+		$amtforpay=0; $pos='';
+		if($usertyp=='Basic')
+		{
+			if($m_level==0)
+				$amtforpay='100';
+			if($m_level==1)
+				$amtforpay='100';
+			if($m_level==2)
+				$amtforpay='100';
+			if($m_level==3)
+				$amtforpay='100';
+			if($m_level==4)
+				$amtforpay='100';
+			if($m_level==5)
+				$amtforpay='100';
+		}
+		if($usertyp=='Premium')
+		{
+			if($m_level==0)
+				$amtforpay='100';
+			if($m_level==1)
+				$amtforpay='100';
+			if($m_level==2)
+				$amtforpay='100';
+			if($m_level==3)
+				$amtforpay='100';
+			if($m_level==4)
+				$amtforpay='100';
+			if($m_level==5)
+				$amtforpay='100';
+		}
+		if($usertyp=='Gold')
+		{
+			if($m_level==0)
+				$amtforpay='100';
+			if($m_level==1)
+				$amtforpay='100';
+			if($m_level==2)
+				$amtforpay='100';
+			if($m_level==3)
+				$amtforpay='100';
+			if($m_level==4)
+				$amtforpay='100';
+			if($m_level==5)
+				$amtforpay='100';
+		}
+		if($placing=='1') $pos='LEFT';
+		if($placing=='2') $pos='RIGHT';
 
+		/*if($m_level>0)
+		{*/
+			if($m_level==0)
+			{
+				/////////////Shopping Wallet credit///////////////
+				$pay_qry_r = "INSERT INTO `tbl_ledger_bonus` set `m_id`='" .$m_id . "',
+		   `m_name`='$m_name', `mode`='CR',  `amt`='$amtforpay',on_date ='" . date('Y-m-d') . "',
+		   summary='Wallet Auto Credit For Level Achivemenet on Binary Gen Payment Rs $amtforpay for $pos', 
+		   for_id='',for_placing='$placing' ";
+				mysqli_query($DB_LINK, $pay_qry_r);
+				echo 'Shopping Wallet credit<br>';
+			}
+			if($m_level==1)
+			{
+				/////////////Shopping Wallet credit///////////////
+		  $pay_qry_r = "INSERT INTO `tbl_ledger_bonus` set `m_id`='" .$m_id . "',
+		   `m_name`='$m_name', `mode`='CR',  `amt`='$amtforpay',on_date ='" . date('Y-m-d') . "',
+		   summary='Wallet Auto Credit For Level Achivemenet on Binary Gen Payment Rs $amtforpay for $pos', 
+		   for_id='',for_placing='$placing' ";
+				mysqli_query($DB_LINK, $pay_qry_r);
+				echo 'Shopping Wallet credit<br>';
+			}
+			if($m_level==2)
+			{
+				/////////////Shopping Wallet credit///////////////
+				$pay_qry_r = "INSERT INTO `tbl_ledger_bonus` set `m_id`='" .$m_id . "',
+		   `m_name`='$m_name', `mode`='CR',  `amt`='$amtforpay',on_date ='" . date('Y-m-d') . "',
+		   summary='Wallet Auto Credit For Level Achivemenet on Binary Gen Payment Rs $amtforpay for $pos', 
+		   for_id='',for_placing='$placing' ";
+				mysqli_query($DB_LINK, $pay_qry_r);
+				echo 'Shopping Wallet credit<br>';
+			/*	/////////////Journey trip Wallet credit///////////////
+				$pay_qry_r = "INSERT INTO `tbl_ledger_journey` set `m_id`='" .$m_id . "',
+		   `m_name`='$m_name', `mode`='CR',  `amt`='$amtforpay',on_date ='" . date('Y-m-d') . "',
+		   summary='Wallet Auto Credit For Level Achivemenet on Binary Gen Payment Rs $amtforpay for $pos', 
+		   for_id='',for_placing='$placing' ";
+				mysqli_query($DB_LINK, $pay_qry_r);
+				echo 'Journey trip Wallet credit<br>';*/
+			}
+			if($m_level==3)
+			{
+				/////////////Shopping Wallet credit///////////////
+				$pay_qry_r = "INSERT INTO `tbl_ledger_bonus` set `m_id`='" .$m_id . "',
+		   `m_name`='$m_name', `mode`='CR',  `amt`='$amtforpay',on_date ='" . date('Y-m-d') . "',
+		   summary='Wallet Auto Credit For Level Achivemenet on Binary Gen Payment Rs $amtforpay for $pos', 
+		   for_id='',for_placing='$placing' ";
+				mysqli_query($DB_LINK, $pay_qry_r);
+				echo 'Shopping Wallet credit<br>';
+	/*			/////////////Journey trip Wallet credit///////////////
+				$pay_qry_r = "INSERT INTO `tbl_ledger_journey` set `m_id`='" .$m_id . "',
+		   `m_name`='$m_name', `mode`='CR',  `amt`='$amtforpay',on_date ='" . date('Y-m-d') . "',
+		   summary='Wallet Auto Credit For Level Achivemenet on Binary Gen Payment Rs $amtforpay for $pos', 
+		   for_id='',for_placing='$placing' ";
+				mysqli_query($DB_LINK, $pay_qry_r);
+				echo 'Journey trip Wallet credit<br>';
+				/////////////Car Fund Wallet credit///////////////
+				$pay_qry_r = "INSERT INTO `tbl_ledger_carfund` set `m_id`='" .$m_id . "',
+		   `m_name`='$m_name', `mode`='CR',  `amt`='$amtforpay',on_date ='" . date('Y-m-d') . "',
+		   summary='Wallet Auto Credit For Level Achivemenet on Binary Gen Payment Rs $amtforpay for $pos', 
+		   for_id='',for_placing='$placing' ";
+				mysqli_query($DB_LINK, $pay_qry_r);
+				echo 'Car Fund Wallet credit<br>';*/
+			}
+			if($m_level==4)
+			{
+				/////////////Shopping Wallet credit///////////////
+				$pay_qry_r = "INSERT INTO `tbl_ledger_bonus` set `m_id`='" .$m_id . "',
+		   `m_name`='$m_name', `mode`='CR',  `amt`='$amtforpay',on_date ='" . date('Y-m-d') . "',
+		   summary='Wallet Auto Credit For Level Achivemenet on Binary Gen Payment Rs $amtforpay for $pos', 
+		   for_id='',for_placing='$placing' ";
+				mysqli_query($DB_LINK, $pay_qry_r);
+				echo 'Shopping Wallet credit<br>';
+			/*	/////////////Journey trip Wallet credit///////////////
+				$pay_qry_r = "INSERT INTO `tbl_ledger_journey` set `m_id`='" .$m_id . "',
+		   `m_name`='$m_name', `mode`='CR',  `amt`='$amtforpay',on_date ='" . date('Y-m-d') . "',
+		   summary='Wallet Auto Credit For Level Achivemenet on Binary Gen Payment Rs $amtforpay for $pos', 
+		   for_id='',for_placing='$placing' ";
+				mysqli_query($DB_LINK, $pay_qry_r);
+				echo 'Journey trip Wallet credit<br>';
+				/////////////Car Fund Wallet credit///////////////
+				$pay_qry_r = "INSERT INTO `tbl_ledger_carfund` set `m_id`='" .$m_id . "',
+		   `m_name`='$m_name', `mode`='CR',  `amt`='$amtforpay',on_date ='" . date('Y-m-d') . "',
+		   summary='Wallet Auto Credit For Level Achivemenet on Binary Gen Payment Rs $amtforpay for $pos', 
+		   for_id='',for_placing='$placing' ";
+				mysqli_query($DB_LINK, $pay_qry_r);
+				echo 'Car Fund Wallet credit<br>';
+				/////////////House Fund Wallet credit///////////////
+				$pay_qry_r = "INSERT INTO `tbl_ledger_housefund` set `m_id`='" .$m_id . "',
+		   `m_name`='$m_name', `mode`='CR',  `amt`='$amtforpay',on_date ='" . date('Y-m-d') . "',
+		   summary='Wallet Auto Credit For Level Achivemenet on Binary Gen Payment Rs $amtforpay for $pos', 
+		   for_id='',for_placing='$placing' ";
+				mysqli_query($DB_LINK, $pay_qry_r);
+				echo 'House Fund Wallet credit<br>';*/
+			}
+			if($m_level==5)
+			{
+				/////////////Shopping Wallet credit///////////////
+				$pay_qry_r = "INSERT INTO `tbl_ledger_bonus` set `m_id`='" .$m_id . "',
+		   `m_name`='$m_name', `mode`='CR',  `amt`='$amtforpay',on_date ='" . date('Y-m-d') . "',
+		   summary='Wallet Auto Credit For Level Achivemenet on Binary Gen Payment Rs $amtforpay for $pos', 
+		   for_id='',for_placing='$placing' ";
+				mysqli_query($DB_LINK, $pay_qry_r);
+				echo 'Shopping Wallet credit<br>';
+				/*/////////////Journey trip Wallet credit///////////////
+				$pay_qry_r = "INSERT INTO `tbl_ledger_journey` set `m_id`='" .$m_id . "',
+		   `m_name`='$m_name', `mode`='CR',  `amt`='$amtforpay',on_date ='" . date('Y-m-d') . "',
+		   summary='Wallet Auto Credit For Level Achivemenet on Binary Gen Payment Rs $amtforpay for $pos', 
+		   for_id='',for_placing='$placing' ";
+				mysqli_query($DB_LINK, $pay_qry_r);
+				echo 'Journey trip Wallet credit<br>';
+				/////////////Car Fund Wallet credit///////////////
+				$pay_qry_r = "INSERT INTO `tbl_ledger_carfund` set `m_id`='" .$m_id . "',
+		   `m_name`='$m_name', `mode`='CR',  `amt`='$amtforpay',on_date ='" . date('Y-m-d') . "',
+		   summary='Wallet Auto Credit For Level Achivemenet on Binary Gen Payment Rs $amtforpay for $pos', 
+		   for_id='',for_placing='$placing' ";
+				mysqli_query($DB_LINK, $pay_qry_r);
+				echo 'Car Fund Wallet credit<br>';
+				/////////////House Fund Wallet credit///////////////
+				$pay_qry_r = "INSERT INTO `tbl_ledger_housefund` set `m_id`='" .$m_id . "',
+		   `m_name`='$m_name', `mode`='CR',  `amt`='$amtforpay',on_date ='" . date('Y-m-d') . "',
+		   summary='Wallet Auto Credit For Level Achivemenet on Binary Gen Payment Rs $amtforpay for $pos', 
+		   for_id='',for_placing='$placing' ";
+				mysqli_query($DB_LINK, $pay_qry_r);
+				echo 'House Fund Wallet credit<br>';
+				/////////////Movies Wallet credit///////////////
+				$pay_qry_r = "INSERT INTO `tbl_ledger_movies` set `m_id`='" .$m_id . "',
+		   `m_name`='$m_name', `mode`='CR',  `amt`='$amtforpay',on_date ='" . date('Y-m-d') . "',
+		   summary='Wallet Auto Credit For Level Achivemenet on Binary Gen Payment Rs $amtforpay for $pos', 
+		   for_id='',for_placing='$placing' ";
+				mysqli_query($DB_LINK, $pay_qry_r);
+				echo 'Movies Wallet credit<br>';*/
+			}
+	/*	}*/
+
+		/////Common Entry For Bonus Wallet//////
+	/*	$pay_qry_r = "INSERT INTO `tbl_ledger_bonus` set `m_id`='" .$m_id . "',
+		   `m_name`='$m_name', `mode`='CR',  `amt`='25',on_date ='" . date('Y-m-d') . "',
+		   summary='Wallet Credit for Binary generation, bonus payment received Rs 25', 
+		   for_id='',for_placing='$placing' ";
+		mysqli_query($DB_LINK, $pay_qry_r);*/
+		echo 'Shopping Wallet credit<br>';
+
+	}
+
+        
 ?>
