@@ -2,24 +2,24 @@
 require_once("../con_base/functions.inc.php");
 if(isset($_GET['del']))
 {
-    mysqli_query($DB_LINK,"delete from tbl_team_state where id=".$_GET['del']) or die(mysqli_error());
+    mysqli_query($DB_LINK,"delete from tbl_team_city where id=".$_GET['del']) or die(mysqli_error());
     $_SESSION['msg']=array('success', 'Deleted Successfully');
-    header("location:team_state.php");
+    header("location:team_city.php");
     exit;
 }
 
 if(isset($_REQUEST['ban']))
 {
-    mysqli_query($DB_LINK,"update tbl_team_state set status=0 where id=".$_GET['ban']) or die(mysqli_error());
+    mysqli_query($DB_LINK,"update tbl_team_city set status=0 where id=".$_GET['ban']) or die(mysqli_error());
     $_SESSION['msg']=array('success', 'Banned Successfully');
-    header("location:team_state.php");
+    header("location:team_city.php");
     exit;
 }
 if(isset($_REQUEST['unban']))
 {
-    mysqli_query($DB_LINK,"update tbl_team_state set status=1 where id='".$_GET['unban']."'   ") or die(mysqli_error());
+    mysqli_query($DB_LINK,"update tbl_team_city set status=1 where id='".$_GET['unban']."'   ") or die(mysqli_error());
     $_SESSION['msg']=array('success', 'Unbanned Successfully');
-    header("location:team_state.php");
+    header("location:team_city.php");
     exit;
 }
 ?>
@@ -34,7 +34,7 @@ if(isset($_REQUEST['unban']))
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>State Directors | <?php echo $SITE_NAME;?></title>
+  <title>District Directors | <?php echo $SITE_NAME;?></title>
 	<?php include("include/top.php");?>
 	<!-- Custom styles for this page -->
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" rel="stylesheet">
@@ -68,19 +68,19 @@ if(isset($_REQUEST['unban']))
 							<div class="container-fluid">
 
                                 <div class="d-sm-flex align-items-center justify-content-between mb-1">
-                                    <h1 class="h3 mb-2 text-gray-800">State Directors</h1>
+                                    <h1 class="h3 mb-2 text-gray-800">District Directors</h1>
 
-                                    <a href="team_state_add.php" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> Add New</a>
+                                    <a href="team_city_add.php" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> Add New</a>
                                 </div>
 								<!-- Page Heading -->
 
-								<p class="mb-4">State Directors list with basic info </p>
+								<p class="mb-4">District Directors list with basic info </p>
 
 
                                 <!-- DataTales Example -->
 								<div class="card shadow mb-4">
 									<div class="card-header py-3">
-										<h6 class="m-0 font-weight-bold text-primary">State Directors</h6>
+										<h6 class="m-0 font-weight-bold text-primary">District Directors</h6>
 
                                     </div>
                                     <div class="card-body">
@@ -115,7 +115,7 @@ if(isset($_REQUEST['unban']))
 												<tbody>
 												<?php
                                                 $jcount=0;
-                                                $qry_user= mysqli_query($DB_LINK,"SELECT * FROM tbl_team_state order by id desc ");
+                                                $qry_user= mysqli_query($DB_LINK,"SELECT * FROM tbl_team_city order by id desc ");
                                                 foreach($qry_user as $data_user )
                                                 {
                                                     $jcount++;
@@ -126,7 +126,9 @@ if(isset($_REQUEST['unban']))
 
                                                                 <small> <a href="javascript:void(0);" title="<?php echo $data_user['address'];?> <?php echo $data_user['city_name'];?> <?php echo $data_user['state_name'];?> Pin - <?php echo $data_user['pin'];?>">View </a>
                                                                 </small><br>
-                                                                for : <?php echo $data_user['a_state_name'];?>
+                                                                for : <?php echo $data_user['a_city_name'];?>
+                                                                <br>
+                                                                <?php echo $data_user['a_sdl_id'];?>/<?php echo $data_user['a_sdl_name'];?>
 
 
                                                             </td>
@@ -135,18 +137,18 @@ if(isset($_REQUEST['unban']))
 															<td><?php echo date_dmy_small($data_user['autodate']);?></td>
 															<td><?php echo date_dmy_small($data_user['validity']);?></td>
 
-															<td><img class="img-fluid img-rounded img-profile" src="../upload/sdl_data/image/<?php echo $data_user['image'];?>"/></td>
+															<td><img class="img-fluid img-rounded img-profile" src="../upload/ddl_data/image/<?php echo $data_user['image'];?>"/></td>
 															<?php /*if($data_user['status']==1){*/?><!--
 																<td class="bg-gradient-success text-white">Active</td><?php
 /*															} else { */?>
 																<td class="bg-gradient-danger text-white">Pending</td>
 															--><?php /*} */?>
                                                             <td>
-                                                                <a  href="team_state_add.php?edit=<?php echo $data_user['id'];?>" ><i  style="color:blue " class="fa fa-edit fa-lg"></i></a> <?php if($data_user['status']==1){?>
-                                                                &nbsp;<a href="team_state.php?ban=<?php echo $data_user['id'];?> "  ><i class="fa fa-check fa-lg" style="color:green" title="Ban"></i>  </a>
+                                                                <a  href="team_city_add.php?edit=<?php echo $data_user['id'];?>" ><i  style="color:blue " class="fa fa-edit fa-lg"></i></a> <?php if($data_user['status']==1){?>
+                                                                &nbsp;<a href="team_city.php?ban=<?php echo $data_user['id'];?> "  ><i class="fa fa-check fa-lg" style="color:green" title="Ban"></i>  </a>
                                                                 <?php } else  { ?>
-                                                                &nbsp;<a href="team_state.php?unban=<?php echo $data_user['id'];?> "  ><i class="fa fa-ban fa-lg" style="color:red" title="Unban"></i>  </a>
-                                                                <?php }  ?>  <a href="javascript:void(0)"  onClick="return del(<?php echo $data_user['id'];?>,'team_state.php')"> <i class=" fa-lg fa fa-trash  "  style="color:red" title="Delete"></i>   </a>
+                                                                &nbsp;<a href="team_city.php?unban=<?php echo $data_user['id'];?> "  ><i class="fa fa-ban fa-lg" style="color:red" title="Unban"></i>  </a>
+                                                                <?php }  ?>  <a href="javascript:void(0)"  onClick="return del(<?php echo $data_user['id'];?>,'team_city.php')"> <i class=" fa-lg fa fa-trash  "  style="color:red" title="Delete"></i>   </a>
 
                                                             </td>
 

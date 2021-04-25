@@ -3,7 +3,7 @@ require_once("../con_base/functions.inc.php");
 if(isset($_POST['save']))
 {
 
-    $a_state_id=(trim($_POST['a_state_id']));
+    $a_sdl_id=(trim($_POST['a_sdl_id']));
     $t_name=strtoupper(trim($_POST['t_name']));
     $mobile=$_POST['mobile'];
     $email=($_POST['email']);
@@ -12,6 +12,7 @@ if(isset($_POST['save']))
     $pincode=(trim($_POST['pin'])) ;
     $state_id=(trim($_POST['state_id']));
     $city_id=(trim($_POST['city_id']));
+    $a_city_id=(trim($_POST['a_city_id']));
     $validity=(trim($_POST['validity']));
 
 
@@ -22,7 +23,7 @@ if(isset($_POST['save']))
 
     if (isset($_FILES['uploaded_file1']))
     {
-        uploadmaster("../upload/sdl_data/image/", 'uploaded_file1');
+        uploadmaster("../upload/ddl_data/image/", 'uploaded_file1');
         if ($finame != '')
         {
             $f1= $finame;
@@ -32,11 +33,12 @@ if(isset($_POST['save']))
 
     ////State City Data/////
     ///
-     if ($_POST['a_state_id'] != '')	{
-         $sqlst = mysqli_query($DB_LINK, "select * from state where state_id='" . $_POST['a_state_id'] . "'") or die(mysqli_error());
+     if ($_POST['a_sdl_id'] != '')	{
+         $sqlst = mysqli_query($DB_LINK, "select t_name  from tbl_team_state where user='" . $_POST['a_sdl_id'] . "'") or die(mysqli_error());
          $datas_name = mysqli_fetch_array($sqlst);
-         $a_state = $datas_name['state'];
-         $a_state_sort_name = $datas_name['sort_code'];
+         $a_sdl_name  = $datas_name['t_name'];
+         $state_code=substr($_POST['a_sdl_id'],0,2);
+
      }
     if ($_POST['state_id'] != '')	{
         $sqlst = mysqli_query($DB_LINK, "select state from state where state_id='" . $_POST['state_id'] . "'") or die(mysqli_error());
@@ -49,25 +51,33 @@ if(isset($_POST['save']))
         $city = $datac_name['city'];
     }
 
+    if ($_POST['a_city_id'] != '')	{
+        $sqlct = mysqli_query($DB_LINK, "select city from city where city_id='" . $_POST['a_city_id'] . "'") or die(mysqli_error());
+        $datac_name = mysqli_fetch_array($sqlct);
+        $a_city = $datac_name['city'];
+    }
+
     /////Get New id/////
-	$new_id=$a_state_sort_name.rand(1000,9999);
+	$new_id=$state_code.''.$_POST['city_id'].'/'.rand(100000,999999);
     $ip=get_ip();
 
 
 
-              $sql_reg="insert into tbl_team_state set 
+             echo $sql_reg="insert into tbl_team_city set 
             `user`='$new_id',
             `pass`='$pass', 
             `t_name`='$t_name',
             `mobile`='$mobile',
             `email`='$email',
             `address`='$address',
-            `a_state_id`='$a_state_id',
-            `a_state_name`='$a_state', 
+            `a_sdl_id`='$a_sdl_id',
+            `a_sdl_name`='$a_sdl_name', 
             `state_id`='$state_id',
             `state_name`='$state',
             `city_id`='$city_id',
             `city_name`='$city',
+            `a_city_id`='$a_city_id',
+            `a_city_name`='$a_city',
             `pin`='$pincode',
             `status`=0, 
             `validity`='$validity',
@@ -80,9 +90,9 @@ if(isset($_POST['save']))
         {
             //Mail is attached on page
             $text='Congratulation your registration is successfully completed with name '.$t_name.' your login ID- '.$new_id.' Password- '.dec($pass).' Warm Regards '.$SITE_NAME ;
-            mail_sender($email,"yes",$text,$t_name,"State Director Registration : AFCT " );
+            mail_sender($email,"yes",$text,$t_name,"District Director Registration : AFCT " );
             $_SESSION['msg']=array('success', 'Registration Successfully completed your login ID- '.$new_id.' Password- '.dec($pass));
-             header("Location: team_state_add.php");
+             header("Location: team_city_add.php");
             exit;
         }
         else	{
@@ -105,7 +115,7 @@ if(isset($_POST['save']))
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>New State Director Registration	| <?php echo $SITE_NAME;?></title>
+    <title>New District Director Registration	| <?php echo $SITE_NAME;?></title>
     <?php include("include/top.php");?>
     <!-- Custom styles for this page -->
     <!--	<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" rel="stylesheet">
@@ -152,8 +162,8 @@ if(isset($_POST['save']))
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <h1 class="h3 mb-2 text-gray-800">New State Director Registration</h1>
-              <!--  <p class="mb-4">New State Director Registration	Form</p>-->
+                <h1 class="h3 mb-2 text-gray-800">New District Director Registration</h1>
+              <!--  <p class="mb-4">New District Director Registration	Form</p>-->
 
 
                 <form id="form_validation" method="POST" action="" enctype="multipart/form-data">
@@ -165,7 +175,7 @@ if(isset($_POST['save']))
                         <div class="col-lg-12 col-md-12 col-sm-12">
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary"> <strong> Assign To State   </strong></h6>
+                                    <h6 class="m-0 font-weight-bold text-primary"> <strong> Assign To State Director  </strong></h6>
 
 
                                 </div>
@@ -175,16 +185,25 @@ if(isset($_POST['save']))
 
 
                                             <div class="form-group">
-                                                <select class="form-control  text-uppercase" name="a_state_id" id="a_state_id"   required>
-                                                    <option value="">--Select State--</option>
-                                                    <?php $sql=mysqli_query($DB_LINK,"select * from state where status=1 order by state") or die(mysqli_error());
+                                                <select class="form-control  text-uppercase" name="a_sdl_id" id="a_sdl_id"   required  onChange="onchangeajax_for_sdl(this.value);">
+                                                    <option value="">--Select State Director--</option>
+                                                    <?php $sql=mysqli_query($DB_LINK,"select * from tbl_team_state where status=1 order by user asc") or die(mysqli_error());
                                                     foreach($sql as $state)
                                                     {
                                                         ?>
-                                                        <option value="<?php echo $state['state_id'];?>" <?php /*if('34'==$state['state_id']) { echo 'selected';   }*/?>><?php echo $state['state'];?></option>
+                                                        <option value="<?php echo $state['user'];?>" <?php /*if('34'==$state['state_id']) { echo 'selected';   }*/?>><?php echo $state['user'];?> - <?php echo $state['t_name'];?></option>
                                                     <?php } ?>
                                                 </select>
 
+                                            </div>
+
+                                            <div class="form-group  ">
+                                                <div id="city_upd_by_sdl">
+                                                    <select name=a_city_id" id="a_city_id" class="form-control  text-uppercase" required>
+                                                        <option value="">--Assign To City Related To State Director--</option>
+
+                                                    </select>
+                                                </div>
                                             </div>
 
 
@@ -220,19 +239,7 @@ if(isset($_POST['save']))
                                                 <input name="uploaded_file1" class="form-control" type="file" id="uploaded_file1">
 
                                                 (For Best resolution use resolution 150 X 150 )     </div>
-                                          <!--  <div class="form-group">
-                                                <input type="text" value="" class="form-control text-uppercase" placeholder="Father name *" name="father_name" required >
-                                            </div>
-                                            <div class="form-group">
-                                                <input type="text" value="" class="form-control text-uppercase" placeholder="Husband name " name="husband_name" required >
-                                            </div>
-                                            <div class="form-group  ">
-                                                <select class="form-control  text-uppercase " name="gender" required>
-                                                    <option value="">-- Please select Gender --</option>
-                                                    <option value="Male">Male</option>
-                                                    <option value="Female">Female</option>
-                                                </select>
-                                            </div>-->
+
                                             <div class="form-group  ">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
@@ -427,6 +434,18 @@ if(isset($_POST['save']))
             success: function(data) {
 
                 $("#city_upd").html(data);
+            }
+        });
+    }
+    function onchangeajax_for_sdl(val) {
+
+        $.ajax({
+            type: "POST",
+            url: "get_city_by_sdl.php",
+            data: 'sdl_id=' + val,
+            success: function(data) {
+
+                $("#city_upd_by_sdl").html(data);
             }
         });
     }
