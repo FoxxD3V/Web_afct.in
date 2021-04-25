@@ -971,7 +971,7 @@ curl_close($curl);
 
 
 function mail_sender($contact,$is_admin, $sms_text,$name,$subject) {
-	include('../assets/plugins/mailer/PHPMailerAutoload.php');
+	include('../core/mailer/PHPMailerAutoload.php');
 	try{
 	global   $SITE_NAME,$EMAIL_ID ,$WEBMAIL,$MPASS ,$HOST ,$PORT,$SITE_URL;
 //echo $SITE_NAME.$EMAIL_ID .$WEBMAIL.$MPASS .$HOST .$PORT.$SITE_URL;
@@ -989,7 +989,7 @@ function mail_sender($contact,$is_admin, $sms_text,$name,$subject) {
                 <table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="border: 1px solid #cccccc; border-collapse: collapse;">
                     <tr>
                         <td align="center" bgcolor="#70bbd9" style="padding: 40px 0 30px 0; color: #153643; font-size: 28px; font-weight: bold; font-family: Arial, sans-serif;">
-                            <img src="'.$SITE_URL.'/assets/links/images/logo.png" alt="'.$SITE_NAME.'" width="200"   style="display: block;" />
+                            <img src="'.$SITE_URL.'/core/img/logo.jpg" alt="'.$SITE_NAME.'" width="200"   style="display: block;" />
                         </td>
                     </tr>
                     <tr>
@@ -1050,20 +1050,22 @@ function mail_sender($contact,$is_admin, $sms_text,$name,$subject) {
 </body>
 </html>';
 	$mail = new PHPMailer;
-	//$mail->isSMTP(); // Set mailer to use SMTP
-	$mail->SMTPDebug = 2;
+	 $mail->isSMTP(); // Set mailer to use SMTP
+	//$mail->SMTPDebug = 3;
 	$mail->Host = $HOST; // Specify main and backup server
 	$mail->SMTPAuth = true; // Enable SMTP authentication
 	$mail->Username = $WEBMAIL; // SMTP username
 	$mail->Password = $MPASS; // SMTP password
-	$mail->SMTPSecure = 'ssl'; // Enable encryption, 'ssl' also accepted
-	$mail->Port = $PORT; //Set the SMTP port number - 587 for authenticated TLS
+	 //$mail->SMTPSecure = 'ssl'; // Enable encryption, 'ssl' also accepted
+      // $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+
+       $mail->Port = $PORT; //Set the SMTP port number - 587 for authenticated TLS
 	$mail->setFrom($WEBMAIL, $SITE_NAME); //Set who the message is to be sent from
 	//$mail->addReplyTo('labnol@gmail.com', 'First Last');  //Set an alternative reply-to address
 	//$mail->addAddress('xyz@gmail.com', $SITE_NAME);
 	//$mail->addAddress($EMAIL_ID, $SITE_NAME);
 	$mail->addAddress($contact, $name);
-if($is_admin!='yes')
+    if($is_admin=='yes')
 	$mail->addAddress($EMAIL_ID, $SITE_NAME);
 	// Name is optional
 	//$mail->addCC('cc@example.com');
@@ -1084,18 +1086,10 @@ if($is_admin!='yes')
 	if ($mail->send()) {
 		//echo 'Message Sent Mailer';
 	  //echo 'Mailer Error: ' . $mail->ErrorInfo;
-	} /*else {
+	}  else {
 		echo 'Mailer Error: ' . $mail->ErrorInfo;
-		//echo 'Message Sent Successfully';
-		// Always set content-type when sending HTML email
-		$headers = "MIME-Version: 1.0" . "\r\n";
-		$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-		// More headers
-		$headers .= 'From: $SITE_NAME<$EMAIL_ID>' . "\r\n";
-		//$headers .= 'Cc: xyz@gmail.com' . "\r\n";
-		//mail($_POST['email'],$subject,$mail_body,$headers);
-		mail($EMAIL_ID, $subject, $mail_body, $headers);
-	}*/
+
+	}
 
 	}
 	catch (Exception $ex)

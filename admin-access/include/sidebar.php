@@ -12,15 +12,15 @@
 	</a>
 
 	<!-- Divider -->
-<!--	<hr class="sidebar-divider my-0">-->
+	<hr class="sidebar-divider my-0">
 
 	<!-- Nav Item - Dashboard -->
-<!--	<li class="nav-item ">
-		<a class="nav-link" target="_blank" href="<?php /*echo $SITE_URL;*/?>">
+	<li class="nav-item ">
+		<a class="nav-link" target="_blank" href="http://www.afctinstitute.com">
 			<i class="fas fa-fw fa-globe-asia faa-spin animated "></i>
 			<span>Website</span></a>
 	</li>
--->
+
 	<!-- Divider -->
 	<hr class="sidebar-divider my-0">
 	<!-- Nav Item - Dashboard -->
@@ -29,21 +29,20 @@
 			<i class="fas fa-fw fa-tachometer-alt"></i>
 			<span>Dashboard</span></a>
 	</li>
-<!--	<li class="nav-item <?php /*if($currentPG=="team_all.php" || $currentPG=="team_left.php" || $currentPG=="team_right.php" || $currentPG=="team_desig.php" ) echo 'active  '; */?> ">
+	<li class="nav-item <?php  if($currentPG=="team_state.php" || $currentPG=="team_city.php" || $currentPG=="team_fren.php"   ) echo 'active  ';  ?> ">
 		<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#team_members" aria-expanded="true" aria-controls="team_members">
 			<i class="fas fa-fw fa-users"></i>
-			<span>Team Members</span>
+			<span>Directors</span>
 		</a>
 		<div id="team_members" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
-	 <a href="team_all.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> My Team (All)</a>
-	 <a href="team_left.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> My Team (Left)</a>
-	 <a href="team_right.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> My Team (Right)</a>
-	 <a href="team_desig.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> My Team (Designation)</a>
+	 <a href="team_state.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> State Directors</a>
+	 <a href="team_city.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> City Directors</a>
+	 <a href="team_fren.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> Franchise Directors</a>
 			</div>
 		</div>
 	</li>
-	<li class="nav-item <?php /*if($currentPG=="business_designation.php"  ) echo 'active  '; */?> ">
+<!--	<li class="nav-item <?php /*if($currentPG=="business_designation.php"  ) echo 'active  '; */?> ">
 		<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#business" aria-expanded="true" aria-controls="team_members">
 
 			<i class="fas  fa-fw fa-business-time"></i>
