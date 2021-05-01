@@ -15,6 +15,10 @@ if(isset($_POST['save']))
     $a_city_id=(trim($_POST['a_city_id']));
     $validity=(trim($_POST['validity']));
 
+    $a_state_id=(trim($_POST['a_state_id']));
+    $a_state_name=(trim($_POST['a_state_name']));
+    $ip=get_ip();
+
 
     ///Image Setup
     $finame ="";
@@ -59,11 +63,9 @@ if(isset($_POST['save']))
 
     /////Get New id/////
 	$new_id=$state_code.''.$_POST['city_id'].'/'.rand(100000,999999);
-    $ip=get_ip();
 
 
-
-             echo $sql_reg="insert into tbl_team_city set 
+            $sql_reg="insert into tbl_team_city set 
             `user`='$new_id',
             `pass`='$pass', 
             `t_name`='$t_name',
@@ -78,13 +80,12 @@ if(isset($_POST['save']))
             `city_name`='$city',
             `a_city_id`='$a_city_id',
             `a_city_name`='$a_city',
+            `a_state_id`='$a_state_id',
+            `a_state_name`='$a_state_name', 
             `pin`='$pincode',
             `status`=0, 
-            `validity`='$validity',
-             
+            `validity`='$validity',             
             `ipaddress` ='$ip' $i1 ";
-
-
 
         if(mysqli_query($DB_LINK,$sql_reg))
         {
@@ -97,7 +98,6 @@ if(isset($_POST['save']))
         }
         else	{
             $_SESSION['msg'] = array('error', 'Something went wrong !!!');
-
         }
 
 

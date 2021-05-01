@@ -29,7 +29,22 @@
 			<i class="fas fa-fw fa-tachometer-alt"></i>
 			<span>Dashboard</span></a>
 	</li>
-	<li class="nav-item <?php  if($currentPG=="team_state.php" || $currentPG=="team_city.php" || $currentPG=="team_fren.php"   ) echo 'active  ';  ?> ">
+
+    <li class="nav-item <?php  if($currentPG=="master_course.php" || $currentPG=="master_city.php" || $currentPG=="master_state.php"   ) echo 'active  ';  ?> ">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#maste_manager" aria-expanded="true" aria-controls="maste_manager">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Master</span>
+        </a>
+        <div id="maste_manager" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a href="master_course.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> Course Master</a>
+                <a href="master_city.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> City Master</a>
+                <a href="master_state.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> State Master</a>
+            </div>
+        </div>
+    </li>
+
+    <li class="nav-item <?php  if($currentPG=="team_state.php" || $currentPG=="team_city.php" || $currentPG=="team_fren.php"   ) echo 'active  ';  ?> ">
 		<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#team_members" aria-expanded="true" aria-controls="team_members">
 			<i class="fas fa-fw fa-users"></i>
 			<span>Directors</span>
@@ -42,7 +57,10 @@
 			</div>
 		</div>
 	</li>
-<!--	<li class="nav-item <?php /*if($currentPG=="business_designation.php"  ) echo 'active  '; */?> ">
+
+
+    <!--
+<li class="nav-item <?php /*if($currentPG=="business_designation.php"  ) echo 'active  '; */?> ">
 		<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#business" aria-expanded="true" aria-controls="team_members">
 
 			<i class="fas  fa-fw fa-business-time"></i>
