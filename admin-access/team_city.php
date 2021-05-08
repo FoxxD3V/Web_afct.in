@@ -94,7 +94,7 @@ if(isset($_REQUEST['unban']))
 													<th>CONTACT  </th>
 													<th>J.DATE  </th>
 													<th>VALIDITY  </th>
-													<th>IMAGE     </th>
+													<!--<th>IMAGE     </th>-->
 
                                                     <th>ACTION</th>
 												</tr>
@@ -107,7 +107,7 @@ if(isset($_REQUEST['unban']))
                                                     <th>CONTACT  </th>
                                                     <th>J.DATE  </th>
                                                     <th>VALIDITY  </th>
-                                                    <th>IMAGE     </th>
+                                                   <!-- <th>IMAGE     </th>-->
 
                                                     <th>ACTION</th>
 												</tr>
@@ -137,7 +137,7 @@ if(isset($_REQUEST['unban']))
 															<td><?php echo date_dmy_small($data_user['autodate']);?></td>
 															<td><?php echo date_dmy_small($data_user['validity']);?></td>
 
-															<td><img class="img-fluid img-rounded img-profile" src="../upload/ddl_data/image/<?php echo $data_user['image'];?>"/></td>
+														<!--	<td><img class="img-fluid img-rounded img-profile" src="../upload/ddl_data/image/<?php /*echo $data_user['image'];*/?>"/></td>-->
 															<?php /*if($data_user['status']==1){*/?><!--
 																<td class="bg-gradient-success text-white">Active</td><?php
 /*															} else { */?>

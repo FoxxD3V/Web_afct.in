@@ -1,5 +1,5 @@
 <!-- Sidebar -->
-<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+<ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
 
 	<!-- Sidebar - Brand -->
 	<a class="sidebar-brand d-flex align-items-center justify-content-center " href="#">
@@ -46,6 +46,12 @@
         </div>
     </li>
 
+  <li class="nav-item <?php if($currentPG=="master_institute.php") echo 'active';?> ">
+    <a class="nav-link" href="master_institute.php">
+      <i class="fas fa-fw fa-university"></i>
+      <span>Institute</span></a>
+  </li>
+
     <li class="nav-item <?php  if($currentPG=="team_state.php" || $currentPG=="team_city.php" || $currentPG=="team_fren.php"   ) echo 'active  ';  ?> ">
 		<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#team_members" aria-expanded="true" aria-controls="team_members">
 			<i class="fas fa-fw fa-user-secret"></i>
@@ -54,7 +60,7 @@
 		<div id="team_members" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
 	 <a href="team_state.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> State Directors</a>
-	 <a href="team_city.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> City Directors</a>
+	 <a href="team_city.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> District Directors</a>
 	 <a href="team_fren.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> Franchise Directors</a>
 			</div>
 		</div>
@@ -81,10 +87,10 @@
 		</a>
 		<div id="student" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
-	 <a href="student_add.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> Add New</a>
-	 <a href="student_list.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> New Application</a>
-	 <a href="student_list_verified.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> All Student</a>
-			</div>
+     <a href="student_add.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> Add New</a>
+     <a href="student_list_unverified.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> Pending Student</a>
+     <a href="student_list_verified.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> Verified Student</a>
+   </div>
 		</div>
 	</li>
 

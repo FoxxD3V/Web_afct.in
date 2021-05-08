@@ -104,9 +104,9 @@ function validate_user()
 }
 function master_user()
 {
-	if(!isset($_SESSION['session_user']))
+	if(!isset($_SESSION[ 'a_userid' ]))
 	{
-		header("location:../login.html");
+		header("location:../");
 		exit();
 	}
 }
@@ -1894,5 +1894,46 @@ function get_upadate_level($downline,$referal,$m_id,$userlevel)
 
 	}
 
-        
+   //////////////////////////////////afct func//////////////////
+///
+function member_counter($tab_name)
+{
+  global $DB_LINK;
+  $getdata_qry=mysqli_query($DB_LINK,"SELECT * from  $tab_name");
+  return mysqli_num_rows($getdata_qry);
+}
+function member_counter_bytyp_state($tab_name,$user)
+{
+  global $DB_LINK;
+  $getdata_qry=mysqli_query($DB_LINK,"SELECT * from  $tab_name where a_sdl_id='$user'");
+  return mysqli_num_rows($getdata_qry);
+}
+function course_dur_data($typ)
+{
+  if($typ=='M')
+    return 'Month';
+  if($typ=='Y')
+    return 'Year';
+}
+
+function login_role_fullname($role)
+{
+  if($role=='sdl')
+    $tab_name="State Director";
+  if($role=='ddl')
+    $tab_name="City Director";
+  if($role=='fdl')
+    $tab_name="Franchise Director";
+  if($role=='sl')
+    $tab_name="Student";
+  if($role=='tl')
+    $tab_name="Teacher / Faculty";
+  return $tab_name;
+}
+function member_counter_by_id($tab_name,$ref_id)
+{
+  global $DB_LINK;
+  $getdata_qry=mysqli_query($DB_LINK,"SELECT * from  $tab_name where user='$ref_id' and status =1");
+  return mysqli_num_rows($getdata_qry);
+}
 ?>

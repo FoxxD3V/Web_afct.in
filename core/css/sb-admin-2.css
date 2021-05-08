@@ -10293,7 +10293,7 @@ a:focus {
   }
   .sidebar.toggled {
     overflow: visible;
-    width: 6.5rem !important;
+    width: 1.5rem !important;
   }
   .sidebar.toggled .nav-item .collapse {
     position: absolute;
@@ -10996,3 +10996,7 @@ footer.sticky-footer .copyright {
 body.sidebar-toggled footer.sticky-footer {
   width: 100%;
 }
+
+
+/* Horigental Menu*/
+

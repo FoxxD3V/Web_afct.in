@@ -51,12 +51,12 @@ require_once("con_base/functions.inc.php");
                               <option value="">-- Select Login --</option>
                               <option value="sdl">STATE DIRECTOR LOGIN</option>
                               <option value="ddl">DISTRICT DIRECTOR LOGIN</option>
-                              <option value="fl">FRANCHISE LOGIN</option>
+                              <option value="fdl">FRANCHISE DIRECTOR LOGIN</option>
                               <option value="tl">FACULTIES / TEACHERS LOGIN</option>
                               <option value="sl">STUDENTS LOGIN</option>
                           </select> </div>
                     <div class="form-group">
-                      <input name="loginid" type="text" maxlength="8" class="form-control form-control-user"     placeholder="Enter User Id">
+                      <input name="loginid" type="text"   class="form-control form-control-user"     placeholder="Enter User Id">
                     </div>
                     <div class="form-group">
                       <input name="pass" type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">

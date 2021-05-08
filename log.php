@@ -2,6 +2,7 @@
 require_once("con_base/functions.inc.php");
 if(isset($_POST['login']))
 {
+
     $user_role="";
     $tmpusertyp=trim(clean($_POST['login_typ']));
     $tmpuserid=trim(clean($_POST['loginid']));
@@ -10,6 +11,21 @@ if(isset($_POST['login']))
     {
         $sql = " select * from tbl_login where user='$tmpuserid' ";
         $user_role='admin';
+    }
+    else if($tmpusertyp=='sdl')
+    {
+      $sql = " select * from tbl_team_state where user='$tmpuserid' ";
+      $user_role='SDL';
+    }
+    else if($tmpusertyp=='ddl')
+    {
+      $sql = " select * from tbl_team_city where user='$tmpuserid' ";
+      $user_role='DDL';
+    }
+    else if($tmpusertyp=='fdl')
+    {
+      $sql = " select * from tbl_team_fren where user='$tmpuserid' ";
+      $user_role='FDL';
     }
     else
     {
@@ -30,7 +46,10 @@ if(isset($_POST['login']))
         $_SESSION[ 'user_role' ] = $user_role;
         $_SESSION[ 'a_id' ] = $line[ 'id' ];
         $_SESSION[ 'a_userid' ] = $tmpuserid;
-        $_SESSION[ 'a_name' ] = $line[ 'username' ];
+        if($tmpusertyp=='')
+         $_SESSION[ 'a_name' ] = $line[ 'username' ];
+         else
+         $_SESSION[ 'a_name' ] = $line[ 't_name' ];
         $_SESSION[ 'a_mobile' ] = $line[ 'mobile' ];
         $_SESSION[ 'a_email' ] = $line[ 'email' ];
         $_SESSION[ 'a_status' ] = $line[ 'status' ];
@@ -40,6 +59,21 @@ if(isset($_POST['login']))
         if($user_role=='admin')
         {
             header("Location: admin-access/index.php");
+            exit();
+        }
+        if($user_role=='SDL')
+        {
+            header("Location: sdl-access/index.php");
+            exit();
+        }
+        if($user_role=='DDL')
+        {
+            header("Location: ddl-access/index.php");
+            exit();
+        }
+        if($user_role=='FDL')
+        {
+            header("Location: fdl-access/index.php");
             exit();
         }
 

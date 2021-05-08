@@ -11,7 +11,7 @@ require_once("../con_base/functions.inc.php"); ?>
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>My Dashboard | <?php echo $SITE_NAME;?></title>
+  <title>Administrator Dashboard | <?php echo $SITE_NAME;?></title>
 
 <?php include("include/top.php");?>
  	<!-- Custom styles for this page -->
@@ -45,7 +45,7 @@ require_once("../con_base/functions.inc.php"); ?>
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">My Dashboard</h1>
+            <h1 class="h3 mb-0 text-gray-800">Administrator Dashboard</h1>
            <!-- <span class="pull-right text-right" ><small><?php /*echo "Updated On : ".$data_foruser['member_refresh_time'];*/?></small></span>
              <a href="member_update_queue.php" class="  d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-refresh fa-sm text-white-50"></i> Update A/c</a>
          --> </div>
@@ -143,45 +143,43 @@ require_once("../con_base/functions.inc.php"); ?>
 										</div>-->
 										<div class="col-xl-3 col-md-6 mb-4" >
 											<div class="card <?php if('1'=='2') echo 'border-success'; else echo 'border-danger'; ?>   mt-3" >
-												<div class="card-header">My Account</div>
+												<div class="card-header">State Director</div>
 												<div class="card-body ">
-													<!--	<h5 class="card-title">Primary card title</h5>-->
-													<?php /*if($data_foruser['status']=='2') { */?><!--
-														<p class="card-text text-success">Account Status : Upgraded</p><?php /*}  else { */?>
-														<p class="card-text text-danger">Account Status : Registered</p>--><?php /*} */?>
+													<!--	<h5 class="card-title">All Members</h5>-->
+
+														<p class="card-text text-success">Total Account  : <?php echo member_counter('tbl_team_state')?> </p>
+													<!--	<p class="card-text text-danger">Account Status : Registered</p>-->
 												</div>
 											</div>
 										</div>
 										<div class="col-xl-3 col-md-6 mb-4" >
 										<div class="card <?php if("1"=='1') echo 'border-success'; else echo 'border-danger'; ?>  mt-3" >
-											<div class="card-header">KYC Status</div>
+											<div class="card-header">District Director</div>
 											<div class="card-body ">
 											<!--	<h5 class="card-title">Primary card title</h5>-->
+             <p class="card-text text-success">Total Account  : <?php echo member_counter('tbl_team_city')?> </p>
 
-												<?php /*if($data_member['is_kyc']=='1') { */?><!--
-													<span class="card-text text-success">Admin Verified</span><?php /*}  else { */?>
-													<span class="card-text text-danger">Admin Pending</span>--><?php /*} */?>
+
+
 											</div>
 										</div>
 										</div>
 										<div class="col-xl-3 col-md-6 mb-4" >
 										<div class="card <?php if("2"=='1') echo 'border-success'; else echo 'border-danger'; ?>  mt-3  " >
-											<div class="card-header">Bank Details</div>
+											<div class="card-header">Frenchise Director</div>
 											<div class="card-body  ">
-												<?php /*if($data_foruser['bank_data_flag']=='1') { */?><!--
-													<span class="card-text text-success">Bank Info Updated</span><?php /*}  else { */?>
-													<span class="card-text text-danger">Bank Info Pending</span>--><?php /*} */?>
-											</div>
+             <p class="card-text text-success">Total Account  : <?php echo member_counter('tbl_team_fren')?> </p>
+
+           </div>
 										</div>
 										</div>
 										<div class="col-xl-3 col-md-6 mb-4" >
 										<div class="card <?php if("1"=='1') echo 'border-success'; else echo 'border-danger'; ?> mt-3  " >
-											<div class="card-header">Profile Image</div>
+											<div class="card-header">Students</div>
 											<div class="card-body  ">
-												<?php /*if($data_member['user_image_flag']=='1') { */?><!--
-													<span class="card-text text-success">Image Verified</span><?php /*}  else { */?>
-													<span class="card-text text-danger">Image Verification Pending</span>--><?php /*} */?>
-											</div>
+             <p class="card-text text-success">Total Account  : <?php //echo member_counter('tbl_team_fren')?> </p>
+
+           </div>
 										</div>
 										</div>
 									</div>

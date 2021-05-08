@@ -2,7 +2,13 @@
 require_once("../con_base/functions.inc.php");
 
 
-
+if(isset($_GET['del']))
+{
+  mysqli_query($DB_LINK,"delete from city where city_id=".$_GET['del']) or die(mysqli_error());
+  $_SESSION['msg']=array('success', 'Deleted Successfully');
+  header("location:master_city.php");
+  exit;
+}
 if(isset($_REQUEST['ban']))
 {
     mysqli_query($DB_LINK,"update city set status='0' where city_id=".$_GET['ban']) or die(mysqli_error());
@@ -65,8 +71,8 @@ if(isset($_REQUEST['unban']))
                                 <div class="d-sm-flex align-items-center justify-content-between mb-1">
                                     <h1 class="h3 mb-2 text-gray-800">City Master</h1>
 
-                               <!--     <a href="master_city_add.php" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> Add New</a>
-                              -->  </div>
+                                   <a href="master_city_add.php" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> Add New</a>
+                                </div>
 								<!-- Page Heading -->
 
 								<p class="mb-4">City Master list with basic info </p>
@@ -113,12 +119,7 @@ if(isset($_REQUEST['unban']))
 															<td><?php echo $data_user['city'];?>  </td>
 															<td><?php echo $data_user['state_name'];
 
-                                                                    $sql_reg="select * from  state where state_id= '".trim($data_user['state_id'])."'";
-                                                                    $edit_qry=mysqli_query($DB_LINK,$sql_reg);
-                                                                    $edit_data=mysqli_fetch_assoc($edit_qry);
 
-                                                                    $sql_upd="update  city set state_name='".strtoupper($edit_data['state'])."' where city_id= '".trim($data_user['city_id'])."'";
-                                                                    mysqli_query($DB_LINK,$sql_upd);
 
                                                                
 
@@ -126,20 +127,26 @@ if(isset($_REQUEST['unban']))
 
 
                                                             <td>
-                                                              <!--   <a  href="master_city_add.php?edit=<?php /* echo $data_user['city_id']; */?>" ><i  style="color:blue " class="fa fa-edit fa-lg"></i></a>
--->
+                                                                <a title="Edit"  href="master_city_add.php?edit=<?php   echo $data_user['city_id'];  ?>" ><i  style="color:blue " class="fa fa-edit fa-lg"></i></a>
+
                                                                 <?php if($data_user['status']=='1'){?>
                                                                 &nbsp;<a href="master_city.php?ban=<?php echo $data_user['city_id'];?> "  ><i class="fa fa-check fa-lg" style="color:green" title="Ban"></i>  </a>
                                                                 <?php } else  { ?>
                                                                 &nbsp;<a href="master_city.php?unban=<?php echo $data_user['city_id'];?> "  ><i class="fa fa-ban fa-lg" style="color:red" title="Unban"></i>  </a>
                                                                 <?php }  ?>
-                                                             <!--   <a href="javascript:void(0)"  onClick="return del(<?php /*echo $data_user['id'];*/?>,'master_city.php')"> <i class=" fa-lg fa fa-trash  "  style="color:red" title="Delete"></i>   </a>
--->
+                                                                <a title="Delete" href="javascript:void(0)"  onClick="return del(<?php echo $data_user['city_id'];?>,'master_city.php')"> <i class=" fa-lg fa fa-trash  "  style="color:red" title="Delete"></i>   </a>
+
                                                             </td>
 
 
 														</tr>
-												 <?php  } ?>
+												 <?php    $sql_reg="select * from  state where state_id= '".trim($data_user['state_id'])."'";
+                                                  $edit_qry=mysqli_query($DB_LINK,$sql_reg);
+                                                  $edit_data=mysqli_fetch_assoc($edit_qry);
+                                                  if(strtoupper($edit_data['state'])!=$data_user['state_name']) {
+                                                    $sql_upd = "update  city set state_name='" . strtoupper($edit_data['state']) . "' where city_id= '" . trim($data_user['city_id']) . "'";
+                                                    mysqli_query($DB_LINK, $sql_upd);
+                                                  } } ?>
 
 
 												</tbody>

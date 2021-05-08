@@ -1,27 +1,27 @@
 <?php
 require_once("../con_base/functions.inc.php");
 
-$c_typ=strtoupper(trim($_POST['c_typ']));
-$c_name =ucwords(trim($_POST['c_name']));
-$c_sort_name =strtoupper(trim($_POST['c_sort_name']));
-$c_code =strtoupper(trim($_POST['c_code']));
-$c_dur =(trim($_POST['c_dur']));
-$c_dur_typ  =(trim($_POST['c_dur_typ']));
-$eligi =ucwords(trim($_POST['eligi']));
-$detail =ucwords(trim($_POST['detail']));
-$c_fee =ucwords(trim($_POST['c_fee']));
-$sdl_ref_inc =ucwords(trim($_POST['sdl_ref_inc']));
-$ddl_ref_inc =ucwords(trim($_POST['ddl_ref_inc']));
-$fl_ref_inc =ucwords(trim($_POST['fl_ref_inc']));
-$tl_ref_inc =ucwords(trim($_POST['tl_ref_inc']));
-$sl_ref_inc =ucwords(trim($_POST['sl_ref_inc']));
-$team_inc =ucwords(trim($_POST['team_inc']));
 
-$ip=get_ip();
 
 
  if(isset($_POST['save']))
 {
+  $c_typ=strtoupper(trim($_POST['c_typ']));
+  $c_name =ucwords(trim($_POST['c_name']));
+  $c_sort_name =strtoupper(trim($_POST['c_sort_name']));
+  $c_code =strtoupper(trim($_POST['c_code']));
+  $c_dur =(trim($_POST['c_dur']));
+  $c_dur_typ  =(trim($_POST['c_dur_typ']));
+  $eligi =ucwords(trim($_POST['eligi']));
+  $detail =ucwords(trim($_POST['detail']));
+  $c_fee =ucwords(trim($_POST['c_fee']));
+  $sdl_ref_inc =ucwords(trim($_POST['sdl_ref_inc']));
+  $ddl_ref_inc =ucwords(trim($_POST['ddl_ref_inc']));
+  $fl_ref_inc =ucwords(trim($_POST['fl_ref_inc']));
+  $tl_ref_inc =ucwords(trim($_POST['tl_ref_inc']));
+  $sl_ref_inc =ucwords(trim($_POST['sl_ref_inc']));
+  $team_inc =ucwords(trim($_POST['team_inc']));
+  $ip=get_ip();
             $sql_reg="insert into tbl_master_course set              
             `c_typ`='$c_typ',            
             `c_name`='$c_name',            
@@ -56,7 +56,22 @@ $ip=get_ip();
  if(isset($_POST['update']))
 {
     $c_id = (trim($_POST['c_id']));
-
+  $c_typ=strtoupper(trim($_POST['c_typ']));
+  $c_name =ucwords(trim($_POST['c_name']));
+  $c_sort_name =strtoupper(trim($_POST['c_sort_name']));
+  $c_code =strtoupper(trim($_POST['c_code']));
+  $c_dur =(trim($_POST['c_dur']));
+  $c_dur_typ  =(trim($_POST['c_dur_typ']));
+  $eligi =ucwords(trim($_POST['eligi']));
+  $detail =ucwords(trim($_POST['detail']));
+  $c_fee =ucwords(trim($_POST['c_fee']));
+  $sdl_ref_inc =ucwords(trim($_POST['sdl_ref_inc']));
+  $ddl_ref_inc =ucwords(trim($_POST['ddl_ref_inc']));
+  $fl_ref_inc =ucwords(trim($_POST['fl_ref_inc']));
+  $tl_ref_inc =ucwords(trim($_POST['tl_ref_inc']));
+  $sl_ref_inc =ucwords(trim($_POST['sl_ref_inc']));
+  $team_inc =ucwords(trim($_POST['team_inc']));
+  $ip=get_ip();
 
 
     $sql_update="update tbl_master_course set              
@@ -252,23 +267,29 @@ if(isset($_GET['edit']))
                                     <div class="row clearfix">
                                         <div class="col-sm-12">
                                             <div class="form-group">
-                                                <input type="number"  class="form-control text-uppercase" placeholder="State Director Referral Income " name="sdl_ref_inc"  value="<?php   if(isset($_GET['edit'])) echo $edit_data['sdl_ref_inc'];?>">
+                                              <label class="label">State Director Referral Income</label>
+                                                <input type="number"  class="form-control text-uppercase"   name="sdl_ref_inc"  value="<?php   if(isset($_GET['edit'])) echo $edit_data['sdl_ref_inc']; else echo '0';?>">
                                             </div>
                                             <div class="form-group">
-                                                <input type="number"  class="form-control text-uppercase" placeholder="District Director Referral Income " name="ddl_ref_inc" value="<?php   if(isset($_GET['edit'])) echo $edit_data['ddl_ref_inc'];?>">
+                                              <label class="label">District Director Referral Income</label>
+                                                <input type="number"  class="form-control text-uppercase"   name="ddl_ref_inc" value="<?php   if(isset($_GET['edit'])) echo $edit_data['ddl_ref_inc']; else echo '0';?>">
                                             </div>
                                              <div class="form-group">
-                                                <input type="number"  class="form-control text-uppercase" placeholder="Franchise Director Referral Income " name="fl_ref_inc" value="<?php   if(isset($_GET['edit'])) echo $edit_data['fl_ref_inc'];?>">
+                                               <label class="label">Franchise Director Referral Income</label>
+                                               <input type="number"  class="form-control text-uppercase"   name="fl_ref_inc" value="<?php   if(isset($_GET['edit'])) echo $edit_data['fl_ref_inc']; else echo '0';?>">
                                             </div>
 
                                              <div class="form-group">
-                                                <input type="number"  class="form-control text-uppercase" placeholder="Teacher Referral Income " name="tl_ref_inc" value="<?php   if(isset($_GET['edit'])) echo $edit_data['tl_ref_inc'];?>">
+                                               <label class="label">Teacher Referral Income</label>
+                                               <input type="number"  class="form-control text-uppercase"   name="tl_ref_inc" value="<?php   if(isset($_GET['edit'])) echo $edit_data['tl_ref_inc']; else echo '0';?>">
                                             </div>
                                              <div class="form-group">
-                                                <input type="number"  class="form-control text-uppercase" placeholder="Student Referral Income " name="sl_ref_inc" value="<?php   if(isset($_GET['edit'])) echo $edit_data['sl_ref_inc'];?>">
+                                               <label class="label">Student Referral Income</label>
+                                               <input type="number"  class="form-control text-uppercase"   name="sl_ref_inc" value="<?php   if(isset($_GET['edit'])) echo $edit_data['sl_ref_inc']; else echo '0';?>">
                                             </div>
                                             <div class="form-group">
-                                                <input type="number"  class="form-control text-uppercase" placeholder="Team Distribution Income " name="team_inc" value="<?php   if(isset($_GET['edit'])) echo $edit_data['team_inc'];?>">
+                                              <label class="label">Team Distribution Income</label>
+                                              <input type="number"  class="form-control text-uppercase"   name="team_inc" value="<?php   if(isset($_GET['edit'])) echo $edit_data['team_inc']; else echo '0';?>">
                                             </div>
 
 
@@ -304,7 +325,8 @@ if(isset($_GET['edit']))
                                     <div class="row clearfix">
                                         <div class="col-sm-12">
                                             <div class="form-group">
-                                                <input type="number" value="<?php   if(isset($_GET['edit'])) echo $edit_data['c_fee'];?>" class="form-control text-uppercase" placeholder="Course Fees *" name="c_fee" required >
+                                              <label class="label">Course Fees</label>
+                                              <input type="number" value="<?php   if(isset($_GET['edit'])) echo $edit_data['c_fee']; else echo '0';?>" class="form-control text-uppercase"   name="c_fee" required >
                                             </div>
                                             <div class="form-group  ">
                                                 <?php   if(isset($_GET['edit'])) { ?>

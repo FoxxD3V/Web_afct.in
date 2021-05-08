@@ -2,8 +2,7 @@
 require_once("../con_base/functions.inc.php");
 if(isset($_POST['save']))
 {
-
-    $a_state_id=(trim($_POST['a_state_id']));
+  $a_state_id=(trim($_POST['a_state_id']));
     $t_name=strtoupper(trim($_POST['t_name']));
     $mobile=$_POST['mobile'];
     $email=($_POST['email']);
@@ -52,9 +51,6 @@ if(isset($_POST['save']))
     /////Get New id/////
 	$new_id=$a_state_sort_name.rand(1000,9999);
     $ip=get_ip();
-
-
-
               $sql_reg="insert into tbl_team_state set 
             `user`='$new_id',
             `pass`='$pass', 
@@ -89,9 +85,99 @@ if(isset($_POST['save']))
             $_SESSION['msg'] = array('error', 'Something went wrong !!!');
 
         }
+}
+if(isset($_POST['update']))
+{
+
+  $c_id = (trim($_POST['c_id']));
+  $image = (trim($_POST['image']));
+    $a_state_id=(trim($_POST['a_state_id']));
+    $t_name=strtoupper(trim($_POST['t_name']));
+    $mobile=$_POST['mobile'];
+    $email=($_POST['email']);
+    $pass=enc($_POST['pass']);
+    $address=(trim($_POST['address'])) ;
+    $pincode=(trim($_POST['pin'])) ;
+    $state_id=(trim($_POST['state_id']));
+    $city_id=(trim($_POST['city_id']));
+    $validity=(trim($_POST['validity']));
+
+
+    ///Image Setup
+    $finame ="";
+    require_once("uploader-file-master.php");
+    $i1='';
+
+    if (isset($_FILES['uploaded_file1']))
+    {
+       uploadmaster("../upload/sdl_data/image/", 'uploaded_file1');
+        if ($finame != '')
+        {
+          unlink("../upload/sdl_data/image/".$image);
+          $f1= $finame;
+            $i1=",image='$f1' ";
+        }
+    }
+
+    ////State City Data/////
+    ///
+     if ($_POST['a_state_id'] != '')	{
+         $sqlst = mysqli_query($DB_LINK, "select * from state where state_id='" . $_POST['a_state_id'] . "'") or die(mysqli_error());
+         $datas_name = mysqli_fetch_array($sqlst);
+         $a_state = $datas_name['state'];
+         $a_state_sort_name = $datas_name['sort_code'];
+     }
+    if ($_POST['state_id'] != '')	{
+        $sqlst = mysqli_query($DB_LINK, "select state from state where state_id='" . $_POST['state_id'] . "'") or die(mysqli_error());
+        $datas_name = mysqli_fetch_array($sqlst);
+        $state = $datas_name['state'];
+    }
+    if ($_POST['city_id'] != '')	{
+        $sqlct = mysqli_query($DB_LINK, "select city from city where city_id='" . $_POST['city_id'] . "'") or die(mysqli_error());
+        $datac_name = mysqli_fetch_array($sqlct);
+        $city = $datac_name['city'];
+    }
+
+    /////Get New id/////
+
+    $ip=get_ip();
+              $sql_reg="update tbl_team_state set 
+            `pass`='$pass', 
+            `t_name`='$t_name',
+            `mobile`='$mobile',
+            `email`='$email',
+            `address`='$address',            
+            `state_id`='$state_id',
+            `state_name`='$state',
+            `city_id`='$city_id',
+            `city_name`='$city',
+            `pin`='$pincode',            
+            `validity`='$validity',
+             
+            `ipaddress` ='$ip' $i1 
+            where id='$c_id'";
 
 
 
+        if(mysqli_query($DB_LINK,$sql_reg))
+        {
+
+             $text='Record updated successfully' ;
+             $_SESSION['msg']=array('success',  $text);
+             header("Location: team_state.php");
+            exit;
+        }
+        else	{
+            $_SESSION['msg'] = array('error', 'Something went wrong !!!');
+
+        }
+}
+
+if(isset($_GET['edit']))
+{
+  $sql_reg="select * from  tbl_team_state where id= '".trim($_GET['edit'])."'";
+  $edit_qry=mysqli_query($DB_LINK,$sql_reg);
+  $edit_data=mysqli_fetch_assoc($edit_qry);
 }
 ?>
 <!DOCTYPE html>
@@ -181,7 +267,7 @@ if(isset($_POST['save']))
                                                     foreach($sql as $state)
                                                     {
                                                         ?>
-                                                        <option value="<?php echo $state['state_id'];?>" <?php /*if('34'==$state['state_id']) { echo 'selected';   }*/?>><?php echo $state['state'];?></option>
+                                                        <option value="<?php echo $state['state_id'];?>" <?php if(isset($_GET['edit'])) if($edit_data['a_state_id']==$state['state_id']) { echo 'selected';   } ?>><?php echo $state['state'];?></option>
                                                     <?php } ?>
                                                 </select>
 
@@ -212,19 +298,49 @@ if(isset($_POST['save']))
                                     <div class="row clearfix">
                                         <div class="col-sm-12">
                                             <div class="form-group">
-                                                <input type="text" value="" class="form-control text-uppercase" placeholder="Member name *" name="t_name" required >
+                                                <input type="text" value="<?php   if(isset($_GET['edit'])) echo $edit_data['t_name'];?>" class="form-control text-uppercase" placeholder="Director Name *" name="t_name" required >
                                             </div>
 
                                             <div class="form-group">
-                                                <label>Select Image</label>
+                                                <label>Upload Director Photo</label>
                                                 <input name="uploaded_file1" class="form-control" type="file" id="uploaded_file1">
 
-                                                (For Best resolution use resolution 150 X 150 )     </div>
+                                                (For Best resolution use resolution 150 X 150 )
+                                              <?php   if(isset($_GET['edit']))  {
+                                                if($edit_data['image']!='') {?>
+                                                  <input type="hidden" value="<?php   if(isset($_GET['edit'])) echo $edit_data['image'];?>"  name="image"   >
+
+                                                  <br><button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#exampleModal">
+                                                    View Image
+                                                  </button>
+
+                                                  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                      <div class="modal-content">
+                                                        <div class="modal-header">
+                                                          <h5 class="modal-title" id="exampleModalLabel">Profile Image</h5>
+                                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                          </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                          <img src="../upload/sdl_data/image/<?php echo $edit_data['image'];?>" class="img-responsive img-fluid">
+
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                              <?php }  } ?>
+                                            </div>
                                           <!--  <div class="form-group">
-                                                <input type="text" value="" class="form-control text-uppercase" placeholder="Father name *" name="father_name" required >
+                                                <input type="text" value="<?php   if(isset($_GET['edit'])) echo $edit_data['state'];?>" class="form-control text-uppercase" placeholder="Father name *" name="father_name" required >
                                             </div>
                                             <div class="form-group">
-                                                <input type="text" value="" class="form-control text-uppercase" placeholder="Husband name " name="husband_name" required >
+                                                <input type="text" value="<?php   if(isset($_GET['edit'])) echo $edit_data['state'];?>" class="form-control text-uppercase" placeholder="Husband name " name="husband_name" required >
                                             </div>
                                             <div class="form-group  ">
                                                 <select class="form-control  text-uppercase " name="gender" required>
@@ -239,7 +355,7 @@ if(isset($_POST['save']))
                                                         <span class="input-group-text" id="basic-addon1"><i class="far fa-calendar-alt"></i></span>
                                                     </div>
 
-                                                    <input readonly type="text" class="form-control datepicker text-uppercase " aria-required="true"  name="validity" required placeholder="Please choose Date Of Validity *" aria-label="Username" aria-describedby="basic-addon1">
+                                                    <input readonly value="<?php   if(isset($_GET['edit'])) echo $edit_data['validity'];?>"  type="text" class="form-control datepicker text-uppercase " aria-required="true"  name="validity" required placeholder="Please choose Date Of Validity *" aria-label="Username" aria-describedby="basic-addon1">
 
 
                                                 </div>
@@ -279,7 +395,7 @@ if(isset($_POST['save']))
                                     <div class="row clearfix">
                                         <div class="col-sm-12">
                                             <div class="form-group ">
-                                                <input type="text" value="" class="form-control text-uppercase" placeholder="Enter Full Address *" name="address" required="" aria-required="true" aria-invalid="true"  >
+                                                <input type="text" value="<?php   if(isset($_GET['edit'])) echo $edit_data['address'];?>" class="form-control text-uppercase" placeholder="Enter Full Address *" name="address" required="" aria-required="true" aria-invalid="true"  >
                                             </div>
                                             <div class="form-group  ">
                                                 <select class="form-control  text-uppercase" name="state_id" id="state_id" onChange="onchangeajax(this.value);" required>
@@ -288,7 +404,7 @@ if(isset($_POST['save']))
                                                     foreach($sql as $state)
                                                     {
                                                         ?>
-                                                        <option value="<?php echo $state['state_id'];?>" <?php /*if('34'==$state['state_id']) { echo 'selected';   }*/?>><?php echo $state['state'];?></option>
+                                                        <option value="<?php echo $state['state_id'];?>" <?php if(isset($_GET['edit'])) if($edit_data['state_id']==$state['state_id']) { echo 'selected';   } ?>><?php echo $state['state'];?></option>
                                                     <?php } ?>
                                                 </select>
                                             </div>
@@ -296,14 +412,23 @@ if(isset($_POST['save']))
                                                 <div id="city_upd">
                                                     <select name="city_id" id="city_id" class="form-control  text-uppercase" required>
                                                         <option value="">--Select City--</option>
-
+                                                            <?php if(isset($_GET['edit']))
+                                                            {
+                                                            $qur=mysqli_query($DB_LINK,"select * from city where state_id='".$edit_data['state_id']."' and status=1 order by city") or die(mysqli_error());
+                                                            foreach($qur as $city)
+                                                            {
+                                                            ?><option value="<?php echo $city['city_id'];?>" <?php if(isset($_GET['edit'])) if($edit_data['city_id']==$city['city_id']) { echo 'selected';   } ?>><?php echo $city['city'];?></option>
+                                                            <?php
+                                                            }
+                                                            }
+                                                            ?>
                                                     </select>
                                                 </div>
                                             </div>
 
 
                                             <div class="form-group  mt-2">
-                                                <input type="tel" minlength="6" maxlength="6" value="" class="form-control  text-uppercase" placeholder="PinCode *" name="pin" required="" aria-required="true" aria-invalid="true"  >
+                                                <input type="tel" minlength="6" maxlength="6" value="<?php   if(isset($_GET['edit'])) echo $edit_data['pin'];?>" class="form-control  text-uppercase" placeholder="PinCode *" name="pin" required="" aria-required="true" aria-invalid="true"  >
                                             </div>
                                         </div>
                                     </div>
@@ -312,8 +437,6 @@ if(isset($_POST['save']))
                         </div>
                     </div>
                     <!-- #END# Select -->
-
-
 
                     <!-- Select -->
                     <div class="row clearfix">
@@ -328,16 +451,24 @@ if(isset($_POST['save']))
                                     <div class="row clearfix">
                                         <div class="col-sm-12">
                                             <div class="form-group ">
-                                                <input type="tel" minlength="10" maxlength="10" value="" class="form-control  text-uppercase" placeholder="Mobile No *" name="mobile" required="" aria-required="true" aria-invalid="true"  >
+                                                <input type="tel" minlength="10" maxlength="10" value="<?php   if(isset($_GET['edit'])) echo $edit_data['mobile'];?>" class="form-control  text-uppercase" placeholder="Mobile No *" name="mobile" required="" aria-required="true" aria-invalid="true"  >
                                             </div>
                                             <div class="form-group">
-                                                <input type="email" value="" class="form-control text-uppercase" placeholder="Email Id  " name="email"     >
+                                                <input type="email" value="<?php   if(isset($_GET['edit'])) echo $edit_data['email'];?>" class="form-control text-uppercase" placeholder="Email Id  " name="email"     >
                                             </div>
                                             <div class="form-group  ">
-                                                <input type="text" value="" class="form-control  text-uppercase" placeholder="Password * " name="pass"  maxlength="10" minlength="3" required >
+                                                <input type="text" value="<?php   if(isset($_GET['edit'])) echo dec($edit_data['pass']);?>" class="form-control  text-uppercase" placeholder="Password * " name="pass"  maxlength="10" minlength="3" required >
                                             </div>
                                             <div class="form-group  ">
+
+                                              <?php   if(isset($_GET['edit'])) { ?>
+                                                <input type="hidden" value="<?php   if(isset($_GET['edit'])) echo $edit_data['id'];?>"  name="c_id"   >
+                                                <button class="btn float-right btn-raised btn-success btn-round waves-effect" type="submit" name="update">Update Now</button>
+
+                                              <?php }
+                                              else { ?>
                                                 <button class="btn float-right btn-raised btn-primary btn-round waves-effect" type="submit" name="save">Register Now</button>
+                                              <?php } ?>
 
                                             </div>
 
@@ -442,6 +573,10 @@ if(isset($_POST['save']))
             value: '01/01/2018'
         });
     });
+
+    $('#myModal').on('shown.bs.modal', function () {
+        $('#myInput').trigger('focus')
+    })
 </script>
 </body>
 
