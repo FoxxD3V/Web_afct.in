@@ -122,13 +122,25 @@
           <div class="submenu">
             <ul class="submenu-item">
               <li class="nav-item">
-                <a class="nav-link" href="user_profile.php">View / Edit Profile</a>
+                <a class="nav-link" href="user_profile.php">View  Profile</a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" href="user_profile.php">  Edit Profile</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">View / Edit Bank Details</a>
+                <a class="nav-link" href="#">View  Bank Details</a>
+              </li>  <li class="nav-item">
+                <a class="nav-link" href="#"> Edit Bank Details</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">View / Edit ID Details</a>
+                <a class="nav-link" href="#">View  ID Details</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">  Edit ID Details</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">  Change Password</a>
               </li>
             </ul>
           </div>
@@ -163,14 +175,20 @@
           </a>
           <div class="submenu">
             <ul class="submenu-item">
-              <li class="nav-item">
-                <a class="nav-link" href="#">District Directors</a>
+             <!-- <li class="nav-item">
+                <a class="nav-link" href="#">Add District Directors</a>
+              </li><li class="nav-item">
+                <a class="nav-link" href="#">View District Directors</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Frenchise Directors</a>
-              </li>
+                <a class="nav-link" href="#">Add Frenchise Directors</a>
+              </li><li class="nav-item">
+                <a class="nav-link" href="#">View Frenchise Directors</a>
+              </li>-->
               <li class="nav-item">
-                <a class="nav-link" href="#">Faculty / Teachers</a>
+                <a class="nav-link" href="#">Add Faculty / Teachers</a>
+              </li><li class="nav-item">
+                <a class="nav-link" href="#">View Faculty / Teachers</a>
               </li>
             </ul>
           </div>
@@ -203,14 +221,18 @@
           <div class="submenu">
             <ul class="submenu-item">
               <li class="nav-item">
-                <a class="nav-link" href="#">View Course Result </a>
+                <a class="nav-link" href="#">Online Course Examination </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">View Course Result</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">View Scholarship Result</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">View Issue Certificate </a>
+                <a class="nav-link" href="#">Certificate Verification</a>
               </li>
+
             </ul>
           </div>
         </li>
@@ -247,7 +269,7 @@
                 <a class="nav-link" href="#">Direct Referral Admission  Wallet</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Institute / Frenchise Wallet</a>
+                <a class="nav-link" href="#">Group Wallet</a>
               </li>
             </ul>
           </div>
@@ -264,12 +286,12 @@
                 <a class="nav-link" href="student_add.php">Add New</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="student_list_unverified.php">Direct Referral - Pending Student</a>
+                <a class="nav-link" href="student_list_unverified.php">Direct / Referral - Pending Student</a>
 
               </li>
 
               <li class="nav-item">
-                <a class="nav-link" href="student_list_verified.php">Direct Referral - Verified Student</a>
+                <a class="nav-link" href="student_list_verified.php">Direct / Referral - Verified Student</a>
               </li>
 
               <li class="nav-item">
