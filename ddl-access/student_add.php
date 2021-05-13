@@ -398,7 +398,7 @@ if(isset($_GET['edit']))
                                             <label>Select Institute  </label>
                                             <div class="form-group mt-3">
                                               <div class="input-group mb-3">
-                                                <select class="form-control  text-uppercase" name="ins_id" id="ins_id"   required  onChange="onchangeajax_get_sc(ins_id.value);">
+                                                <select class="form-control  text-uppercase" name="ins_id" id="ins_id"      onChange="onchangeajax_get_sc(ins_id.value);">
 
                                                   <?php $sql=mysqli_query($DB_LINK,"select * from tbl_master_institute where a_fdl_id='".$_SESSION[ 'a_userid' ]."'   order by t_name asc") or die(mysqli_error());
                                                   foreach($sql as $state)

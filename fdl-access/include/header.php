@@ -126,25 +126,26 @@
               </li>
 
               <li class="nav-item">
-                <a class="nav-link" href="user_profile.php">  Edit Profile</a>
+                <a class="nav-link" href="user_profile_update.php">  Edit Profile</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">View  Bank Details</a>
+                <a class="nav-link" href="user_bank_profile.php">View  Bank Details</a>
               </li>  <li class="nav-item">
-                <a class="nav-link" href="#"> Edit Bank Details</a>
+                <a class="nav-link" href="user_bank_profile_update.php"> Edit Bank Details</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">View  ID Details</a>
+                <a class="nav-link" href="user_id_profile.php">View  ID Details</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">  Edit ID Details</a>
+                <a class="nav-link" href="user_id_profile_update.php">  Edit ID Details</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">  Change Password</a>
+                <a class="nav-link" href="user_change_password.php">  Change Password</a>
               </li>
             </ul>
           </div>
         </li>
+
         <li class="nav-item">
           <a href="#" class="nav-link">
             <i class="fas fa-fw fa-atlas"></i>

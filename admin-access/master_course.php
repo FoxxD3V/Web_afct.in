@@ -40,14 +40,14 @@ if(isset($_GET['del']))
 
 if(isset($_REQUEST['ban']))
 {
-    mysqli_query($DB_LINK,"update tbl_master_course set status=0 where id=".$_GET['ban']) or die(mysqli_error());
+    mysqli_query($DB_LINK,"update tbl_master_course set status='0' where id=".$_GET['ban']) or die(mysqli_error());
     $_SESSION['msg']=array('success', 'Banned Successfully');
     header("location:master_course.php");
     exit;
 }
 if(isset($_REQUEST['unban']))
 {
-    mysqli_query($DB_LINK,"update tbl_master_course set status=1 where id='".$_GET['unban']."'   ") or die(mysqli_error());
+    mysqli_query($DB_LINK,"update tbl_master_course set status='1' where id='".$_GET['unban']."'   ") or die(mysqli_error());
     $_SESSION['msg']=array('success', 'Unbanned Successfully');
     header("location:master_course.php");
     exit;

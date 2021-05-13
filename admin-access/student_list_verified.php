@@ -93,6 +93,7 @@ if(isset($_REQUEST['unban']))
               <th >#</th>
               <th>NAME</th>
               <th>COURSE</th>
+
               <th>INSTITUTE</th>
               <th>REFERRAL</th>
               <th>CONTACT</th>
@@ -124,6 +125,7 @@ if(isset($_REQUEST['unban']))
 															<td><?php echo $jcount;?></td>
 															<td><?php echo $data_user['t_name'].' '.$data_user['m_name'].' '.$data_user['l_name'];?><br>
                  <?php echo $data_user['user'];?><br>
+                 Pass : <?php echo dec($data_user['pass']);?><br>
                  <?php echo date_dmy_small($data_user['doj']);?>
                </td>
 

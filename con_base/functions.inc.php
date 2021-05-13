@@ -1918,6 +1918,7 @@ function course_dur_data($typ)
 
 function login_role_fullname($role)
 {
+  $tab_name='';
   if($role=='sdl')
     $tab_name="State Director";
   if($role=='ddl')
@@ -1933,7 +1934,9 @@ function login_role_fullname($role)
 function member_counter_by_id($tab_name,$ref_id)
 {
   global $DB_LINK;
-  $getdata_qry=mysqli_query($DB_LINK,"SELECT * from  $tab_name where user='$ref_id' and status =1");
+    $qry="SELECT * from  $tab_name where user='$ref_id' and status =1";
+
+  $getdata_qry=mysqli_query($DB_LINK,$qry);
   return mysqli_num_rows($getdata_qry);
 }
 ?>

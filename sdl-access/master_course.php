@@ -89,7 +89,7 @@ require_once("../con_base/functions.inc.php");
 												<tbody>
 												<?php
                                                 $jcount=0;
-                                                $qry_user= mysqli_query($DB_LINK,"SELECT * FROM tbl_master_course order by id desc ");
+                                                $qry_user= mysqli_query($DB_LINK,"SELECT * FROM tbl_master_course where c_typ='".$_GET['type']."' order by id desc ");
                                                 foreach($qry_user as $data_user )
                                                 {
                                                     $jcount++;

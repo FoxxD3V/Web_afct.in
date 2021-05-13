@@ -1,106 +1,6 @@
 <?php
 require_once("../con_base/functions.inc.php");
 
-if(isset($_POST['update']))
-{
-  $c_id = (trim($_POST['c_id']));
-  $image = (trim($_POST['image']));
-  $a_sdl_id=(trim($_POST['a_sdl_id']));
-  $t_name=strtoupper(trim($_POST['t_name']));
-  $mobile=$_POST['mobile'];
-  $email=($_POST['email']);
-  //$pass=enc($_POST['pass']);
-  $address=(trim($_POST['address'])) ;
-  $pincode=(trim($_POST['pin'])) ;
-  $state_id=(trim($_POST['state_id']));
-  $city_id=(trim($_POST['city_id']));
-  $a_city_id=(trim($_POST['a_city_id']));
-  $validity=(trim($_POST['validity']));
-
-  $a_state_id=(trim($_POST['a_state_id']));
-  $a_state_name=(trim($_POST['a_state_name']));
-  $ip=get_ip();
-
-
-  ///Image Setup
-  $finame ="";
-  require_once("uploader-file-master.php");
-  $i1='';
-
-  if (isset($_FILES['uploaded_file1']))
-  {
-    uploadmaster("../upload/ddl_data/image/", 'uploaded_file1');
-    if ($finame != '')
-    {
-      unlink("../upload/ddl_data/image/".$image);
-
-      $f1= $finame;
-      $i1=",image='$f1' ";
-    }
-  }
-
-  ////State City Data/////
-  ///
-  if ($_POST['a_sdl_id'] != '')	{
-    $sqlst = mysqli_query($DB_LINK, "select t_name  from tbl_team_state where user='" . $_POST['a_sdl_id'] . "'") or die(mysqli_error());
-    $datas_name = mysqli_fetch_array($sqlst);
-    $a_sdl_name  = $datas_name['t_name'];
-    $state_code=substr($_POST['a_sdl_id'],0,2);
-
-  }
-  if ($_POST['state_id'] != '')	{
-    $sqlst = mysqli_query($DB_LINK, "select state from state where state_id='" . $_POST['state_id'] . "'") or die(mysqli_error());
-    $datas_name = mysqli_fetch_array($sqlst);
-    $state = $datas_name['state'];
-  }
-  if ($_POST['city_id'] != '')	{
-    $sqlct = mysqli_query($DB_LINK, "select city from city where city_id='" . $_POST['city_id'] . "'") or die(mysqli_error());
-    $datac_name = mysqli_fetch_array($sqlct);
-    $city = $datac_name['city'];
-  }
-
-  if ($_POST['a_city_id'] != '')	{
-    $sqlct = mysqli_query($DB_LINK, "select city from city where city_id='" . $_POST['a_city_id'] . "'") or die(mysqli_error());
-    $datac_name = mysqli_fetch_array($sqlct);
-    $a_city = $datac_name['city'];
-  }
-
-
-
-  $sql_reg="update tbl_team_city set 
-             
-             
-            `t_name`='$t_name',
-            `mobile`='$mobile',
-            `email`='$email',
-            `address`='$address',
-             
-            `state_id`='$state_id',
-            `state_name`='$state',
-            `city_id`='$city_id',
-            `city_name`='$city',             
-            `pin`='$pincode',
-            `status`=0, 
-                      
-            `ipaddress` ='$ip' $i1 
-            where id='$c_id'";
-
-  if(mysqli_query($DB_LINK,$sql_reg))
-  {
-    $text='Record updated successfully' ;
-    $_SESSION['msg']=array('success',  $text);
-
-    header("Location: team_city.php");
-    exit;
-  }
-  else	{
-    $_SESSION['msg'] = array('error', 'Something went wrong !!!');
-  }
-
-
-
-}
-
 
 
 ?>
@@ -135,6 +35,371 @@ if(isset($_POST['update']))
       margin-bottom: 3rem;
     }
 
+    .profile-nav, .profile-info{
+      margin-top:30px;
+    }
+
+    .profile-nav .user-heading {
+      background: #fbc02d;
+      color: #fff;
+      border-radius: 4px 4px 0 0;
+      -webkit-border-radius: 4px 4px 0 0;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .profile-nav .user-heading.round a  {
+      border-radius: 50%;
+      -webkit-border-radius: 50%;
+      border: 10px solid rgba(255,255,255,0.3);
+      display: inline-block;
+    }
+
+    .profile-nav .user-heading a img {
+      width: 112px;
+      height: 112px;
+      border-radius: 50%;
+      -webkit-border-radius: 50%;
+    }
+
+    .profile-nav .user-heading h1 {
+      font-size: 22px;
+      font-weight: 300;
+      margin-bottom: 5px;
+    }
+
+    .profile-nav .user-heading p {
+      font-size: 12px;
+    }
+
+    .profile-nav ul {
+      margin-top: 1px;
+    }
+
+    .profile-nav ul > li {
+      border-bottom: 1px solid #ebeae6;
+      margin-top: 0;
+      line-height: 30px;
+    }
+
+    .profile-nav ul > li:last-child {
+      border-bottom: none;
+    }
+
+    .profile-nav ul > li > a {
+      border-radius: 0;
+      -webkit-border-radius: 0;
+      color: #89817f;
+      border-left: 5px solid #fff;
+    }
+
+    .profile-nav ul > li > a:hover, .profile-nav ul > li > a:focus, .profile-nav ul li.active  a {
+      background: #f8f7f5 !important;
+      border-left: 5px solid #fbc02d;
+      color: #89817f !important;
+    }
+
+    .profile-nav ul > li:last-child > a:last-child {
+      border-radius: 0 0 4px 4px;
+      -webkit-border-radius: 0 0 4px 4px;
+    }
+
+    .profile-nav ul > li > a > i{
+      font-size: 16px;
+      padding-right: 10px;
+      color: #bcb3aa;
+    }
+
+    .r-activity {
+      margin: 6px 0 0;
+      font-size: 12px;
+    }
+
+
+    .p-text-area, .p-text-area:focus {
+      border: none;
+      font-weight: 300;
+      box-shadow: none;
+      color: #c3c3c3;
+      font-size: 16px;
+    }
+
+    .profile-info .panel-footer {
+      background-color:#f8f7f5 ;
+      border-top: 1px solid #e7ebee;
+    }
+
+    .profile-info .panel-footer ul li a {
+      color: #7a7a7a;
+    }
+
+    .bio-graph-heading {
+      background: #fbc02d;
+      color: #fff;
+      text-align: center;
+      font-style: italic;
+      padding: 40px 110px;
+      border-radius: 4px 4px 0 0;
+      -webkit-border-radius: 4px 4px 0 0;
+      font-size: 16px;
+      font-weight: 300;
+    }
+
+    .bio-graph-info {
+      color: #89817e;
+    }
+
+    .bio-graph-info h1 {
+      font-size: 22px;
+      font-weight: 300;
+      margin: 0 0 20px;
+    }
+
+    .bio-row {
+      width: 50%;
+      float: left;
+      margin-bottom: 10px;
+      padding:0 15px;
+    }
+
+    .bio-row p span {
+      width: 100px;
+      display: inline-block;
+    }
+
+    .bio-chart, .bio-desk {
+      float: left;
+    }
+
+    .bio-chart {
+      width: 40%;
+    }
+
+    .bio-desk {
+      width: 60%;
+    }
+
+    .bio-desk h4 {
+      font-size: 15px;
+      font-weight:400;
+    }
+
+    .bio-desk h4.terques {
+      color: #4CC5CD;
+    }
+
+    .bio-desk h4.red {
+      color: #e26b7f;
+    }
+
+    .bio-desk h4.green {
+      color: #97be4b;
+    }
+
+    .bio-desk h4.purple {
+      color: #caa3da;
+    }
+
+    .file-pos {
+      margin: 6px 0 10px 0;
+    }
+
+    .profile-activity h5 {
+      font-weight: 300;
+      margin-top: 0;
+      color: #c3c3c3;
+    }
+
+    .summary-head {
+      background: #ee7272;
+      color: #fff;
+      text-align: center;
+      border-bottom: 1px solid #ee7272;
+    }
+
+    .summary-head h4 {
+      font-weight: 300;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+
+    .summary-head p {
+      color: rgba(255,255,255,0.6);
+    }
+
+    ul.summary-list {
+      display: inline-block;
+      padding-left:0 ;
+      width: 100%;
+      margin-bottom: 0;
+    }
+
+    ul.summary-list > li {
+      display: inline-block;
+      width: 19.5%;
+      text-align: center;
+    }
+
+    ul.summary-list > li > a > i {
+      display:block;
+      font-size: 18px;
+      padding-bottom: 5px;
+    }
+
+    ul.summary-list > li > a {
+      padding: 10px 0;
+      display: inline-block;
+      color: #818181;
+    }
+
+    ul.summary-list > li  {
+      border-right: 1px solid #eaeaea;
+    }
+
+    ul.summary-list > li:last-child  {
+      border-right: none;
+    }
+
+    .activity {
+      width: 100%;
+      float: left;
+      margin-bottom: 10px;
+    }
+
+    .activity.alt {
+      width: 100%;
+      float: right;
+      margin-bottom: 10px;
+    }
+
+    .activity span {
+      float: left;
+    }
+
+    .activity.alt span {
+      float: right;
+    }
+    .activity span, .activity.alt span {
+      width: 45px;
+      height: 45px;
+      line-height: 45px;
+      border-radius: 50%;
+      -webkit-border-radius: 50%;
+      background: #eee;
+      text-align: center;
+      color: #fff;
+      font-size: 16px;
+    }
+
+    .activity.terques span {
+      background: #8dd7d6;
+    }
+
+    .activity.terques h4 {
+      color: #8dd7d6;
+    }
+    .activity.purple span {
+      background: #b984dc;
+    }
+
+    .activity.purple h4 {
+      color: #b984dc;
+    }
+    .activity.blue span {
+      background: #90b4e6;
+    }
+
+    .activity.blue h4 {
+      color: #90b4e6;
+    }
+    .activity.green span {
+      background: #aec785;
+    }
+
+    .activity.green h4 {
+      color: #aec785;
+    }
+
+    .activity h4 {
+      margin-top:0 ;
+      font-size: 16px;
+    }
+
+    .activity p {
+      margin-bottom: 0;
+      font-size: 13px;
+    }
+
+    .activity .activity-desk i, .activity.alt .activity-desk i {
+      float: left;
+      font-size: 18px;
+      margin-right: 10px;
+      color: #bebebe;
+    }
+
+    .activity .activity-desk {
+      margin-left: 70px;
+      position: relative;
+    }
+
+    .activity.alt .activity-desk {
+      margin-right: 70px;
+      position: relative;
+    }
+
+    .activity.alt .activity-desk .panel {
+      float: right;
+      position: relative;
+    }
+
+    .activity-desk .panel {
+      background: #F4F4F4 ;
+      display: inline-block;
+    }
+
+
+    .activity .activity-desk .arrow {
+      border-right: 8px solid #F4F4F4 !important;
+    }
+    .activity .activity-desk .arrow {
+      border-bottom: 8px solid transparent;
+      border-top: 8px solid transparent;
+      display: block;
+      height: 0;
+      left: -7px;
+      position: absolute;
+      top: 13px;
+      width: 0;
+    }
+
+    .activity-desk .arrow-alt {
+      border-left: 8px solid #F4F4F4 !important;
+    }
+
+    .activity-desk .arrow-alt {
+      border-bottom: 8px solid transparent;
+      border-top: 8px solid transparent;
+      display: block;
+      height: 0;
+      right: -7px;
+      position: absolute;
+      top: 13px;
+      width: 0;
+    }
+
+    .activity-desk .album {
+      display: inline-block;
+      margin-top: 10px;
+    }
+
+    .activity-desk .album a{
+      margin-right: 10px;
+    }
+
+    .activity-desk .album a:last-child{
+      margin-right: 0px;
+    }
+
   </style>
 
 </head>
@@ -159,283 +424,217 @@ if(isset($_POST['update']))
       <!-- End of Topbar -->
 
       <!-- Begin Page Content -->
-      <div class="container-fluid">
+
 
         <!-- Page Heading -->
-        <h1 class="h3 mb-2 text-gray-800"> My Profile</h1>
+
         <!--  <p class="mb-4"> My Profile	Form</p>-->
         <?php
         $sql_reg="select * from  tbl_team_city where   id= '".trim($_SESSION[ 'a_id' ])."'";
         $edit_qry=mysqli_query($DB_LINK,$sql_reg);
         $edit_data=mysqli_fetch_assoc($edit_qry);  ?>
 
+        <div class="container">
+          <div class="main-body">
 
-        <form id="form_validation" method="POST" action="" enctype="multipart/form-data">
+            <!-- Breadcrumb -->
+           <!-- <nav aria-label="breadcrumb" class="main-breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item"><a href="javascript:void(0)">User</a></li>
+                <li class="breadcrumb-item active" aria-current="page">User Profile</li>
+              </ol>
+            </nav>-->
+            <!-- /Breadcrumb -->
 
-
-          <!-- Select -->
-
-          <div class="row clearfix">
-            <div class="col-lg-12 col-md-12 col-sm-12">
-              <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary"> <strong> Assign To State Director  </strong></h6>
-
-
-                </div>
-                <div class="card-body">
-                  <div class="row clearfix">
-                    <div class="col-sm-12">
-
-
-                      <div class="form-group">
-                        <label>State Director</label>
-                        <select class="form-control  text-uppercase" name="a_sdl_id" id="a_sdl_id"   required  onChange="onchangeajax_for_sdl(this.value);">
-                         <!-- <option value="">--Select State Director--</option>-->
-                          <?php $sql=mysqli_query($DB_LINK,"select * from tbl_team_state where status=1 and  user='".$edit_data['a_sdl_id']."' order by user asc") or die(mysqli_error());
-                          foreach($sql as $state)
-                          {
-                            ?>
-                            <option value="<?php echo $state['user'];?>" <?php     if($edit_data['a_sdl_id']==$state['user']) { echo 'selected';   } ?>><?php echo $state['user'];?> - <?php echo $state['t_name'];?></option>
-                          <?php } ?>
-                        </select>
-
-                      </div>
-
-                      <div class="form-group  ">
-                        <div id="city_upd_by_sdl">
-                          <label>Assigned City Related To State Director</label>
-                          <select name=a_city_id" id="a_city_id" class="form-control  text-uppercase" required>
-                            <!--<option value="">--Assign To City Related To State Director--</option>-->
-                            <?php  
-                            {
-                              $qur=mysqli_query($DB_LINK,"select * from city where state_id='".$edit_data['a_state_id']."' and status=1  and city_id='".$edit_data['a_city_id']."'order by city") or die(mysqli_error());
-                              foreach($qur as $city)
-                              {
-                                ?><option value="<?php echo $city['city_id'];?>" <?php   if($edit_data['a_city_id']==$city['city_id']) { echo 'selected';   } ?>><?php echo $city['city'];?></option>
-                                <?php
-                              }
-                            }
-                            ?>
-                          </select>
-                        </div>
-                      </div>
-
-
-                    </div>
-
-
-                  </div>
-
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- #END# Select -->
-
-          <!-- Select -->
-          <div class="row clearfix">
-            <div class="col-lg-12 col-md-12 col-sm-12">
-              <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">  Account  Basic Information  </strong> </h6>
-
-
-                </div>
-                <div class="card-body">
-                  <div class="row clearfix">
-                    <div class="col-sm-12">
-                      <div class="form-group">
-                        <input type="text" value="<?php     echo $edit_data['t_name'];?>" class="form-control text-uppercase" placeholder="Director Name *" name="t_name" required >
-                      </div>
-
-                      <div class="form-group">
-                        <label>Upload Director Photo</label>
-                        <input name="uploaded_file1" class="form-control" type="file" id="uploaded_file1">
-
-                        (For Best resolution use resolution 150 X 150 )
-                        <?php      {
-                          if($edit_data['image']!='') {?>
-                            <input type="hidden" value="<?php     echo $edit_data['image'];?>"  name="image"   >
-
-                            <br><button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#exampleModal">
-                              View Image
-                            </button>
-
-                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                              <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                  <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Profile Image</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                      <span aria-hidden="true">&times;</span>
-                                    </button>
-                                  </div>
-                                  <div class="modal-body">
-                                    <img src="../upload/ddl_data/image/<?php echo $edit_data['image'];?>" class="img-responsive img-fluid">
-
-                                  </div>
-                                  <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          <?php }  } ?>
-                      </div>
-                      <!--  <div class="form-group">
-                                                <input type="text" value="<?php     echo $edit_data['state'];?>" class="form-control text-uppercase" placeholder="Father name *" name="father_name" required >
-                                            </div>
-                                            <div class="form-group">
-                                                <input type="text" value="<?php     echo $edit_data['state'];?>" class="form-control text-uppercase" placeholder="Husband name " name="husband_name" required >
-                                            </div>
-                                            <div class="form-group  ">
-                                                <select class="form-control  text-uppercase " name="gender" required>
-                                                    <option value="">-- Please select Gender --</option>
-                                                    <option value="Male">Male</option>
-                                                    <option value="Female">Female</option>
-                                                </select>
-                                            </div>-->
-                      <div class="form-group  ">
-                        <div class="input-group mb-3">
-                          <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1"><i class="far fa-calendar-alt"></i></span>
-                          </div>
-
-                          <input readonly value="<?php     echo $edit_data['validity'];?>"  type="text" class="form-control datepicker text-uppercase " aria-required="true"  name="validity" required placeholder="Please choose Date Of Validity *" aria-label="Username" aria-describedby="basic-addon1">
-
-
-                        </div>
-
-                        <div class="input-append date">
-
-                          </span>
-                        </div>
-
-                      </div>
-
-
-
-
-
-                    </div>
-
-
-                  </div>
-
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- #END# Select -->
-
-          <!-- Select -->
-          <div class="row clearfix">
-            <div class="col-lg-12 col-md-12 col-sm-12">
-              <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">  Address Information   </strong></h6>
-
-
-                </div>
-                <div class="card-body">
-                  <div class="row clearfix">
-                    <div class="col-sm-12">
-                      <div class="form-group ">
-                        <input type="text" value="<?php     echo $edit_data['address'];?>" class="form-control text-uppercase" placeholder="Enter Full Address *" name="address" required="" aria-required="true" aria-invalid="true"  >
-                      </div>
-                      <div class="form-group  ">
-                        <select class="form-control  text-uppercase" name="state_id" id="state_id" onChange="onchangeajax(this.value);" required>
-                          <option value="">--Select State--</option>
-                          <?php $sql=mysqli_query($DB_LINK,"select * from state where status=1 order by state") or die(mysqli_error());
-                          foreach($sql as $state)
-                          {
-                            ?>
-                            <option value="<?php echo $state['state_id'];?>" <?php   if($edit_data['state_id']==$state['state_id']) { echo 'selected';   } ?>><?php echo $state['state'];?></option>
-                          <?php } ?>
-                        </select>
-                      </div>
-                      <div class="form-group  ">
-                        <div id="city_upd">
-                          <select name="city_id" id="city_id" class="form-control  text-uppercase" required>
-                            <option value="">--Select City--</option>
-                            <?php  
-                            {
-                              $qur=mysqli_query($DB_LINK,"select * from city where state_id='".$edit_data['state_id']."' and status=1 order by city") or die(mysqli_error());
-                              foreach($qur as $city)
-                              {
-                                ?><option value="<?php echo $city['city_id'];?>" <?php   if($edit_data['city_id']==$city['city_id']) { echo 'selected';   } ?>><?php echo $city['city'];?></option>
-                                <?php
-                              }
-                            }
-                            ?>
-                          </select>
-                        </div>
-                      </div>
-
-
-                      <div class="form-group  mt-2">
-                        <input type="tel" minlength="6" maxlength="6" value="<?php     echo $edit_data['pin'];?>" class="form-control  text-uppercase" placeholder="PinCode *" name="pin" required="" aria-required="true" aria-invalid="true"  >
+            <div class="row gutters-sm">
+              <div class="col-md-4 mb-3">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="d-flex flex-column align-items-center text-center">
+                      <img src="../upload/ddl_data/image/<?php echo $edit_data['image'];?>" alt="Admin" class="rounded-circle" width="150">
+                      <div class="mt-3">
+                        <h4><?php echo $edit_data['t_name']?></h4>
+                        <p class="text-secondary mb-1">District Director</p>
+                        <p class="text-muted font-size-sm"><?php echo $edit_data['a_city_name']?> <?php echo $edit_data['a_state_name']?></p>
+                       <!-- <button class="btn btn-primary">Follow</button>
+                        <button class="btn btn-outline-primary">Message</button>-->
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
-          <!-- #END# Select -->
+                <div class="card mt-3">
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                      <h6 class="mb-0">  Validity </h6>
+                      <span class="text-secondary"><?php     echo $edit_data['validity'];?></span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                      <h6 class="mb-0"> State Director ID</h6>
+                      <span class="text-secondary"><?php     echo $edit_data['a_sdl_id'];?></span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                      <h6 class="mb-0"> State Director Name</h6>
 
-          <!-- Select -->
-          <div class="row clearfix">
-            <div class="col-lg-12 col-md-12 col-sm-12">
-              <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">  Account Contact / Login Information   </strong></h6>
+                    </li><li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+
+                      <span class="text-secondary"><?php     echo $edit_data['a_sdl_name'];?></span>
+                    </li>
 
 
+
+                  </ul>
                 </div>
-                <div class="card-body">
-                  <div class="row clearfix">
-                    <div class="col-sm-12">
-                      <div class="form-group ">
-                        <input type="tel" minlength="10" maxlength="10" value="<?php     echo $edit_data['mobile'];?>" class="form-control  text-uppercase" placeholder="Mobile No *" name="mobile" required="" aria-required="true" aria-invalid="true"  >
+              </div>
+              <div class="col-md-8">
+                <div class="card mb-3">
+                  <div class="card-body">
+                    <h3 class="d-flex align-items-center mb-3"> My Basic Profile Info</h3>
+
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <h6 class="mb-0">Full Name</h6>
                       </div>
-                      <div class="form-group">
-                        <input type="email" value="<?php     echo $edit_data['email'];?>" class="form-control text-uppercase" placeholder="Email Id  " name="email"     >
+                      <div class="col-sm-9 text-secondary">
+                        <?php echo $edit_data['t_name']?>
                       </div>
-                      <!--<div class="form-group  ">
-                        <input type="text" value="<?php /*    echo dec($edit_data['pass']);*/?>" class="form-control  text-uppercase" placeholder="Password * " name="pass"  maxlength="10" minlength="3" required >
-                      </div>-->
-                      <div class="form-group  ">
+                    </div>
+                    <hr>
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <h6 class="mb-0">Email</h6>
+                      </div>
+                      <div class="col-sm-9 text-secondary">
+                        <?php echo $edit_data['email']?>
+                      </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <h6 class="mb-0">Phone</h6>
+                      </div>
+                      <div class="col-sm-9 text-secondary">
+                        <?php echo $edit_data['mobile']?>
+                      </div>
+                    </div>
+                    <hr>
 
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <h6 class="mb-0">Address</h6>
+                      </div>
+                      <div class="col-sm-9 text-secondary">
+                        <?php echo $edit_data['address']?>
+                        <br><?php echo $edit_data['city_name']?>
+                        <?php echo $edit_data['state_name']?>
+                        Pincode : <?php echo $edit_data['pin']?>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
+                <div class="card mb-3">
+                  <div class="card-body">
+                    <h3 class="d-flex align-items-center mb-3"> Bank Account Info</h3>
 
-                          <button class="btn float-right btn-raised btn-primary btn-round waves-effect" type="submit" name="update">Update Profile</button>
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <h6 class="mb-0"> Beneficiary / Account name </h6>
+                      </div>
+                      <div class="col-sm-9 text-secondary">
+                        <?php echo $edit_data['benf_name'];?>
+                      </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <h6 class="mb-0">  Account No. :</h6>
+                      </div>
+                      <div class="col-sm-9 text-secondary">
+                        <?php echo $edit_data['acc'];?>
+                      </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <h6 class="mb-0">Bank Name  :</h6>
+                      </div>
+                      <div class="col-sm-9 text-secondary">
+                        <?php echo $edit_data['bank'];?>
+                      </div>
+                    </div>
+                    <hr>
 
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <h6 class="mb-0">  IFSC Code. :</h6>
+                      </div>
+                      <div class="col-sm-9 text-secondary">
+                        <?php echo $edit_data['ifsc'];?>
+                      </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <h6 class="mb-0">  Bank Branch :</h6>
+                      </div>
+                      <div class="col-sm-9 text-secondary">
+                        <?php echo $edit_data['branch'];?>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card mb-3">
+                  <div class="card-body">
+                    <h3 class="d-flex align-items-center mb-3"> ID Address Proof Info</h3>
+
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <h6 class="mb-0"> Aadhar Card No </h6>
+                      </div>
+                      <div class="col-sm-9 text-secondary">
+                        <?php echo $edit_data['uid'];?>
+                      </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <img src="../upload/ddl_data/uid/<?php echo $edit_data['uid_img'];?>" alt="Admin" class="img-fluid" >
 
                       </div>
+                      <div class="col-sm-6  ">
+                        <img src="../upload/ddl_data/uid/<?php echo $edit_data['uid_img_back'];?>" alt="Admin" class="img-fluid"  >
+
+                      </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <h6 class="mb-0">Pan Card No.  :</h6>
+                      </div>
+                      <div class="col-sm-9 text-secondary">
+                        <?php echo $edit_data['pan'];?>
+                      </div>
+                    </div>
+                    <hr>
 
 
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <img src="../upload/ddl_data/pan/<?php echo $edit_data['pan_img'];?>" alt="Admin" class="img-fluid"  >
 
-
-
+                      </div>
 
                     </div>
-
-
                   </div>
-
                 </div>
+
               </div>
             </div>
           </div>
-          <!-- #END# Select -->
+        </div>
 
-
-
-        </form>
-      </div>
       <!-- /.container-fluid -->
 
     </div>

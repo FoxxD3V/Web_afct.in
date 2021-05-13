@@ -9,7 +9,7 @@
   <!-- Topbar Search -->
   <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 "><!--navbar-search-->
     <div class="input-group">
-      <h6 class="m-0 font-weight-bold text-primary"><?php echo ucfirst( $_SESSION[ 'a_name' ]);?> [<?php echo $_SESSION[ 'a_userid' ];?>]</h6>
+      <h6 class="m-0 font-weight-bold text-primary"><?php echo ucfirst( $_SESSION[ 'a_name' ]);?> [<?php echo $_SESSION[ 'a_userid' ];?>]  - {<?php echo $_SESSION[ 'user_role' ]; echo login_role_fullname($_SESSION[ 'user_role' ]);?>}</h6>
     </div>
   </div>
 
@@ -126,25 +126,27 @@
               </li>
 
               <li class="nav-item">
-                <a class="nav-link" href="user_profile.php">  Edit Profile</a>
+                <a class="nav-link" href="user_profile_update.php">  Edit Profile</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">View  Bank Details</a>
+                <a class="nav-link" href="user_bank_profile.php">View  Bank Details</a>
               </li>  <li class="nav-item">
-                <a class="nav-link" href="#"> Edit Bank Details</a>
+                <a class="nav-link" href="user_bank_profile_update.php"> Edit Bank Details</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">View  ID Details</a>
+                <a class="nav-link" href="user_id_profile.php">View  ID Details</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">  Edit ID Details</a>
+                <a class="nav-link" href="user_id_profile_update.php">  Edit ID Details</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">  Change Password</a>
+                <a class="nav-link" href="user_change_password.php">  Change Password</a>
               </li>
             </ul>
           </div>
         </li>
+
+
         <li class="nav-item">
           <a href="#" class="nav-link">
             <i class="fas fa-fw fa-atlas"></i>
@@ -164,6 +166,8 @@
 
 
             </ul>
+
+
           </div>
         </li>
         <li class="nav-item">
@@ -298,24 +302,6 @@
                 <a class="nav-link" href="#">All Students Group  </a>
 
               </li>
-            </ul>
-          </div>
-        </li>
-        <li class="nav-item">
-          <a href="#" class="nav-link">
-            <i class="fas fa-fw fa-university"></i>
-            <span class="menu-title">Institute  </span>
-            <i class="fas fa-angle-down"></i>
-          </a>
-          <div class="submenu">
-            <ul class="submenu-item">
-              <li class="nav-item">
-                <a class="nav-link" href="master_institute_add.php">Add Institute </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="master_institute.php">View Institute</a>
-              </li>
-
             </ul>
           </div>
         </li>

@@ -1,6 +1,6 @@
 <?php
 require_once("../con_base/functions.inc.php");
-/*if(isset($_GET['del']))
+if(isset($_GET['del']))
 {
     mysqli_query($DB_LINK,"delete from tbl_team_city where id=".$_GET['del']) or die(mysqli_error());
     $_SESSION['msg']=array('success', 'Deleted Successfully');
@@ -21,7 +21,7 @@ if(isset($_REQUEST['unban']))
     $_SESSION['msg']=array('success', 'Unbanned Successfully');
     header("location:team_city.php");
     exit;
-}*/
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -96,7 +96,7 @@ if(isset($_REQUEST['unban']))
 													<th>VALIDITY  </th>
 													<!--<th>IMAGE     </th>-->
 
-                <th>STATUS</th>
+                                                    <th>ACTION</th>
 												</tr>
 												</thead>
 												<tfoot>
@@ -109,12 +109,12 @@ if(isset($_REQUEST['unban']))
                                                     <th>VALIDITY  </th>
                                                    <!-- <th>IMAGE     </th>-->
 
-                                                     <th>STATUS</th>
+                                                    <th>ACTION</th>
 												</tr>
 												</tfoot>
 												<tbody>
 												<?php
-                                                 $jcount=0;
+                                                $jcount=0;
                                                 $qry_user= mysqli_query($DB_LINK,"SELECT * FROM tbl_team_city where a_sdl_id='".$_SESSION[ 'a_userid' ]."' order by id desc ");
                                                 foreach($qry_user as $data_user )
                                                 {
@@ -132,18 +132,17 @@ if(isset($_REQUEST['unban']))
 
 
                                                             </td>
-                                                            <td>UID : <?php echo $data_user['user'];?> </td>
+                                                            <td>UID : <?php echo $data_user['user'];?><br>Pass : <?php echo dec($data_user['pass']);?> </td>
                                                             <td> <?php echo $data_user['mobile'];?><br><?php echo $data_user['email'];?></td>
 															<td><?php echo date_dmy_small($data_user['autodate']);?></td>
 															<td><?php echo date_dmy_small($data_user['validity']);?></td>
 
-															<!--<td>
-                 <img class="img-fluid img-rounded img-profile" src="../upload/ddl_data/image/<?php /*echo $data_user['image']; */?>"/></td>-->
-															<?php  if($data_user['status']==1){ ?>
+														<!--	<td><img class="img-fluid img-rounded img-profile" src="../upload/ddl_data/image/<?php /*echo $data_user['image'];*/?>"/></td>-->
+															<?php if($data_user['status']==1){?>
 																<td class="bg-gradient-success text-white">Active</td><?php
- 														} else {  ?>
+															} else { ?>
 																<td class="bg-gradient-danger text-white">Pending</td>
-														 <?php  }  ?>
+															<?php } ?>
                                                            <!-- <td>
                                                                 <a  href="team_city_add.php?edit=<?php /*echo $data_user['id'];*/?>" ><i  style="color:blue " class="fa fa-edit fa-lg"></i></a> <?php /*if($data_user['status']==1){*/?>
                                                                 &nbsp;<a href="team_city.php?ban=<?php /*echo $data_user['id'];*/?> "  ><i class="fa fa-check fa-lg" style="color:green" title="Ban"></i>  </a>

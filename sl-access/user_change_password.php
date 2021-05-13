@@ -4,23 +4,23 @@ require_once("../con_base/functions.inc.php");
 
 if(isset($_POST['upd_pass']))
 {
-	$sql = "select * from registration where user='".$_SESSION[ 'a_mid' ]."'  ";
-	$result=mysqli_query($DB_LINK1,$sql);
+	$sql = "select * from tbl_team_fren where user='".$_SESSION[ 'a_userid' ]."'  ";
+	$result=mysqli_query($DB_LINK,$sql);
 	$line=mysqli_fetch_array($result);
-	if($line['password']==trim($_POST['opass']))
+	if($line['pass']==enc(trim($_POST['opass'])))
 	{
-		if(mysqli_query($DB_LINK1," update registration set password='".(trim($_POST['cpass']))."' where user='".$_SESSION[ 'a_mid' ]."'   and password='".(trim($_POST['opass']))."'"))
+		if(mysqli_query($DB_LINK," update tbl_team_fren set pass='".enc(trim($_POST['cpass']))."' where user='".$_SESSION[ 'a_userid' ]."'   and pass='".enc(trim($_POST['opass']))."'"))
 		{
 			//$_SESSION['suc_msg']="Password Updated Succesfully";
 			$_SESSION['msg']=array('success', 'Password Updated Succesfully');
-			header("Location: setting_changepassword.php");
+			header("Location: user_change_password.php");
 			exit;
 		}
 		else
 		{
 			//$_SESSION['err_msg']="Something went wrong !!!";
 			$_SESSION['msg']=array('error', 'Something went wrong !!!');
-			header("Location: setting_changepassword.php");
+			header("Location: user_change_password.php");
 			exit;
 		}
 	}
@@ -28,7 +28,7 @@ if(isset($_POST['upd_pass']))
 	{
 		//$_SESSION['err_msg']="Old Password Not correct !!!";
 		$_SESSION['msg']=array('error', 'Old Password Not correct !!!');
-		header("Location: setting_changepassword.php");
+		header("Location: user_change_password.php");
 		exit;
 
 	}
@@ -101,7 +101,7 @@ if(isset($_POST['upd_pass']))
 																	<div class="input-group-append">
 																		<span class="input-group-text  " id="basic-addon2">	<i class="fas fa-key"   ></i></span>
 																	</div>
-																	<input type="password" class="form-control  text-uppercase" required  placeholder="Old password" name="opass"   id="opass"   aria-label="Recipient's username" aria-describedby="basic-addon2"  >
+																	<input type="password" class="form-control  " required  placeholder="Old password" name="opass"   id="opass"   aria-label="Recipient's username" aria-describedby="basic-addon2"  >
 
 																</div>
 															</div>
@@ -111,7 +111,7 @@ if(isset($_POST['upd_pass']))
 																	<div class="input-group-append">
 																		<span class="input-group-text  " id="basic-addon2">	<i class="fas fa-key"   ></i></span>
 																	</div>
-																	<input type="text" class="form-control  text-uppercase" required  name="npass" placeholder="New password"    id="npass"   aria-label="Recipient's username" aria-describedby="basic-addon2" >
+																	<input type="text" class="form-control  " required  name="npass" placeholder="New password"    id="npass"   aria-label="Recipient's username" aria-describedby="basic-addon2" >
 
 																</div>
 															</div>
@@ -121,7 +121,7 @@ if(isset($_POST['upd_pass']))
 																	<div class="input-group-append">
 																		<span class="input-group-text  " id="basic-addon2">	<i class="fas fa-key"   ></i></span>
 																	</div>
-																	<input type="password" class="form-control  text-uppercase" placeholder="Confirm password"   name="cpass"    id="cpass"    aria-label="Recipient's username" aria-describedby="basic-addon2"  >
+																	<input type="password" class="form-control  " placeholder="Confirm password"   name="cpass"    id="cpass"    aria-label="Recipient's username" aria-describedby="basic-addon2"  >
 
 																</div>
 															</div>

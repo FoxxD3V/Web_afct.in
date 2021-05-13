@@ -138,7 +138,7 @@ if(isset($_POST['save']))
       }
     }
 
-    $sql_reg = "insert into  tbl_team_student set 
+     $sql_reg = "insert into  tbl_team_student set 
   `user`='$new_id',
   `pass`='$pass',
   `s_title`='$s_title',
@@ -207,6 +207,8 @@ if(isset($_POST['save']))
   `o_grade`='$o_grade'
    
    $i1";
+
+
 
     if (mysqli_query($DB_LINK, $sql_reg)) {
       //Mail is attached on page
@@ -398,7 +400,7 @@ if(isset($_GET['edit']))
                                             <label>Select Institute  </label>
                                             <div class="form-group mt-3">
                                               <div class="input-group mb-3">
-                                                <select class="form-control  text-uppercase" name="ins_id" id="ins_id"   required  onChange="onchangeajax_get_sc(ins_id.value);">
+                                                <select class="form-control  text-uppercase" name="ins_id" id="ins_id"      onChange="onchangeajax_get_sc(ins_id.value);">
 
                                                   <?php $sql=mysqli_query($DB_LINK,"select * from tbl_master_institute where a_fdl_id='".$_SESSION[ 'a_userid' ]."'   order by t_name asc") or die(mysqli_error());
                                                   foreach($sql as $state)
@@ -919,7 +921,7 @@ if(isset($_GET['edit']))
                             </div>
 
                             <div class="col-sm-12">
-                              <div class="row">
+                              <div class="row ">
                                 <div class="col-sm-1">
                                   <div class="form-group">
                                     <label><small>HIGH SCHOOL</small></label>
@@ -934,35 +936,35 @@ if(isset($_GET['edit']))
 
                                 <div class="col-sm-1">
                                   <div class="form-group">
-                                    <input type="number" value="<?php   if(isset($_GET['edit'])) echo $edit_data['h_year']?>" class="form-control text-uppercase"  name="h_year" placeholder="Year " required="" aria-required="true" aria-invalid="true"  >
+                                    <input type="text" value="<?php   if(isset($_GET['edit'])) echo $edit_data['h_year']?>" class="form-control text-uppercase"  name="h_year" placeholder="Year " required="" aria-required="true" aria-invalid="true"  >
 
                                   </div>
                                 </div>
 
                                 <div class="col-sm-2">
                                   <div class="form-group">
-                                    <input type="number" value="<?php   if(isset($_GET['edit'])) echo $edit_data['h_enrol']?>" class="form-control text-uppercase"  name="h_enrol" placeholder="Enrollment No. " required="" aria-required="true" aria-invalid="true"  >
+                                    <input type="text" value="<?php   if(isset($_GET['edit'])) echo $edit_data['h_enrol']?>" class="form-control text-uppercase"  name="h_enrol" placeholder="Enrollment No. " required="" aria-required="true" aria-invalid="true"  >
 
                                   </div>
                                 </div>
 
                                 <div class="col-sm-2">
                                   <div class="form-group">
-                                    <input type="number" value="<?php   if(isset($_GET['edit'])) echo $edit_data['h_fmark'];?>" class="form-control text-uppercase"  name="h_fmark" placeholder=" Full Marks" required="" aria-required="true" aria-invalid="true"  >
+                                    <input type="text" value="<?php   if(isset($_GET['edit'])) echo $edit_data['h_fmark'];?>" class="form-control text-uppercase"  name="h_fmark" placeholder=" Full Marks" required="" aria-required="true" aria-invalid="true"  >
 
                                   </div>
                                 </div>
 
                                 <div class="col-sm-2">
                                   <div class="form-group">
-                                    <input type="number" value="<?php   if(isset($_GET['edit'])) echo $edit_data['h_omark'];?>" class="form-control text-uppercase"  name="h_omark" placeholder=" Obtain Marks" required="" aria-required="true" aria-invalid="true"  >
+                                    <input type="text" value="<?php   if(isset($_GET['edit'])) echo $edit_data['h_omark'];?>" class="form-control text-uppercase"  name="h_omark" placeholder=" Obtain Marks" required="" aria-required="true" aria-invalid="true"  >
 
                                   </div>
                                 </div>
 
                                 <div class="col-sm-1">
                                   <div class="form-group">
-                                    <input type="number" value="<?php   if(isset($_GET['edit'])) echo $edit_data['h_grade'];?>" class="form-control text-uppercase"  name="h_grade" placeholder=" Per%" required="" aria-required="true" aria-invalid="true"  >
+                                    <input type="text" value="<?php   if(isset($_GET['edit'])) echo $edit_data['h_grade'];?>" class="form-control text-uppercase"  name="h_grade" placeholder=" Per%" required="" aria-required="true" aria-invalid="true"  >
 
                                   </div>
                                 </div>
@@ -989,35 +991,35 @@ if(isset($_GET['edit']))
 
                                 <div class="col-sm-1">
                                   <div class="form-group">
-                                    <input type="number" value="<?php   if(isset($_GET['edit'])) echo $edit_data['i_year'];?>" class="form-control text-uppercase"  name="i_year" placeholder="Year "   aria-required="true" aria-invalid="true"  >
+                                    <input type="text" value="<?php   if(isset($_GET['edit'])) echo $edit_data['i_year'];?>" class="form-control text-uppercase"  name="i_year" placeholder="Year "   aria-required="true" aria-invalid="true"  >
 
                                   </div>
                                 </div>
 
                                 <div class="col-sm-2">
                                   <div class="form-group">
-                                    <input type="number" value="<?php   if(isset($_GET['edit'])) echo $edit_data['i_enrol'];?>" class="form-control text-uppercase"  name="i_enrol" placeholder="Enrollment No. "  aria-required="true" aria-invalid="true"  >
+                                    <input type="text" value="<?php   if(isset($_GET['edit'])) echo $edit_data['i_enrol'];?>" class="form-control text-uppercase"  name="i_enrol" placeholder="Enrollment No. "  aria-required="true" aria-invalid="true"  >
 
                                   </div>
                                 </div>
 
                                 <div class="col-sm-2">
                                   <div class="form-group">
-                                    <input type="number" value="<?php   if(isset($_GET['edit'])) echo $edit_data['i_fmark'];?>" class="form-control text-uppercase"  name="i_fmark" placeholder=" Full Marks"   aria-required="true" aria-invalid="true"  >
+                                    <input type="text" value="<?php   if(isset($_GET['edit'])) echo $edit_data['i_fmark'];?>" class="form-control text-uppercase"  name="i_fmark" placeholder=" Full Marks"   aria-required="true" aria-invalid="true"  >
 
                                   </div>
                                 </div>
 
                                 <div class="col-sm-2">
                                   <div class="form-group">
-                                    <input type="number" value="<?php   if(isset($_GET['edit'])) echo $edit_data['i_omark'];?>" class="form-control text-uppercase"  name="i_omark" placeholder=" Obtain Marks"   aria-required="true" aria-invalid="true"  >
+                                    <input type="text" value="<?php   if(isset($_GET['edit'])) echo $edit_data['i_omark'];?>" class="form-control text-uppercase"  name="i_omark" placeholder=" Obtain Marks"   aria-required="true" aria-invalid="true"  >
 
                                   </div>
                                 </div>
 
                                 <div class="col-sm-1">
                                   <div class="form-group">
-                                    <input type="number" value="<?php   if(isset($_GET['edit'])) echo $edit_data['i_grade'];?>" class="form-control text-uppercase"  name="i_grade" placeholder=" Per%"   aria-required="true" aria-invalid="true"  >
+                                    <input type="text" value="<?php   if(isset($_GET['edit'])) echo $edit_data['i_grade'];?>" class="form-control text-uppercase"  name="i_grade" placeholder=" Per%"   aria-required="true" aria-invalid="true"  >
 
                                   </div>
                                 </div>
@@ -1044,35 +1046,35 @@ if(isset($_GET['edit']))
 
                                 <div class="col-sm-1">
                                   <div class="form-group">
-                                    <input type="number" value="<?php   if(isset($_GET['edit'])) echo $edit_data['g_year'];?>" class="form-control text-uppercase"  name="g_year" placeholder="Year "   aria-required="true" aria-invalid="true"  >
+                                    <input type="text" value="<?php   if(isset($_GET['edit'])) echo $edit_data['g_year'];?>" class="form-control text-uppercase"  name="g_year" placeholder="Year "   aria-required="true" aria-invalid="true"  >
 
                                   </div>
                                 </div>
 
                                 <div class="col-sm-2">
                                   <div class="form-group">
-                                    <input type="number" value="<?php   if(isset($_GET['edit'])) echo $edit_data['g_enrol'];?>" class="form-control text-uppercase"  name="g_enrol" placeholder="Enrollment No. "  aria-required="true" aria-invalid="true"  >
+                                    <input type="text" value="<?php   if(isset($_GET['edit'])) echo $edit_data['g_enrol'];?>" class="form-control text-uppercase"  name="g_enrol" placeholder="Enrollment No. "  aria-required="true" aria-invalid="true"  >
 
                                   </div>
                                 </div>
 
                                 <div class="col-sm-2">
                                   <div class="form-group">
-                                    <input type="number" value="<?php   if(isset($_GET['edit'])) echo $edit_data['g_fmark'];?>" class="form-control text-uppercase"  name="g_fmark" placeholder=" Full Marks"   aria-required="true" aria-invalid="true"  >
+                                    <input type="text" value="<?php   if(isset($_GET['edit'])) echo $edit_data['g_fmark'];?>" class="form-control text-uppercase"  name="g_fmark" placeholder=" Full Marks"   aria-required="true" aria-invalid="true"  >
 
                                   </div>
                                 </div>
 
                                 <div class="col-sm-2">
                                   <div class="form-group">
-                                    <input type="number" value="<?php   if(isset($_GET['edit'])) echo $edit_data['g_omark'];?>" class="form-control text-uppercase"  name="g_omark" placeholder=" Obtain Marks"   aria-required="true" aria-invalid="true"  >
+                                    <input type="text" value="<?php   if(isset($_GET['edit'])) echo $edit_data['g_omark'];?>" class="form-control text-uppercase"  name="g_omark" placeholder=" Obtain Marks"   aria-required="true" aria-invalid="true"  >
 
                                   </div>
                                 </div>
 
                                 <div class="col-sm-1">
                                   <div class="form-group">
-                                    <input type="number" value="<?php   if(isset($_GET['edit'])) echo $edit_data['g_grade'];?>" class="form-control text-uppercase"  name="g_grade" placeholder=" Per%"   aria-required="true" aria-invalid="true"  >
+                                    <input type="text" value="<?php   if(isset($_GET['edit'])) echo $edit_data['g_grade'];?>" class="form-control text-uppercase"  name="g_grade" placeholder=" Per%"   aria-required="true" aria-invalid="true"  >
 
                                   </div>
                                 </div>
@@ -1099,35 +1101,35 @@ if(isset($_GET['edit']))
 
                                 <div class="col-sm-1">
                                   <div class="form-group">
-                                    <input type="number" value="<?php   if(isset($_GET['edit'])) echo $edit_data['pg_year'];?>" class="form-control text-uppercase"  name="pg_year" placeholder="Year "   aria-required="true" aria-invalid="true"  >
+                                    <input type="text" value="<?php   if(isset($_GET['edit'])) echo $edit_data['pg_year'];?>" class="form-control text-uppercase"  name="pg_year" placeholder="Year "   aria-required="true" aria-invalid="true"  >
 
                                   </div>
                                 </div>
 
                                 <div class="col-sm-2">
                                   <div class="form-group">
-                                    <input type="number" value="<?php   if(isset($_GET['edit'])) echo $edit_data['pg_enrol'];?>" class="form-control text-uppercase"  name="pg_enrol" placeholder="Enrollment No. "  aria-required="true" aria-invalid="true"  >
+                                    <input type="text" value="<?php   if(isset($_GET['edit'])) echo $edit_data['pg_enrol'];?>" class="form-control text-uppercase"  name="pg_enrol" placeholder="Enrollment No. "  aria-required="true" aria-invalid="true"  >
 
                                   </div>
                                 </div>
 
                                 <div class="col-sm-2">
                                   <div class="form-group">
-                                    <input type="number" value="<?php   if(isset($_GET['edit'])) echo $edit_data['pg_fmark']?>" class="form-control text-uppercase"  name="pg_fmark" placeholder=" Full Marks"   aria-required="true" aria-invalid="true"  >
+                                    <input type="text" value="<?php   if(isset($_GET['edit'])) echo $edit_data['pg_fmark']?>" class="form-control text-uppercase"  name="pg_fmark" placeholder=" Full Marks"   aria-required="true" aria-invalid="true"  >
 
                                   </div>
                                 </div>
 
                                 <div class="col-sm-2">
                                   <div class="form-group">
-                                    <input type="number" value="<?php   if(isset($_GET['edit'])) echo $edit_data['pg_omark'];?>" class="form-control text-uppercase"  name="pg_omark" placeholder=" Obtain Marks"   aria-required="true" aria-invalid="true"  >
+                                    <input type="text" value="<?php   if(isset($_GET['edit'])) echo $edit_data['pg_omark'];?>" class="form-control text-uppercase"  name="pg_omark" placeholder=" Obtain Marks"   aria-required="true" aria-invalid="true"  >
 
                                   </div>
                                 </div>
 
                                 <div class="col-sm-1">
                                   <div class="form-group">
-                                    <input type="number" value="<?php   if(isset($_GET['edit'])) echo $edit_data['pg_grade'];?>" class="form-control text-uppercase"  name="pg_grade" placeholder=" Per%"   aria-required="true" aria-invalid="true"  >
+                                    <input type="text" value="<?php   if(isset($_GET['edit'])) echo $edit_data['pg_grade'];?>" class="form-control text-uppercase"  name="pg_grade" placeholder=" Per%"   aria-required="true" aria-invalid="true"  >
 
                                   </div>
                                 </div>
@@ -1154,35 +1156,35 @@ if(isset($_GET['edit']))
 
                                 <div class="col-sm-1">
                                   <div class="form-group">
-                                    <input type="number" value="<?php   if(isset($_GET['edit'])) echo $edit_data['o_year'];?>" class="form-control text-uppercase"  name="o_year" placeholder="Year "   aria-required="true" aria-invalid="true"  >
+                                    <input type="text" value="<?php   if(isset($_GET['edit'])) echo $edit_data['o_year'];?>" class="form-control text-uppercase"  name="o_year" placeholder="Year "   aria-required="true" aria-invalid="true"  >
 
                                   </div>
                                 </div>
 
                                 <div class="col-sm-2">
                                   <div class="form-group">
-                                    <input type="number" value="<?php   if(isset($_GET['edit'])) echo $edit_data['o_enrol'];?>" class="form-control text-uppercase"  name="o_enrol" placeholder="Enrollment No. "  aria-required="true" aria-invalid="true"  >
+                                    <input type="text" value="<?php   if(isset($_GET['edit'])) echo $edit_data['o_enrol'];?>" class="form-control text-uppercase"  name="o_enrol" placeholder="Enrollment No. "  aria-required="true" aria-invalid="true"  >
 
                                   </div>
                                 </div>
 
                                 <div class="col-sm-2">
                                   <div class="form-group">
-                                    <input type="number" value="<?php   if(isset($_GET['edit'])) echo $edit_data['o_fmark'];?>" class="form-control text-uppercase"  name="o_fmark" placeholder=" Full Marks"   aria-required="true" aria-invalid="true"  >
+                                    <input type="text" value="<?php   if(isset($_GET['edit'])) echo $edit_data['o_fmark'];?>" class="form-control text-uppercase"  name="o_fmark" placeholder=" Full Marks"   aria-required="true" aria-invalid="true"  >
 
                                   </div>
                                 </div>
 
                                 <div class="col-sm-2">
                                   <div class="form-group">
-                                    <input type="number" value="<?php   if(isset($_GET['edit'])) echo $edit_data['o_omark'];?>" class="form-control text-uppercase"  name="o_omark" placeholder="  Obtain Marks"   aria-required="true" aria-invalid="true"  >
+                                    <input type="text" value="<?php   if(isset($_GET['edit'])) echo $edit_data['o_omark'];?>" class="form-control text-uppercase"  name="o_omark" placeholder="  Obtain Marks"   aria-required="true" aria-invalid="true"  >
 
                                   </div>
                                 </div>
 
                                 <div class="col-sm-1">
                                   <div class="form-group">
-                                    <input type="number" value="<?php   if(isset($_GET['edit'])) echo $edit_data['o_grade'];?>" class="form-control text-uppercase"  name="o_grade" placeholder=" Per%"   aria-required="true" aria-invalid="true"  >
+                                    <input type="text" value="<?php   if(isset($_GET['edit'])) echo $edit_data['o_grade'];?>" class="form-control text-uppercase"  name="o_grade" placeholder=" Per%"   aria-required="true" aria-invalid="true"  >
 
                                   </div>
                                 </div>
