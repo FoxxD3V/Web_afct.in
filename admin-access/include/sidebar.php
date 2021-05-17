@@ -59,8 +59,11 @@
 		</a>
 		<div id="team_members" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
+	 <a href="team_state_add.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> Add State Directors</a>
 	 <a href="team_state.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> State Directors</a>
+	 <a href="team_city_add.php" class="collapse-item"><i class="fas fa-angle-double-right"></i>Add District Directors</a>
 	 <a href="team_city.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> District Directors</a>
+	 <a href="team_fren_add.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> Add Franchise Directors</a>
 	 <a href="team_fren.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> Franchise Directors</a>
 			</div>
 		</div>
@@ -93,6 +96,20 @@
    </div>
 		</div>
 	</li>
+
+
+  <li class="nav-item <?php  if($currentPG=="wallet_bonus.php" || $currentPG=="wallet_bonus_add.php" || $currentPG=="student_list_verified.php"   ) echo 'active  ';  ?> ">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#wallet" aria-expanded="true" aria-controls="wallet">
+      <i class="fas fa-fw fa-wallet"></i>
+      <span>Wallet</span>
+    </a>
+    <div id="wallet" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <a href="wallet_bonus.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> Bonus Wallet Status</a>
+        <a href="wallet_bonus_add.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> Add Bonus Wallet</a>
+       </div>
+    </div>
+  </li>
 
     <li class="nav-item <?php  if($currentPG=="setting_changepassword.php" || $currentPG=="setting_updateimage.php"  ) echo 'active  ';  ?> ">
 		<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#setting" aria-expanded="true" aria-controls="team_members">

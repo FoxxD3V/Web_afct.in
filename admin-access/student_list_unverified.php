@@ -141,7 +141,10 @@ if(isset($_REQUEST['unban']))
                                                          <td>
                                                               <!--   <a  href="student_list_Unverified_add.php?edit=<?php /* echo $data_user['id']; */?>" ><i  style="color:blue " class="fa fa-edit fa-lg"></i></a>
 
-                                                              --> <?php  if($data_user['status']=='1'){ ?>
+                                                              -->
+                                                           <a  href="student_profile_view.php?id=<?php   echo $data_user['id'];  ?>" title="View Student Profile" ><i  style="color:green " class="fa fa-view fa-eye"></i></a>
+
+                                                           <?php  if($data_user['status']=='1'){ ?>
                                                                 &nbsp;<a href="student_list_unverified.php?ban=<?php  echo $data_user['id']; ?> "  ><i class="fa fa-check fa-lg" style="color:green" title="Ban"></i>  </a>
                                                                 <?php  } else  { ?>
                                                                 &nbsp;<a href="student_list_unverified.php?unban=<?php echo $data_user['id']; ?> "  ><i class="fa fa-ban fa-lg" style="color:red" title="Unban"></i>  </a>

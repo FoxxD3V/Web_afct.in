@@ -11,7 +11,7 @@ require_once("../con_base/functions.inc.php"); ?>
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Franchise Director Dashboard | <?php echo $SITE_NAME;?></title>
+  <title>Student Dashboard | <?php echo $SITE_NAME;?></title>
 
 <?php include("include/top.php");?>
  	<!-- Custom styles for this page -->
@@ -51,7 +51,7 @@ require_once("../con_base/functions.inc.php"); ?>
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Franchise Director Dashboard</h1>
+            <h1 class="h3 mb-0 text-gray-800">Student Dashboard</h1>
            <!-- <span class="pull-right text-right" ><small><?php /*echo "Updated On : ".$data_foruser['member_refresh_time'];*/?></small></span>
              <a href="member_update_queue.php" class="  d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-refresh fa-sm text-white-50"></i> Update A/c</a>
          --> </div>

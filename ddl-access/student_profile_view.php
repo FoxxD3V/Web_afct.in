@@ -15,7 +15,7 @@ require_once("../con_base/functions.inc.php");
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>My Profile	| <?php echo $SITE_NAME;?></title>
+  <title>Student Profile	| <?php echo $SITE_NAME;?></title>
   <?php include("include/top.php");?>
   <!-- Custom styles for this page -->
   <!--	<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" rel="stylesheet">
@@ -428,14 +428,16 @@ require_once("../con_base/functions.inc.php");
 
         <!-- Page Heading -->
 
-        <!--  <p class="mb-4"> My Profile	Form</p>-->
         <?php
-        $sql_reg="select * from  tbl_team_state where   id= '".trim($_SESSION[ 'a_id' ])."'";
+        $sql_reg="select * from  tbl_team_student where   id= '".trim($_GET[ 'id' ])."'";
         $edit_qry=mysqli_query($DB_LINK,$sql_reg);
         $edit_data=mysqli_fetch_assoc($edit_qry);  ?>
 
         <div class="container">
           <div class="main-body">
+            <p class="mb-4 h3"> Student Profile	 </p>
+
+
 
             <!-- Breadcrumb -->
            <!-- <nav aria-label="breadcrumb" class="main-breadcrumb">
@@ -452,12 +454,13 @@ require_once("../con_base/functions.inc.php");
                 <div class="card">
                   <div class="card-body">
                     <div class="d-flex flex-column align-items-center text-center">
-                      <img src="../upload/sdl_data/image/<?php echo $edit_data['image'];?>" alt="Admin" class="rounded-circle" width="150">
+                      <img src="../upload/sl_data/image/<?php echo $edit_data['image'];?>" alt="Admin" class="rounded-circle" width="150">
                       <div class="mt-3">
-                        <h4><?php echo $edit_data['t_name']?></h4>
-                        <p class="text-secondary mb-1">State Director</p>
-                        <p class="text-muted font-size-sm">ID : <?php echo $edit_data['user']?>  </p>
-                        <p class="text-muted font-size-sm"><?php echo $edit_data['a_city_name']?> <?php echo $edit_data['a_state_name']?></p>
+                        <h4><?php echo $edit_data['s_title']?> <?php echo $edit_data['t_name']?></h4>
+                        <p class="text-secondary mb-1">Student</p>
+                        <p class="text-muted font-size-sm">Reg Id : <?php echo  ($edit_data['user'])?>  </p>
+                        <p class="text-muted font-size-sm">DOJ : <?php echo date_dmy_small($edit_data['doj'])?>  </p>
+                        <p class="text-muted font-size-sm"> <?php echo  ($edit_data['c_code'])?> / <?php echo  ($edit_data['c_name'])?>  </p>
                        <!-- <button class="btn btn-primary">Follow</button>
                         <button class="btn btn-outline-primary">Message</button>-->
                       </div>
@@ -466,14 +469,32 @@ require_once("../con_base/functions.inc.php");
                 </div>
                 <div class="card mt-3">
                   <ul class="list-group list-group-flush">
+
                     <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                      <h6 class="mb-0">  Validity </h6>
-                      <span class="text-secondary"><?php     echo $edit_data['validity'];?></span>
+                      <h6 class="mb-0"> Referral ID</h6>
+                      <span class="text-secondary"><?php     echo $edit_data['ref_id'];?></span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                      <h6 class="mb-0"> State Director ID</h6>
-                      <span class="text-secondary"><?php     echo $edit_data['a_sdl_id'];?></span>
+                      <h6 class="mb-0"> Referral   Name</h6>
+
+                      <span class="text-secondary"><?php     echo $edit_data['ref_name'];?></span>
                     </li>
+
+                    <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                      <h6 class="mb-0">Institute ID</h6>
+                      <span class="text-secondary"><?php     echo $edit_data['ins_code'];?></span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                      <h6 class="mb-0">Institute Name</h6>
+                      <span class="text-secondary"><?php     echo $edit_data['ins_name'];?></span>
+                    </li>
+
+
+
+
+
+
+
 
 
                   </ul>
@@ -482,14 +503,54 @@ require_once("../con_base/functions.inc.php");
               <div class="col-md-8">
                 <div class="card mb-3">
                   <div class="card-body">
-                    <h3 class="d-flex align-items-center mb-3"> My Basic Profile Info</h3>
+                    <h3 class="d-flex align-items-center mb-3"> Basic Profile Info</h3>
 
                     <div class="row">
                       <div class="col-sm-3">
                         <h6 class="mb-0">Full Name</h6>
                       </div>
                       <div class="col-sm-9 text-secondary">
-                        <?php echo $edit_data['t_name']?>
+                        <?php echo $edit_data['t_name']?> <?php echo $edit_data['m_name']?> <?php echo $edit_data['l_name']?>
+                      </div>
+                    </div>
+                    <hr><div class="row">
+                      <div class="col-sm-3">
+                        <h6 class="mb-0">Father Name</h6>
+                      </div>
+                      <div class="col-sm-9 text-secondary">
+                        <?php echo $edit_data['f_name']?>
+                      </div>
+                    </div>
+                    <hr><div class="row">
+                      <div class="col-sm-3">
+                        <h6 class="mb-0">Mother Name</h6>
+                      </div>
+                      <div class="col-sm-9 text-secondary">
+                        <?php echo $edit_data['mot_name']?>
+                      </div>
+                    </div>
+                    <hr><div class="row">
+                      <div class="col-sm-3">
+                        <h6 class="mb-0">Category Name</h6>
+                      </div>
+                      <div class="col-sm-9 text-secondary">
+                        <?php echo $edit_data['cat_name']?>
+                      </div>
+                    </div>
+                    <hr><div class="row">
+                      <div class="col-sm-3">
+                        <h6 class="mb-0">Gender</h6>
+                      </div>
+                      <div class="col-sm-9 text-secondary">
+                        <?php echo $edit_data['gender']?>
+                      </div>
+                    </div>
+                    <hr><div class="row">
+                      <div class="col-sm-3">
+                        <h6 class="mb-0">Date Of Birth</h6>
+                      </div>
+                      <div class="col-sm-9 text-secondary">
+                        <?php echo date_dmy_small($edit_data['dob'])?>
                       </div>
                     </div>
                     <hr>
@@ -526,6 +587,59 @@ require_once("../con_base/functions.inc.php");
                   </div>
                 </div>
 
+
+
+
+
+
+
+
+              </div>
+
+              <div class="col-md-12 mt-2">
+                <div class="card mb-3">
+                  <div class="card-body">
+                    <h3 class="d-flex align-items-center mb-3"> ID Address Proof Info</h3>
+
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <h6 class="mb-0"> Aadhar Card No </h6>
+                      </div>
+                      <div class="col-sm-3 text-secondary">
+                        <?php echo $edit_data['id_aadhar'];?>
+                      </div>
+                      <div class="col-sm-3">
+                        <h6 class="mb-0">Pan Card No.  :</h6>
+                      </div>
+                      <div class="col-sm-3 text-secondary">
+                        <?php echo $edit_data['id_pan'];?>
+                      </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                      <div class="col-sm-4">
+                        <img src="../upload/sl_data/uid/<?php echo $edit_data['uid_img'];?>" alt="Admin" class="img-fluid" >
+
+                      </div>
+                      <div class="col-sm-4  ">
+                        <img src="../upload/sl_data/uid/<?php echo $edit_data['uid_img_back'];?>" alt="Admin" class="img-fluid"  >
+
+                      </div>
+                      <div class="col-sm-4">
+                        <img src="../upload/sl_data/pan/<?php echo $edit_data['pan_img'];?>" alt="Admin" class="img-fluid"  >
+
+                      </div>
+                    </div>
+                    <hr>
+
+
+
+                    <div class="row">
+
+
+                    </div>
+                  </div>
+                </div>
                 <div class="card mb-3">
                   <div class="card-body">
                     <h3 class="d-flex align-items-center mb-3"> Bank Account Info</h3>
@@ -577,52 +691,89 @@ require_once("../con_base/functions.inc.php");
                     </div>
                   </div>
                 </div>
-
                 <div class="card mb-3">
                   <div class="card-body">
-                    <h3 class="d-flex align-items-center mb-3"> ID Address Proof Info</h3>
+                    <h3 class="d-flex align-items-center mb-3"> Educational Qualification Info</h3>
 
-                    <div class="row">
-                      <div class="col-sm-3">
-                        <h6 class="mb-0"> Aadhar Card No </h6>
-                      </div>
-                      <div class="col-sm-9 text-secondary">
-                        <?php echo $edit_data['uid'];?>
-                      </div>
+
+
+
+                    <div class="row clearfix">
+                      <table class="table table-bordered table-hover  ">
+                        <tbody>
+                        <tr>
+                          <td>QUALIFICATION</td>
+                          <td>BOARD / UNIVERSITY NAME</td>
+                          <td>YEAR</td>
+                          <td>ENROLLMENT NO.</td>
+                          <td>FULL MARKS</td>
+                          <td>OBTAINED MARKS</td>
+                          <td>Per(%) / GRADE</td>
+                        </tr>
+
+
+
+
+                        <tr>
+                          <td>HIGH SCHOOL </td>
+                          <td> <?php     echo $edit_data['h_board']?></td>
+                          <td> <?php     echo $edit_data['h_year']?></td>
+                          <td> <?php     echo $edit_data['h_enrol']?></td>
+                          <td> <?php     echo $edit_data['h_fmark'];?></td>
+                          <td> <?php     echo $edit_data['h_omark'];?></td>
+                          <td> <?php     echo $edit_data['h_grade'];?></td>
+                        </tr>
+                        <tr>
+                          <td>INTERMEDIATE </td>
+                          <td> <?php     echo $edit_data['i_board']?></td>
+                          <td> <?php     echo $edit_data['i_year']?></td>
+                          <td> <?php     echo $edit_data['i_enrol']?></td>
+                          <td> <?php     echo $edit_data['i_fmark'];?></td>
+                          <td> <?php     echo $edit_data['i_omark'];?></td>
+                          <td> <?php     echo $edit_data['i_grade'];?></td>
+                        </tr>
+
+                        <tr>
+                          <td>GRADUATION </td>
+                          <td> <?php     echo $edit_data['g_board']?></td>
+                          <td> <?php     echo $edit_data['g_year']?></td>
+                          <td> <?php     echo $edit_data['g_enrol']?></td>
+                          <td> <?php     echo $edit_data['g_fmark'];?></td>
+                          <td> <?php     echo $edit_data['g_omark'];?></td>
+                          <td> <?php     echo $edit_data['g_grade'];?></td>
+                        </tr>
+
+                        <tr>
+                          <td>POST GRADUATION </td>
+                          <td> <?php     echo $edit_data['pg_board']?></td>
+                          <td> <?php     echo $edit_data['pg_year']?></td>
+                          <td> <?php     echo $edit_data['pg_enrol']?></td>
+                          <td> <?php     echo $edit_data['pg_fmark'];?></td>
+                          <td> <?php     echo $edit_data['pg_omark'];?></td>
+                          <td> <?php     echo $edit_data['pg_grade'];?></td>
+                        </tr>
+
+                        <tr>
+                          <td>OTHER </td>
+                          <td> <?php     echo $edit_data['o_board']?></td>
+                          <td> <?php     echo $edit_data['o_year']?></td>
+                          <td> <?php     echo $edit_data['o_enrol']?></td>
+                          <td> <?php     echo $edit_data['o_fmark'];?></td>
+                          <td> <?php     echo $edit_data['o_omark'];?></td>
+                          <td> <?php     echo $edit_data['o_grade'];?></td>
+                        </tr>
+
+                        </tbody>
+                      </table>
+
+
+
+
+
                     </div>
-                    <hr>
-                    <div class="row">
-                      <div class="col-sm-6">
-                        <img src="../upload/sdl_data/uid/<?php echo $edit_data['uid_img'];?>" alt="Admin" class="img-fluid" >
 
-                      </div>
-                      <div class="col-sm-6  ">
-                        <img src="../upload/sdl_data/uid/<?php echo $edit_data['uid_img_back'];?>" alt="Admin" class="img-fluid"  >
-
-                      </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                      <div class="col-sm-3">
-                        <h6 class="mb-0">Pan Card No.  :</h6>
-                      </div>
-                      <div class="col-sm-9 text-secondary">
-                        <?php echo $edit_data['pan'];?>
-                      </div>
-                    </div>
-                    <hr>
-
-
-                    <div class="row">
-                      <div class="col-sm-6">
-                        <img src="../upload/sdl_data/pan/<?php echo $edit_data['pan_img'];?>" alt="Admin" class="img-fluid"  >
-
-                      </div>
-
-                    </div>
                   </div>
                 </div>
-
               </div>
             </div>
           </div>

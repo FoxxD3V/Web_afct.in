@@ -101,7 +101,7 @@
 
 </nav>
 
-<div class="horizontal-menu mb-4 shadow static-top bg-gradient-secondary">
+<div class="horizontal-menu mb-4 shadow static-top bg-gradient-primary">
 
   <nav class="bottom-navbar">
     <div class=".container  pl-2  ">
@@ -305,11 +305,6 @@
             </ul>
           </div>
         </li>
-
-
-
-
-
         <li class="nav-item">
           <a class="nav-link"  href="#" data-toggle="modal" data-target="#logoutModal" title="Logout">
             <i class="fas fa-fw fa-sign-out-alt faa-passing animated "></i>

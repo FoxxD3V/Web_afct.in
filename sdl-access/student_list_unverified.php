@@ -97,7 +97,7 @@ if(isset($_REQUEST['unban']))
               <th>REFERRAL</th>
               <th>CONTACT</th>
               <th>STATUS</th>
-              <!--<th>ACTION</th>-->
+              <th>ACTION</th>
 												</tr>
 												</thead>
 												<tfoot>
@@ -109,7 +109,7 @@ if(isset($_REQUEST['unban']))
               <th>REFERRAL</th>
               <th>CONTACT</th>
               <th>STATUS</th>
-              <!--<th>ACTION</th>-->
+              <th>ACTION</th>
 												</tr>
 												</tfoot>
 												<tbody>
@@ -138,17 +138,19 @@ if(isset($_REQUEST['unban']))
                   <td class="bg-gradient-danger text-white">Pending</td>
                 <?php  }  ?>
 
-                                                 <!--           <td>
-                                                                 <a  href="student_list_Unverified_add.php?edit=<?php /* echo $data_user['id']; */?>" ><i  style="color:blue " class="fa fa-edit fa-lg"></i></a>
+                                                          <td>
+                                                            <a  href="student_profile_view.php?id=<?php   echo $data_user['id'];  ?>" title="View Student Profile" ><i  style="color:green " class="fa fa-view fa-eye"></i></a>
 
-                                                               <?php /* if($data_user['status']=='1'){ */?>
-                                                                &nbsp;<a href="student_list_Unverified.php?ban=<?php /* echo $data_user['id']; */?> "  ><i class="fa fa-check fa-lg" style="color:green" title="Ban"></i>  </a>
-                                                                <?php /* } else  { */?>
-                                                                &nbsp;<a href="student_list_Unverified.php?unban=<?php /*echo $data_user['id']; */?> "  ><i class="fa fa-ban fa-lg" style="color:red" title="Unban"></i>  </a>
-                                                                <?php /* }   */?>
-                                                               <a href="javascript:void(0)"  onClick="return del(<?php /*echo $data_user['id']; */?>,'student_list_Unverified.php')"> <i class=" fa-lg fa fa-trash  "  style="color:red" title="Delete"></i>   </a>
+                                                            <!--  <a  href="student_list_Unverified_add.php?edit=<?php /* echo $data_user['id']; */?>" ><i  style="color:blue " class="fa fa-edit fa-lg"></i></a>
 
-                                                            </td>-->
+                                                          <?php /* if($data_user['status']=='1'){ */?>
+                                                           &nbsp;<a href="student_list_Unverified.php?ban=<?php /* echo $data_user['id']; */?> "  ><i class="fa fa-check fa-lg" style="color:green" title="Ban"></i>  </a>
+                                                           <?php /* } else  { */?>
+                                                           &nbsp;<a href="student_list_Unverified.php?unban=<?php /*echo $data_user['id']; */?> "  ><i class="fa fa-ban fa-lg" style="color:red" title="Unban"></i>  </a>
+                                                           <?php /* }   */?>
+                                                          <a href="javascript:void(0)"  onClick="return del(<?php /*echo $data_user['id']; */?>,'student_list_Unverified.php')"> <i class=" fa-lg fa fa-trash  "  style="color:red" title="Delete"></i>   </a>
+-->
+                                                       </td>
 
 
 														</tr>

@@ -101,7 +101,7 @@
 
 </nav>
 
-<div class="horizontal-menu mb-4 shadow static-top bg-gradient-info">
+<div class="horizontal-menu mb-4 shadow static-top bg-gradient-primary">
 
   <nav class="bottom-navbar">
     <div class=".container  pl-2  ">

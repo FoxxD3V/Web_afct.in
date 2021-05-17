@@ -869,54 +869,6 @@ if(isset($_GET['edit']))
                         </div>
                         <div class="card-body">
                           <div class="row clearfix">
-                            <div class="col-sm-12">
-                              <div class="row">
-                                <div class="col-sm-1">
-                                  <div class="form-group ">
-                                    <label ><small>QUALIFICATION</small></label>
-                                  </div>
-                                </div>
-
-                                <div class="col-sm-3">
-                                  <div class="form-group text-center">
-                                    <label><small>BOARD / UNIVERSITY NAME</small></label>
-                                  </div>
-                                </div>
-
-                                <div class="col-sm-1">
-                                  <div class="form-group text-center">
-                                    <label><small>YEAR</small></label>
-                                  </div>
-                                </div>
-
-                                <div class="col-sm-2">
-                                  <div class="form-group text-center">
-                                    <label><small>ENROLLMENT NO.</small></label>
-                                  </div>
-                                </div>
-
-                                <div class="col-sm-2">
-                                  <div class="form-group text-center">
-                                    <label><small>FULL MARKS</small></label>
-                                  </div>
-                                </div>
-
-                                <div class="col-sm-2">
-                                  <div class="form-group text-center">
-                                    <label><small>OBTAINED MARKS</small></label>
-                                  </div>
-                                </div>
-
-                                <div class="col-sm-1">
-                                  <div class="form-group">
-                                    <label><small>Per(%) / GRADE </small></label>
-                                  </div>
-                                </div>
-
-
-
-                              </div>
-                            </div>
 
                             <div class="col-sm-12">
                               <div class="row">
