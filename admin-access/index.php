@@ -141,43 +141,61 @@ require_once("../con_base/functions.inc.php"); ?>
 												<div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: <?/*=$p_status*/?>%"></div>
 											</div>
 										</div>-->
-										<div class="col-xl-3 col-md-6 mb-4" >
+										<div class="col-xl-2 col-md-6 mb-2" >
 											<div class="card <?php if('1'=='2') echo 'border-success'; else echo 'border-danger'; ?>   mt-3" >
-												<div class="card-header">State Director</div>
+												<div class="card-header text-center"><a href="team_state.php" >State Director</a></div>
 												<div class="card-body ">
 													<!--	<h5 class="card-title">All Members</h5>-->
 
-														<p class="card-text text-success">Total Account  : <?php echo member_counter('tbl_team_state')?> </p>
+														<p class="card-text text-success text-center">Total Account  : <?php echo member_counter('tbl_team_state')?> </p>
 													<!--	<p class="card-text text-danger">Account Status : Registered</p>-->
 												</div>
 											</div>
 										</div>
-										<div class="col-xl-3 col-md-6 mb-4" >
+										<div class="col-xl-2 col-md-6 mb-2" >
 										<div class="card <?php if("1"=='1') echo 'border-success'; else echo 'border-danger'; ?>  mt-3" >
-											<div class="card-header">District Director</div>
+											<div class="card-header text-center"><a href="team_city.php" >District Director</a></div>
 											<div class="card-body ">
 											<!--	<h5 class="card-title">Primary card title</h5>-->
-             <p class="card-text text-success">Total Account  : <?php echo member_counter('tbl_team_city')?> </p>
+             <p class="card-text text-success text-center">Total Account  : <?php echo member_counter('tbl_team_city')?> </p>
 
 
 
 											</div>
 										</div>
 										</div>
-										<div class="col-xl-3 col-md-6 mb-4" >
+										<div class="col-xl-2 col-md-6 mb-2" >
 										<div class="card <?php if("2"=='1') echo 'border-success'; else echo 'border-danger'; ?>  mt-3  " >
-											<div class="card-header">Frenchise Director</div>
+											<div class="card-header text-center"><a href="team_fren.php">Frenchise Director</a> </div>
 											<div class="card-body  ">
-             <p class="card-text text-success">Total Account  : <?php echo member_counter('tbl_team_fren')?> </p>
+             <p class="card-text text-success text-center" >Total Account  : <?php echo member_counter('tbl_team_fren')?> </p>
 
            </div>
 										</div>
 										</div>
-										<div class="col-xl-3 col-md-6 mb-4" >
+										<div class="col-xl-2 col-md-6 mb-2" >
 										<div class="card <?php if("1"=='1') echo 'border-success'; else echo 'border-danger'; ?> mt-3  " >
-											<div class="card-header">Students</div>
+            <div class="card-header text-center"><a href="student_list_verified.php" >Students</a></div>
 											<div class="card-body  ">
-             <p class="card-text text-success">Total Account  : <?php //echo member_counter('tbl_team_fren')?> </p>
+             <p class="card-text text-success text-center">Total Account  : <?php echo member_counter('tbl_team_student')?> </p>
+
+           </div>
+										</div>
+										</div>
+										<div class="col-xl-2 col-md-6 mb-2" >
+										<div class="card <?php if("1"=='1') echo 'border-warning'; else echo 'border-danger'; ?> mt-3  " >
+											<div class="card-header text-center"><a href="team_fact_apr.php">Faculty</a></div>
+											<div class="card-body  ">
+             <p class="card-text text-success text-center">Total Account  : <?php echo member_counter('tbl_team_fact')?> </p>
+
+           </div>
+										</div>
+										</div>
+										<div class="col-xl-2 col-md-6 mb-2" >
+										<div class="card <?php if("1"=='1') echo 'border-primary'; else echo 'border-danger'; ?> mt-3  " >
+											<div class="card-header text-center"><a href="master_course.php"> Courses </a></div>
+											<div class="card-body  ">
+             <p class="card-text text-success text-center">Total : <?php echo member_counter('tbl_master_course')?> </p>
 
            </div>
 										</div>

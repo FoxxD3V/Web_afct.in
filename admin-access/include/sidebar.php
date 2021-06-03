@@ -38,19 +38,34 @@
         </a>
         <div id="maste_manager" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a href="master_course_typ.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> Course Type  </a>
-                <a href="master_course.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> Course </a>
-                <a href="master_city.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> City  </a>
-                <a href="master_state.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> State  </a>
+                <a href="master_course_typ_add.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> Add Course Type  </a>
+                <a href="master_course_typ.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> Course Type List </a>
+                <a href="master_course_add.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> Add Course </a>
+                <a href="master_course.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> Course List</a>
+                <a href="master_course_content_add.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> Course Content Add</a>
+                <a href="master_course_content.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> Course Content List</a>
+                <a href="master_city_add.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> Add City  </a>
+                <a href="master_city.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> City List </a>
+                <a href="master_state_add.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> Add State  </a>
+                <a href="master_state.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> State List </a>
             </div>
         </div>
     </li>
 
-  <li class="nav-item <?php if($currentPG=="master_institute.php") echo 'active';?> ">
-    <a class="nav-link" href="master_institute.php">
-      <i class="fas fa-fw fa-university"></i>
-      <span>Institute</span></a>
+  <li class="nav-item <?php  if($currentPG=="master_institute.php" || $currentPG=="master_institute_add.php" || $currentPG=="master_state.php" || $currentPG=="master_course_typ.php"   ) echo 'active  ';  ?> ">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#inst_manager" aria-expanded="true" aria-controls="maste_manager">
+      <i class="fas fa-fw  fa-university"></i>
+      <span>Institute</span>
+    </a>
+    <div id="inst_manager" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <a href="master_institute_add.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> Add Institute </a>
+        <a href="master_institute.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> Institute List  </a>
+        </div>
+    </div>
   </li>
+
+
 
     <li class="nav-item <?php  if($currentPG=="team_state.php" || $currentPG=="team_city.php" || $currentPG=="team_fren.php"   ) echo 'active  ';  ?> ">
 		<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#team_members" aria-expanded="true" aria-controls="team_members">
@@ -61,7 +76,7 @@
 			<div class="bg-white py-2 collapse-inner rounded">
 	 <a href="team_state_add.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> Add State Directors</a>
 	 <a href="team_state.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> State Directors</a>
-	 <a href="team_city_add.php" class="collapse-item"><i class="fas fa-angle-double-right"></i>Add District Directors</a>
+	 <a href="team_city_add.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> Add District Directors</a>
 	 <a href="team_city.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> District Directors</a>
 	 <a href="team_fren_add.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> Add Franchise Directors</a>
 	 <a href="team_fren.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> Franchise Directors</a>
@@ -76,9 +91,9 @@
 		</a>
 		<div id="faculties" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
-	 <a href="team_faculties_add.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> Add New</a>
-	 <a href="team_faculties_new.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> New Application</a>
-	 <a href="team_faculties.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> Faculties</a>
+	 <a href="team_fact_add.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> Add New</a>
+	 <a href="team_fact.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> Faculties List (Pending)</a>
+	 <a href="team_fact_apr.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> Faculties List (Approved)</a>
 			</div>
 		</div>
 	</li>
@@ -105,6 +120,7 @@
     </a>
     <div id="wallet" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
+        <a href="wallet_direct.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> Direct Wallet</a>
         <a href="wallet_bonus.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> Bonus Wallet Status</a>
         <a href="wallet_bonus_add.php" class="collapse-item"><i class="fas fa-angle-double-right"></i> Add Bonus Wallet</a>
        </div>

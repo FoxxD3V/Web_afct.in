@@ -32,6 +32,11 @@ if(isset($_POST['login']))
       $sql = " select * from tbl_team_student where user='$tmpuserid' ";
       $user_role='SL';
     }
+    else if($tmpusertyp=='tl')
+    {
+      $sql = " select * from tbl_team_fact where user='$tmpuserid' ";
+      $user_role='TL';
+    }
     else
     {
         $user_role=$tmpusertyp;
@@ -86,6 +91,11 @@ if(isset($_POST['login']))
             header("Location: sl-access/index.php");
             exit();
         }
+      if($user_role=='TL')
+      {
+        header("Location: tl-access/index.php");
+        exit();
+      }
 
 			/*	if($line['status']==0)
 							{

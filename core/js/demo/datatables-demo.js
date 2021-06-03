@@ -4,6 +4,7 @@ $(document).ready(function() {
     dom: 'Bfrtip',
     responsive: true,
     rowReorder: true,
+    pageLength:50,
     buttons: [
       'copyHtml5',
       'excelHtml5',

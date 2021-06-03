@@ -144,6 +144,8 @@ if(isset($_REQUEST['unban']))
 																<td class="bg-gradient-danger text-white">Pending</td>
 															--><?php /*} */?>
                     <td>
+                      <a  href="user_profile_fren.php?id=<?php   echo $data_user['id'];  ?>" title="View Profile" ><i  style="color:green " class="fa fa-view fa-eye"></i></a>
+
                       <a  href="team_fren_add.php?edit=<?php echo $data_user['id'];?>" ><i  style="color:blue " class="fa fa-edit fa-lg"></i></a> <?php if($data_user['status']==1){?>
                         &nbsp;<a href="team_fren.php?ban=<?php echo $data_user['id'];?> "  ><i class="fa fa-check fa-lg" style="color:green" title="Ban"></i>  </a>
                       <?php } else  { ?>

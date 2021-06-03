@@ -15,12 +15,21 @@ require_once("../con_base/functions.inc.php");
   $eligi =ucwords(trim($_POST['eligi']));
   $detail =ucwords(trim($_POST['detail']));
   $c_fee =ucwords(trim($_POST['c_fee']));
+  $o_c_fee =ucwords(trim($_POST['o_c_fee']));
+
   $sdl_ref_inc =ucwords(trim($_POST['sdl_ref_inc']));
   $ddl_ref_inc =ucwords(trim($_POST['ddl_ref_inc']));
   $fl_ref_inc =ucwords(trim($_POST['fl_ref_inc']));
   $tl_ref_inc =ucwords(trim($_POST['tl_ref_inc']));
   $sl_ref_inc =ucwords(trim($_POST['sl_ref_inc']));
   $team_inc =ucwords(trim($_POST['team_inc']));
+
+  $o_sdl_ref_inc =ucwords(trim($_POST['o_sdl_ref_inc']));
+  $o_ddl_ref_inc =ucwords(trim($_POST['o_ddl_ref_inc']));
+  $o_fl_ref_inc =ucwords(trim($_POST['o_fl_ref_inc']));
+  $o_tl_ref_inc =ucwords(trim($_POST['o_tl_ref_inc']));
+  $o_sl_ref_inc =ucwords(trim($_POST['o_sl_ref_inc']));
+  $o_team_inc =ucwords(trim($_POST['o_team_inc']));
   $ip=get_ip();
             $sql_reg="insert into tbl_master_course set              
             `c_typ`='$c_typ',            
@@ -32,12 +41,19 @@ require_once("../con_base/functions.inc.php");
             `eligi`='$eligi',            
             `detail`='$detail',            
             `c_fee`='$c_fee',            
+            `o_c_fee`='$o_c_fee',            
             `sdl_ref_inc`='$sdl_ref_inc',            
             `ddl_ref_inc`='$ddl_ref_inc',            
             `fl_ref_inc`='$fl_ref_inc',            
             `tl_ref_inc`='$tl_ref_inc',            
             `sl_ref_inc`='$sl_ref_inc',            
-            `team_inc`='$team_inc',            
+            `team_inc`='$team_inc',   
+             `o_sdl_ref_inc`='$o_sdl_ref_inc',            
+            `o_ddl_ref_inc`='$o_ddl_ref_inc',            
+            `o_fl_ref_inc`='$o_fl_ref_inc',            
+            `o_tl_ref_inc`='$o_tl_ref_inc',            
+            `o_sl_ref_inc`='$o_sl_ref_inc',            
+            `o_team_inc`='$o_team_inc',         
             `status`='0',              
             `ipaddress` ='$ip'  ";
 
@@ -65,6 +81,15 @@ require_once("../con_base/functions.inc.php");
   $eligi =ucwords(trim($_POST['eligi']));
   $detail =ucwords(trim($_POST['detail']));
   $c_fee =ucwords(trim($_POST['c_fee']));
+  $o_c_fee =ucwords(trim($_POST['o_c_fee']));
+
+  $o_sdl_ref_inc =ucwords(trim($_POST['o_sdl_ref_inc']));
+  $o_ddl_ref_inc =ucwords(trim($_POST['o_ddl_ref_inc']));
+  $o_fl_ref_inc =ucwords(trim($_POST['o_fl_ref_inc']));
+  $o_tl_ref_inc =ucwords(trim($_POST['o_tl_ref_inc']));
+  $o_sl_ref_inc =ucwords(trim($_POST['o_sl_ref_inc']));
+  $o_team_inc =ucwords(trim($_POST['o_team_inc']));
+
   $sdl_ref_inc =ucwords(trim($_POST['sdl_ref_inc']));
   $ddl_ref_inc =ucwords(trim($_POST['ddl_ref_inc']));
   $fl_ref_inc =ucwords(trim($_POST['fl_ref_inc']));
@@ -84,12 +109,19 @@ require_once("../con_base/functions.inc.php");
             `eligi`='$eligi',            
             `detail`='$detail',            
             `c_fee`='$c_fee',            
+            `o_c_fee`='$o_c_fee',            
             `sdl_ref_inc`='$sdl_ref_inc',            
             `ddl_ref_inc`='$ddl_ref_inc',            
             `fl_ref_inc`='$fl_ref_inc',            
             `tl_ref_inc`='$tl_ref_inc',            
             `sl_ref_inc`='$sl_ref_inc',            
-            `team_inc`='$team_inc'
+            `team_inc`='$team_inc',
+             `o_sdl_ref_inc`='$o_sdl_ref_inc',            
+            `o_ddl_ref_inc`='$o_ddl_ref_inc',            
+            `o_fl_ref_inc`='$o_fl_ref_inc',            
+            `o_tl_ref_inc`='$o_tl_ref_inc',            
+            `o_sl_ref_inc`='$o_sl_ref_inc',            
+            `o_team_inc`='$o_team_inc'
              where id='$c_id'
              ";
 
@@ -259,7 +291,7 @@ if(isset($_GET['edit']))
                         <div class="col-lg-12 col-md-12 col-sm-12">
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">   Commission Information  </strong> </h6>
+                                    <h6 class="m-0 font-weight-bold text-primary"> Online  Commission Information  </strong> </h6>
 
 
                                 </div>
@@ -267,30 +299,58 @@ if(isset($_GET['edit']))
                                     <div class="row clearfix">
                                         <div class="col-sm-12">
                                             <div class="form-group">
-                                              <label class="label">State Director Referral Income</label>
+                                              <label class="label">Online State Director Referral Income</label>
                                                 <input type="number"  class="form-control text-uppercase"   name="sdl_ref_inc"  value="<?php   if(isset($_GET['edit'])) echo $edit_data['sdl_ref_inc']; else echo '0';?>">
                                             </div>
                                             <div class="form-group">
-                                              <label class="label">District Director Referral Income</label>
+                                              <label class="label">Online District Director Referral Income</label>
                                                 <input type="number"  class="form-control text-uppercase"   name="ddl_ref_inc" value="<?php   if(isset($_GET['edit'])) echo $edit_data['ddl_ref_inc']; else echo '0';?>">
                                             </div>
-                                             <div class="form-group">
-                                               <label class="label">Franchise Director Referral Income</label>
+                                            <div class="form-group">
+                                               <label class="label">Online Franchise Director Referral Income</label>
                                                <input type="number"  class="form-control text-uppercase"   name="fl_ref_inc" value="<?php   if(isset($_GET['edit'])) echo $edit_data['fl_ref_inc']; else echo '0';?>">
                                             </div>
-
                                              <div class="form-group">
-                                               <label class="label">Teacher Referral Income</label>
+                                               <label class="label">Online Teacher Referral Income</label>
                                                <input type="number"  class="form-control text-uppercase"   name="tl_ref_inc" value="<?php   if(isset($_GET['edit'])) echo $edit_data['tl_ref_inc']; else echo '0';?>">
                                             </div>
                                              <div class="form-group">
-                                               <label class="label">Student Referral Income</label>
+                                               <label class="label">Online Student Referral Income</label>
                                                <input type="number"  class="form-control text-uppercase"   name="sl_ref_inc" value="<?php   if(isset($_GET['edit'])) echo $edit_data['sl_ref_inc']; else echo '0';?>">
                                             </div>
                                             <div class="form-group">
-                                              <label class="label">Team Distribution Income</label>
+                                              <label class="label">Online Team Distribution Income</label>
                                               <input type="number"  class="form-control text-uppercase"   name="team_inc" value="<?php   if(isset($_GET['edit'])) echo $edit_data['team_inc']; else echo '0';?>">
                                             </div>
+                                          <div class="card-header py-3">
+                                            <h6 class="m-0 font-weight-bold text-primary"> Offline  Commission Information  </strong> </h6>
+
+
+                                          </div>
+                                          <div class="form-group">
+                                            <label class="label">Offline State Director Referral Income</label>
+                                            <input type="number"  class="form-control text-uppercase"   name="o_sdl_ref_inc"  value="<?php   if(isset($_GET['edit'])) echo $edit_data['o_sdl_ref_inc']; else echo '0';?>">
+                                          </div>
+                                          <div class="form-group">
+                                            <label class="label">Offline District Director Referral Income</label>
+                                            <input type="number"  class="form-control text-uppercase"   name="o_ddl_ref_inc" value="<?php   if(isset($_GET['edit'])) echo $edit_data['o_ddl_ref_inc']; else echo '0';?>">
+                                          </div>
+                                          <div class="form-group">
+                                            <label class="label">Offline Franchise Director Referral Income</label>
+                                            <input type="number"  class="form-control text-uppercase"   name="o_fl_ref_inc" value="<?php   if(isset($_GET['edit'])) echo $edit_data['o_fl_ref_inc']; else echo '0';?>">
+                                          </div>
+                                          <div class="form-group">
+                                            <label class="label">Offline Teacher Referral Income</label>
+                                            <input type="number"  class="form-control text-uppercase"   name="o_tl_ref_inc" value="<?php   if(isset($_GET['edit'])) echo $edit_data['o_tl_ref_inc']; else echo '0';?>">
+                                          </div>
+                                          <div class="form-group">
+                                            <label class="label">Offline Student Referral Income</label>
+                                            <input type="number"  class="form-control text-uppercase"   name="o_sl_ref_inc" value="<?php   if(isset($_GET['edit'])) echo $edit_data['o_sl_ref_inc']; else echo '0';?>">
+                                          </div>
+                                          <div class="form-group">
+                                            <label class="label">Offline Team Distribution Income</label>
+                                            <input type="number"  class="form-control text-uppercase"   name="o_team_inc" value="<?php   if(isset($_GET['edit'])) echo $edit_data['o_team_inc']; else echo '0';?>">
+                                          </div>
 
 
 
@@ -325,8 +385,13 @@ if(isset($_GET['edit']))
                                     <div class="row clearfix">
                                         <div class="col-sm-12">
                                             <div class="form-group">
-                                              <label class="label">Course Fees</label>
+                                              <label class="label">Online Course   and Certificate Fee</label>
                                               <input type="number" value="<?php   if(isset($_GET['edit'])) echo $edit_data['c_fee']; else echo '0';?>" class="form-control text-uppercase"   name="c_fee" required >
+                                            </div>
+
+                                            <div class="form-group">
+                                              <label class="label">Offline Course and Certificate Fee</label>
+                                              <input type="number" value="<?php   if(isset($_GET['edit'])) echo $edit_data['o_c_fee']; else echo '0';?>" class="form-control text-uppercase"   name="o_c_fee" required >
                                             </div>
                                             <div class="form-group  ">
                                                 <?php   if(isset($_GET['edit'])) { ?>

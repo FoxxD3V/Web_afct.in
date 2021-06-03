@@ -65,100 +65,114 @@ require_once("../con_base/functions.inc.php");
                                     </div>
                                     <div class="card-body">
 										<div class="table-responsive">
-											<table class="table table-bordered" id="dataTableFullPage" width="100%" cellspacing="0">
-												<thead>
-												<tr>
-													<th >#</th>
-													<th>INFO</th>
-                                                    <th>FEE</th>
-													<th>DURATION</th>
-													<th>ELIGIBILITY</th>
-                                                     <th>DETAILS</th>
-												</tr>
-												</thead>
-												<tfoot>
-												<tr>
-                                                    <th >#</th>
-                                                    <th>INFO</th>
-                                                    <th>FEE</th>
-                                                    <th>DURATION</th>
-                                                    <th>ELIGIBILITY</th>
-                                                    <th>DETAILS</th>
-												</tr>
-												</tfoot>
-												<tbody>
-												<?php
-                                                $jcount=0;
-                                                $qry_user= mysqli_query($DB_LINK,"SELECT * FROM tbl_master_course where c_typ='".$_GET['type']."' order by id desc ");
-                                                foreach($qry_user as $data_user )
-                                                {
-                                                    $jcount++;
-                                                ?>
-														<tr>
-															<td><?php echo $jcount;?></td>
-															<td><?php echo $data_user['c_name'];?><br>
-                                                                <small>[<?php echo $data_user['c_code'];?>] <?php echo $data_user['c_sort_name'];?></small>
-                                                            </td>
-                                                            <td> <?php echo $data_user['c_fee'];?></td>
-                                                            <td><?php echo $data_user['c_dur'];?> <?php echo $data_user['c_dur_typ'];?></td>
-                                                            <td> <?php echo $data_user['eligi'];?></td>
+
+            <table class="table table-bordered" id="dataTableFullPage" width="100%" cellspacing="0">
+              <thead>
+              <tr>
+                <th>#</th>
+                <th>CODE</th>
+                <th>INFO</th>
+                <th>ONLINE COURSE + CERTIFICATE FEE</th>
+                <th>OFFLINE COURSE + CERTIFICATE FEE</th>
+                <th>DURATION</th>
+
+                <th>DETAILS</th>
+              </tr>
+              </thead>
+              <tfoot>
+              <tr>
+                <th>#</th>
+                <th>CODE</th>
+                <th>INFO</th>
+                <th>ONLINE COURSE + CERTIFICATE FEE</th>
+                <th>OFFLINE COURSE + CERTIFICATE FEE</th>
+                <th>DURATION</th>
+
+                <th>DETAILS</th>
+              </tr>
+              </tfoot>
+              <tbody>
+              <?php
+              $jcount = 0;
+              $qry_user = mysqli_query($DB_LINK, "SELECT * FROM tbl_master_course where c_typ='" . $_GET['type'] . "' order by id desc ");
+              foreach ($qry_user as $data_user) {
+                $jcount++;
+                ?>
+                <tr>
+                  <td><?php echo $jcount; ?></td>
+                  <td> <?php echo $data_user['c_sort_name']; ?> </td>
+                  <td><?php echo $data_user['c_name']; ?><br>
+                    <small>[<?php echo $data_user['c_code']; ?>] <?php echo $data_user['c_sort_name']; ?></small>
+
+                    <br>Eligibility : <?php echo $data_user['eligi']; ?></td>
+                  <td><?php echo $data_user['c_fee']; ?>/-</td>
+                  <td><?php echo $data_user['o_c_fee']; ?>/-</td>
+                  <td><?php echo $data_user['c_dur']; ?> <?php echo course_dur_data($data_user['c_dur_typ']); ?></td>
 
 
+                  <td>
+                    <!--   <a href="javascript:void(0);" title="<?php /*echo $data_user['detail'];*/
+                    ?> "><i  style="color:green " class="fa fa-info-circle fa-lg"> </i></a>
+                                                            -->
+                    <button type="button" class="btn btn-sm btn-warning" data-toggle="modal"
+                            data-target="#exampleModal<?php echo $jcount; ?>">
+                      View
+                    </button>
 
+                    <div class="modal fade" id="exampleModal<?php echo $jcount; ?>" tabindex="-1" role="dialog"
+                         aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Course Details</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <?php
+                            echo '<pre>';
+                            echo $data_user['detail'];
+                            echo '</pre>';
+                            ?>
 
-                                                            <td>
-                                                            <!--   <a href="javascript:void(0);" title="<?php /*echo $data_user['detail'];*/?> "><i  style="color:green " class="fa fa-info-circle fa-lg"> </i></a>
-                                                            -->  <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#exampleModal<?php echo $jcount;?>">
-                                                                View
-                                                              </button>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 
-                                                              <div class="modal fade" id="exampleModal<?php echo $jcount;?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                                <div class="modal-dialog" role="document">
-                                                                  <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                      <h5 class="modal-title" id="exampleModalLabel">Course Details</h5>
-                                                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                        <span aria-hidden="true">&times;</span>
-                                                                      </button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                      <?php
-                                                                      echo '<pre>';
-                                                                      echo $data_user['detail'];
-                                                                      echo '</pre>';
-                                                                      ?>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
 
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <script> $('#myModal<?php echo $jcount;?>').on('shown.bs.modal', function () {
+                            $('#myInput').trigger('focus')
+                        })</script>
 
-                                                                    </div>
-                                                                  </div>
-                                                                </div>
-                                                              </div>
-
-                                                              <script> $('#myModal<?php echo $jcount;?>').on('shown.bs.modal', function () {
-                                                                      $('#myInput').trigger('focus')
-                                                                  })</script>
-
-                                                              <!--
-                                                                                                                              <a  href="master_course_add.php?edit=<?php /*echo $data_user['id'];*/?>" ><i  style="color:blue " class="fa fa-edit fa-lg"></i></a> <?php /*if($data_user['status']==1){*/?>
-                                                                                                                              &nbsp;<a href="master_course.php?ban=<?php /*echo $data_user['id'];*/?> "  ><i class="fa fa-check fa-lg" style="color:green" title="Ban"></i>  </a>
-                                                                                                                              <?php /*} else  { */?>
-                                                                                                                              &nbsp;<a href="master_course.php?unban=<?php /*echo $data_user['id'];*/?> "  ><i class="fa fa-ban fa-lg" style="color:red" title="Unban"></i>  </a>
-                                                                                                                              <?php /*}  */?>
-                                                                                                                              <a href="javascript:void(0)"  onClick="return del(<?php /*echo $data_user['id'];*/?>,'master_course.php')"> <i class=" fa-lg fa fa-trash  "  style="color:red" title="Delete"></i>   </a>
+                    <!--
+                                                                                                                              <a  href="master_course_add.php?edit=<?php /*echo $data_user['id'];*/
+                    ?>" ><i  style="color:blue " class="fa fa-edit fa-lg"></i></a> <?php /*if($data_user['status']==1){*/
+                    ?>
+                                                                                                                              &nbsp;<a href="master_course.php?ban=<?php /*echo $data_user['id'];*/
+                    ?> "  ><i class="fa fa-check fa-lg" style="color:green" title="Ban"></i>  </a>
+                                                                                                                              <?php /*} else  { */
+                    ?>
+                                                                                                                              &nbsp;<a href="master_course.php?unban=<?php /*echo $data_user['id'];*/
+                    ?> "  ><i class="fa fa-ban fa-lg" style="color:red" title="Unban"></i>  </a>
+                                                                                                                              <?php /*}  */
+                    ?>
+                                                                                                                              <a href="javascript:void(0)"  onClick="return del(<?php /*echo $data_user['id'];*/
+                    ?>,'master_course.php')"> <i class=" fa-lg fa fa-trash  "  style="color:red" title="Delete"></i>   </a>
                                                               -->
-                                                            </td>
+                  </td>
 
+                </tr>
+              <?php } ?>
 
-														</tr>
-												 <?php  } ?>
+              </tbody>
+            </table>
 
-
-												</tbody>
-											</table>
-										</div>
+          </div>
 									</div>
 								</div>
 

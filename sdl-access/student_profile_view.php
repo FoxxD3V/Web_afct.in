@@ -459,6 +459,8 @@ require_once("../con_base/functions.inc.php");
                         <h4><?php echo $edit_data['s_title']?> <?php echo $edit_data['t_name']?></h4>
                         <p class="text-secondary mb-1">Student</p>
                         <p class="text-muted font-size-sm">Reg Id : <?php echo  ($edit_data['user'])?>  </p>
+                        <p class="text-muted font-size-sm">Reg Type : <?php echo  ($edit_data['reg_typ'])?>  </p>
+
                         <p class="text-muted font-size-sm">DOJ : <?php echo date_dmy_small($edit_data['doj'])?>  </p>
                         <p class="text-muted font-size-sm"> <?php echo  ($edit_data['c_code'])?> / <?php echo  ($edit_data['c_name'])?>  </p>
                        <!-- <button class="btn btn-primary">Follow</button>

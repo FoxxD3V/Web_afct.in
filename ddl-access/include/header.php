@@ -9,8 +9,11 @@
   <!-- Topbar Search -->
   <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 "><!--navbar-search-->
     <div class="input-group">
-      <h6 class="m-0 font-weight-bold text-primary"><?php echo ucfirst( $_SESSION[ 'a_name' ]);?> [<?php echo $_SESSION[ 'a_userid' ];?>]</h6>
-    </div>
+      <h6 class="m-0 font-weight-bold text-primary">
+        <?php echo ucfirst( $_SESSION[ 'a_name' ]);?>
+        [<?php echo $_SESSION[ 'a_userid' ];?>] -
+        [<?php echo login_role_fullname($_SESSION[ 'user_role' ]);?>]
+      </h6></div>
   </div>
 
   <!-- Topbar Navbar -->
@@ -204,11 +207,22 @@
           <div class="submenu">
             <ul class="submenu-item">
               <li class="nav-item">
-                <a class="nav-link" href="#">Continue Classes</a>
+                <a class="nav-link" href="#">Continue Class</a>
+              </li>
+                <li class="nav-item">
+                <a class="nav-link" href="#">Upcoming Class </a>
+              </li>
+
+              <li class="nav-item">
+              <a href="master_course_content_add.php" class="nav-link">  Course Content Add</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Revise Classes </a>
+              <a href="master_course_content.php" class="nav-link">  Course Content List</a>
               </li>
+
+
+
+
 
             </ul>
           </div>
@@ -263,6 +277,9 @@
           </a>
           <div class="submenu">
             <ul class="submenu-item">
+              <li class="nav-item">
+                <a class="nav-link" href="wallet_bonus.php">Bonus Wallet </a>
+              </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">Scholarship Wallet </a>
               </li>

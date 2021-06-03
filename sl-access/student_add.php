@@ -56,8 +56,10 @@ if(isset($_POST['save']))
 
     $Session_name = date("Y");
 
-    $new_id = $Session_name . "" . $c_sort_name . rand(100000, 999999);
+    //$new_id = $Session_name . "" . $c_sort_name . rand(100000, 999999);
+    $new_id = time();
     $pass = enc($_POST['pass']);
+    $reg_typ =  (trim($_POST['reg_typ']));
     $s_title =  (trim($_POST['s_title']));
     $t_name = strtoupper(trim($_POST['t_name']));
     $m_name = strtoupper(trim($_POST['m_name']));
@@ -141,6 +143,7 @@ if(isset($_POST['save']))
      $sql_reg = "insert into  tbl_team_student set 
   `user`='$new_id',
   `pass`='$pass',
+   `reg_typ`='$reg_typ',
   `s_title`='$s_title',
   `t_name`='$t_name',
   `m_name`='$m_name',
@@ -212,9 +215,9 @@ if(isset($_POST['save']))
 
     if (mysqli_query($DB_LINK, $sql_reg)) {
       //Mail is attached on page
-      $text = 'Congratulation your registration is successfully completed with name ' . $t_name . ' your login ID- ' . $new_id . ' Password- ' . dec($pass) . ' Warm Regards ' . $SITE_NAME;
+      $text = 'Congratulation your registration is successfully completed with name ' . $t_name . ' your login ID- ' . $new_id . ' Password- ' . dec($pass) . ' for login visit www.afct.in  Warm Regards ' . $SITE_NAME;
       mail_sender($email, "yes", $text, $t_name, "Student Registration : AFCT ");
-      $_SESSION['msg'] = array('success', 'Registration Successfully completed your login ID- ' . $new_id . ' Password- ' . dec($pass));
+      $_SESSION['msg'] = array('success', $text);
       header("Location: student_add.php");
       exit;
     } else {
@@ -506,61 +509,87 @@ if(isset($_GET['edit']))
                         <div class="card-body">
                           <div class="row clearfix">
                             <div class="col-sm-12">
-                              <div class="form-group  ">
-                                <label> Date of Admission </label>
-                                <div class="input-group mb-3">
-                                  <div class="input-group-prepend">
-                                    <span class="input-group-text" id="basic-addon1"><i class="far fa-calendar-alt"></i></span>
+
+
+
+
+                              <div class="form-group">
+
+                                <div class="row">
+                                  <div class="col-sm-6">
+                                    <div class="form-group">
+                                      <label> Registration Type</label>
+                                      <select class="form-control  text-uppercase" name="reg_typ" id="reg_typ"   required   >
+                                        <option value="">--Select Registration Type--</option>
+                                        <option value="Online" <?php  if(isset($_GET['edit']))  if($edit_data['reg_typ']=="Online") { echo 'selected';   } ?>>Online</option>
+                                        <option value="Offline" <?php  if(isset($_GET['edit']))  if($edit_data['reg_typ']=="Offline") { echo 'selected';   } ?>>Offline</option>
+
+                                      </select>
+
+                                    </div>
                                   </div>
 
-                                  <input readonly value="<?php   if(isset($_GET['edit'])) echo $edit_data['doj'];?>"  type="text"   class="form-control datepicker2 text-uppercase " aria-required="true"  name="doj" required placeholder="Please choose Date of Admission *" aria-label="Username" aria-describedby="basic-addon1">
+
+                                  <div class="col-sm-6">
+                                    <label> Date of Admission </label>
+                                    <div class="input-group mb-3">
+                                      <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon1"><i class="far fa-calendar-alt"></i></span>
+                                      </div>
+
+                                      <input readonly value="<?php   if(isset($_GET['edit'])) echo $edit_data['doj'];?>"  type="text"   class="form-control datepicker2 text-uppercase " aria-required="true"  name="doj" required placeholder="Please choose Date of Admission *" aria-label="Username" aria-describedby="basic-addon1">
 
 
+                                    </div>
+
+                                    <div class="input-append date">
+
+
+
+                                    </div>
+                                  </div>
                                 </div>
 
-                                <div class="input-append date">
 
-                                  </span>
-                                </div>
 
                               </div>
 
                               <div class="form-group">
 
-                                  <div class="row">
-                                    <div class="col-sm-6">
-                                      <div class="form-group">
-                                        <label> Course Type</label>
-                                        <select class="form-control  text-uppercase" name="c_typ" id="c_typ"   required  onChange="onchangeajax_for_course_cat(this.value);">
-                                          <option value="">--Select Course Type--</option>
-                                          <?php $sql=mysqli_query($DB_LINK,"select * from tbl_master_course_typ   order by t_name asc") or die(mysqli_error());
-                                          foreach($sql as $state)
-                                          {
-                                            ?>
-                                            <option value="<?php echo $state['t_name'];?>" <?php  if(isset($_GET['edit']))  if($edit_data['t_name']==$state['t_name']) { echo 'selected';   } ?>><?php echo $state['t_name'];?></option>
-                                          <?php } ?>
-                                        </select>
+                                <div class="row">
+                                  <div class="col-sm-6">
+                                    <div class="form-group">
+                                      <label> Course Type</label>
+                                      <select class="form-control  text-uppercase" name="c_typ" id="c_typ"   required  onChange="onchangeajax_for_course_cat(this.value);">
+                                        <option value="">--Select Course Type--</option>
+                                        <?php $sql=mysqli_query($DB_LINK,"select * from tbl_master_course_typ   order by t_name asc") or die(mysqli_error());
+                                        foreach($sql as $state)
+                                        {
+                                          ?>
+                                          <option value="<?php echo $state['t_name'];?>" <?php  if(isset($_GET['edit']))  if($edit_data['t_name']==$state['t_name']) { echo 'selected';   } ?>><?php echo $state['t_name'];?></option>
+                                        <?php } ?>
+                                      </select>
 
-                                      </div>
-                                    </div>
-
-
-                                    <div class="col-sm-6"><label>Course Name</label>
-                                      <div class="form-group" id="get_course">
-
-                                        <select class="form-control  text-uppercase" name="c_code" id="c_code"   required  onChange="onchangeajax_for_course(this.value);">
-                                          <option value="">--Select Course--</option>
-                                          <?php $sql=mysqli_query($DB_LINK,"select * from tbl_master_course where status=1 order by c_name asc") or die(mysqli_error());
-                                          foreach($sql as $state)
-                                          {
-                                            ?>
-                                            <option value="<?php echo $state['c_code'];?>" <?php  if(isset($_GET['edit']))  if($edit_data['course_id']==$state['c_code']) { echo 'selected';   } ?>>[<?php echo $state['c_code'];?>] - <?php echo $state['c_sort_name'];?> - <?php echo $state['c_name'];?></option>
-                                          <?php } ?>
-                                        </select>
-
-                                      </div>
                                     </div>
                                   </div>
+
+
+                                  <div class="col-sm-6"><label>Course Name</label>
+                                    <div class="form-group" id="get_course">
+
+                                      <select class="form-control  text-uppercase" name="c_code" id="c_code"   required  onChange="onchangeajax_for_course(this.value);">
+                                        <option value="">--Select Course--</option>
+                                        <?php $sql=mysqli_query($DB_LINK,"select * from tbl_master_course where status=1 order by c_name asc") or die(mysqli_error());
+                                        foreach($sql as $state)
+                                        {
+                                          ?>
+                                          <option value="<?php echo $state['c_code'];?>" <?php  if(isset($_GET['edit']))  if($edit_data['course_id']==$state['c_code']) { echo 'selected';   } ?>>[<?php echo $state['c_code'];?>] - <?php echo $state['c_sort_name'];?> - <?php echo $state['c_name'];?></option>
+                                        <?php } ?>
+                                      </select>
+
+                                    </div>
+                                  </div>
+                                </div>
 
 
 

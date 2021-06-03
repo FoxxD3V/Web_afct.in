@@ -1918,11 +1918,12 @@ function course_dur_data($typ)
 
 function login_role_fullname($role)
 {
+  $role=strtolower($role);
   $tab_name='';
   if($role=='sdl')
     $tab_name="State Director";
   if($role=='ddl')
-    $tab_name="City Director";
+    $tab_name="District Director";
   if($role=='fdl')
     $tab_name="Franchise Director";
   if($role=='sl')

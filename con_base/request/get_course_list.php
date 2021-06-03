@@ -1,9 +1,9 @@
 <?php
 include("../functions.inc.php");
-    $type_name=$_POST['type_name']; ?>
-    <select class="form-control  text-uppercase" name="c_code" id="c_code"   required  onChange="onchangeajax_for_course(this.value);">
+      $type_name=$_POST['type_name'];  ?>
+     <select class="form-control  text-uppercase" name="c_code" id="c_code"   required  onChange="onchangeajax_for_course(this.value);">
                                           <option value="">--Select Course--</option>
-                                          <?php $sql=mysqli_query($DB_LINK,"select * from tbl_master_course where status=1 and c_typ='$type_name' order by c_name asc") or die(mysqli_error());
+                                          <?php $sql=mysqli_query($DB_LINK,"select * from tbl_master_course where status='1' and c_typ='$type_name' order by c_name asc") or die(mysqli_error());
                                           foreach($sql as $state)
                                           {
                                             ?>
