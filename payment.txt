@@ -3,8 +3,9 @@ Server Payment            11000
 Extra Module Exam Paper   15000
 Extra Work                 5000
 Domain 2 Year              2000
+Basic App Development      5000
 -----------------------------------
-Total                      73000
+Total                      78000
 ------------------------------------
 
 
@@ -16,7 +17,9 @@ Payment Received
 03-05-21            5000
 17-05-21            6000
 18-05-21            2550
+03-06-21            7000
+03-06-21            1000   (For App Adv)
 ---------------------------
-Total               24550
+Total               32550
 ----------------------------
 

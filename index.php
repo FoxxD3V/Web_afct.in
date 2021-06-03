@@ -68,20 +68,20 @@ require_once("con_base/functions.inc.php");
                       </div>
                     </div>
                     <button  type="submit" name="login" href="index.php" class="btn btn-primary btn-user btn-block">
-                       Login Now
+                        <i class="fas fa-sign-in-alt"></i> Login Now
                     </button>
-                    <!--<hr>
-                    <a href="index.html" class="btn btn-google btn-user btn-block">
-                      <i class="fab fa-google fa-fw"></i> Login with Google
+                    <hr>
+                    <a href="#"   onclick="fun()">
+                         <img src="core/img/android_btn.png" class="img-fluid img-responsive"/>
                     </a>
-                    <a href="index.html" class="btn btn-facebook btn-user btn-block">
+                    <!--<a href="index.html" class="btn btn-facebook btn-user btn-block">
                       <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
-                    </a>-->
+                    </a>--><!---->
                   </form>
-                  <hr>
+                  <!--<hr>
                   <div class="text-center">
                     <a class="small" href="#">Forgot Password?</a>
-                  </div>
+                  </div>-->
                   <div class="text-center">
 																			<?php if(isset($_SESSION['warn_msg'])) {
 																				echo $_SESSION['warn_msg'];
@@ -125,6 +125,15 @@ require_once("con_base/functions.inc.php");
 				type: "<?php echo $result[1];?>"
 			});
 			<?php $_SESSION['msg']=''; } }?>
+
+            function fun()
+            {
+                swal({
+                    title: "App Update",
+                    text: "AFCT Android App Coming Soon",
+                    type: "success"
+                });
+            }
 		</script>
 
 </body>

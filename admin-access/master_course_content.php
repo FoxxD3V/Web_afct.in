@@ -170,7 +170,7 @@ if (isset($_REQUEST['unban'])) {
                          href="master_course_content_view.php?id=<?php echo $data_user['id']; ?>&view=video">View</a>
                     </td>
 
-                    <td><?php echo $data_user['posted_by']; ?><br><?php echo date_dmy_small($data_user['auto_date']); ?> </td>
+                    <td><?php echo $data_user['posted_by']; ?><br><?php echo date_dmy_small($data_user['auto_date']); ?><br>For : <?php echo $data_user['state_name']; ?> </td>
 
 
                     <td>

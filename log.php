@@ -4,6 +4,7 @@ if(isset($_POST['login']))
 {
 
     $user_role="";
+    $user_state="";
     $tmpusertyp=trim(clean($_POST['login_typ']));
     $tmpuserid=trim(clean($_POST['loginid']));
     $tmppassword=trim(enc($_POST['pass']));
@@ -73,26 +74,31 @@ if(isset($_POST['login']))
         }
         if($user_role=='SDL')
         {
+            $_SESSION[ 'a_state_id' ] = $line[ 'a_state_id' ];
             header("Location: sdl-access/index.php");
             exit();
         }
         if($user_role=='DDL')
         {
+            $_SESSION[ 'a_state_id' ] = $line[ 'a_state_id' ];
             header("Location: ddl-access/index.php");
             exit();
         }
         if($user_role=='FDL')
         {
+            $_SESSION[ 'a_state_id' ] = $line[ 'a_state_id' ];
             header("Location: fdl-access/index.php");
             exit();
         }
         if($user_role=='SL')
         {
+            $_SESSION[ 'a_state_id' ] = $line[ 'state_id' ];
             header("Location: sl-access/index.php");
             exit();
         }
       if($user_role=='TL')
       {
+        $_SESSION[ 'a_state_id' ] = $line[ 'state_id' ];
         header("Location: tl-access/index.php");
         exit();
       }

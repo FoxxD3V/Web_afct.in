@@ -207,10 +207,10 @@
           <div class="submenu">
             <ul class="submenu-item">
               <li class="nav-item">
-                <a class="nav-link" href="#">Continue Class</a>
+                <a class="nav-link" href="class_continue.php">Continue Class</a>
               </li>
-                <li class="nav-item">
-                <a class="nav-link" href="#">Upcoming Class </a>
+                 <li class="nav-item">
+                <a class="nav-link" href="class_upcoming.php">Upcoming Class </a>
               </li>
 
               <li class="nav-item">
