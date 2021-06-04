@@ -1,5 +1,45 @@
 <?php
 require_once("con_base/functions.inc.php");
+if(isset($_SESSION[ 'a_id' ]))
+{
+    $user_role=$_SESSION[ 'user_role' ]  ;
+
+    if($user_role=='admin')
+    {
+        header("Location: admin-access/index.php");
+        exit();
+    }
+    if($user_role=='SDL')
+    {
+        //$_SESSION[ 'a_state_id' ] = $line[ 'a_state_id' ];
+        header("Location: sdl-access/index.php");
+        exit();
+    }
+    if($user_role=='DDL')
+    {
+        //$_SESSION[ 'a_state_id' ] = $line[ 'a_state_id' ];
+        header("Location: ddl-access/index.php");
+        exit();
+    }
+    if($user_role=='FDL')
+    {
+        //$_SESSION[ 'a_state_id' ] = $line[ 'a_state_id' ];
+        header("Location: fdl-access/index.php");
+        exit();
+    }
+    if($user_role=='SL')
+    {
+        //$_SESSION[ 'a_state_id' ] = $line[ 'state_id' ];
+        header("Location: sl-access/index.php");
+        exit();
+    }
+    if($user_role=='TL')
+    {
+        //$_SESSION[ 'a_state_id' ] = $line[ 'state_id' ];
+        header("Location: tl-access/index.php");
+        exit();
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -43,10 +83,21 @@ require_once("con_base/functions.inc.php");
                   <div class="text-center">
 
                       <img src="core/img/logo.jpg" class="img-fluid"/>
-                    <h1 class="h4 text-gray-900 mb-4"> </h1>
+
                   </div>
                   <form class="user" action="log.php" method="post">
+                      <?php if(isset($_GET['log_typ']))
+                      {
+                          ?>
+                          <input name="login_typ" type="hidden" value="<?=$_GET['log_typ']?>" >
+                          <h1 class="h4 text-gray-900 mb-4 text-center" ><?php echo login_role_fullname($_GET['log_typ']);?> Login </h1>
+                          <hr>
+
+                          <?php
+                      } else
+                      {?>
                       <div class="form-group">
+
                           <select class="form-control text-uppercase" name="login_typ"   >
                               <option value="">-- Select Login --</option>
                               <option value="sdl">STATE DIRECTOR LOGIN</option>
@@ -55,6 +106,7 @@ require_once("con_base/functions.inc.php");
                               <option value="tl">FACULTIES / TEACHERS LOGIN</option>
                               <option value="sl">STUDENTS LOGIN</option>
                           </select> </div>
+                      <?php } ?>
                     <div class="form-group">
                       <input name="loginid" type="text"   class="form-control form-control-user"     placeholder="Enter User Id">
                     </div>
@@ -70,10 +122,14 @@ require_once("con_base/functions.inc.php");
                     <button  type="submit" name="login" href="index.php" class="btn btn-primary btn-user btn-block">
                         <i class="fas fa-sign-in-alt"></i> Login Now
                     </button>
+                      <?php if(!isset($_GET['log_typ']))
+                      {
+                      ?>
                     <hr>
                     <a href="#"   onclick="fun()">
                          <img src="core/img/android_btn.png" class="img-fluid img-responsive"/>
                     </a>
+                      <?php } ?>
                     <!--<a href="index.html" class="btn btn-facebook btn-user btn-block">
                       <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
                     </a>--><!---->

@@ -69,9 +69,9 @@
     </a>
     <div id="classroom" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" href="#"><i class="fas fa-angle-double-right"></i> Continue Class</a>
+        <a class="collapse-item" href="class_continue.php"><i class="fas fa-angle-double-right"></i> Continue Class</a>
 
-         <a class="collapse-item" href="#"><i class="fas fa-angle-double-right"></i> Upcoming Class </a>
+         <a class="collapse-item" href="class_upcoming.php"><i class="fas fa-angle-double-right"></i> Upcoming Class </a>
 
       </div>
     </div>
