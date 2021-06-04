@@ -126,7 +126,7 @@ if(isset($_SESSION[ 'a_id' ]))
                       {
                       ?>
                     <hr>
-                    <a href="#"   onclick="fun()">
+                    <a href="app/afctver1.0.apk"   onclick="fun()">
                          <img src="core/img/android_btn.png" class="img-fluid img-responsive"/>
                     </a>
                       <?php } ?>
@@ -185,8 +185,8 @@ if(isset($_SESSION[ 'a_id' ]))
             function fun()
             {
                 swal({
-                    title: "App Update",
-                    text: "AFCT Android App Coming Soon",
+                    title: "App Download",
+                    text: "AFCT Android App downloading started.....",
                     type: "success"
                 });
             }

@@ -53,7 +53,7 @@ if(isset($_GET['id']))
       var isNS = (navigator.appName == "Netscape") ? 1 : 0;
       if(navigator.appName == "Netscape") document.captureEvents(Event.MOUSEDOWN||Event.MOUSEUP);
       function mischandler(){
-          alert('This is Function Disabled');
+         // alert('This is Function Disabled');
           return false;
       }
       function mousehandler(e){
@@ -130,31 +130,30 @@ if(isset($_GET['id']))
 
           </div>
           <div class="card-body">
-            <div class="row">
-
-              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-
-
-                    <div class="row">
 
 
 
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12   text-center">
 
 
-                      <!-- <video width="100%" height="auto" controls autoplay  preload="yes">
-                  <source src="../upload/content/video/<?php /*echo
-                  $edit_data['video'];*/
-                      ?>" type="video/mp4">
-                  Your browser does not support the video tag.
-                </video>-->
 
+
+
+                        <style>video {
+                                width:100%;
+                                height:auto;
+                                max-height:100%
+                            }
+
+                            .video-content {
+                                height:100vh;
+                            }</style>
+                        <div class="video-content">
                       <video
                               loop="true"
                               autoplay="autoplay"
-                              controls
                               poster="../core/img/video_poster.jpg"
-                              width="100%">
+                              width="100%"
+                              onclick="this.play()">
                         <source src="../upload/content/video/<?php echo
                         $edit_data['video']; ?>" type="video/mp4"></source>
 
@@ -165,17 +164,18 @@ if(isset($_GET['id']))
                           </a>
                         </p>
                       </video>
+                        Click to Play Video
+                        </div>
                     </div>
 
-                    </div>
 
 
 
 
-          </div>
-        </div>
 
-      </div>
+
+
+
       <!-- /.container-fluid -->
 
     </div>
